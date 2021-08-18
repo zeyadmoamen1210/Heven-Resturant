@@ -175,10 +175,10 @@ app.on("ready", async () => {
 
     const options = {
       silent: false,
-      // printBackground: true,
-      // margins: { 
-      //   marginType: 'none',
-      // }
+      printBackground: true,
+      margins: { 
+        marginType: 'none',
+      }
       // copies: 2,
     }
 
@@ -213,9 +213,9 @@ app.on("ready", async () => {
       silent: true,
       printBackground: false,
       color: false,
-      // margins: { 
-      //   marginType: 'none',
-      // }
+      margins: { 
+        marginType: 'none',
+      }
       // copies: 2,
     }
 
@@ -258,11 +258,11 @@ app.on("ready", async () => {
     var options = {
       deviceName: args,
       silent: true,
-      // printBackground: true,
-      // color: false,
-      // margins: {
-      //     marginType: 'none',
-      // },
+      printBackground: true,
+      color: false,
+      margins: {
+          marginType: 'none',
+      },
 
       // header: 'Header of the Page',
       // footer: 'Footer of the Page'
