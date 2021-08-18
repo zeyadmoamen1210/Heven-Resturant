@@ -102,6 +102,8 @@ export default {
       this.isKitchenPrinters = true;
 
       this.table_id =  null;
+
+      
       this.notes =  null;
 
 
@@ -150,9 +152,10 @@ export default {
       this.isKitchenPrinters = true;
 
       this.table_id =  null;
-      this.notes =  null;
+      this.notes =  nullك
 
-      
+
+
       this.isKitchenPrinters = true;
       this.getAllPrinters();
 
