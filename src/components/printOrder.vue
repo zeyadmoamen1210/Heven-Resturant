@@ -91,21 +91,6 @@ export default {
 
 
 
-    this.dataForPrint = [];
-      this.index = 0;
-      this.categories =  [];
-      this.printers = [];
-      this.inVoiceDetails = {};
-      this.productsToPrint = [];
-      this.printAllProducts =  true;
-      this.allOrderPrice = 0;
-      this.isKitchenPrinters = true;
-
-      this.table_id =  null;
-
-      
-      this.notes =  null;
-
 
     this.isKitchenPrinters = true;
     this.getAllPrinters();
@@ -141,18 +126,6 @@ export default {
 
     ipcRenderer.on("data", (event, arg) => {
 
-      this.dataForPrint = [];
-      this.index = 0;
-      this.categories =  [];
-      this.printers = [];
-      this.inVoiceDetails = {};
-      this.productsToPrint = [];
-      this.printAllProducts =  true;
-      this.allOrderPrice = 0;
-      this.isKitchenPrinters = true;
-
-      this.table_id =  null;
-      this.notes =  nullك
 
 
 
