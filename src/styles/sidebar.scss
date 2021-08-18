@@ -1,0 +1,73 @@
+
+@font-face {
+    font-family: "din";
+    src: url("../assets/fonts/din-next-regular.ttf");
+}
+@font-face {
+    font-family: "din-bold";
+    src: url("../assets/fonts/din-next-bold.ttf");
+}
+
+$regularFont : 'din', sans-serif;
+$boldFont : 'din-bold', sans-serif;
+
+
+    .vs-sidebar-content {
+        background-color: #EBF9FC;
+        border-radius: 0;
+        z-index: 2000 !important;
+
+        .vs-sidebar__logo {
+
+            margin: 25px 0px 0px;
+            padding: 0px;
+            min-height: 40px;
+
+
+            img {}
+        }
+
+        p {
+            font-size: 10px;
+            font-family: "din", sans-serif;
+            color: #FE5634;
+            font-weight: 700;
+            display: block !important;
+            width: 100%;
+        }
+
+        .vs-sidebar__item {
+            &::after {
+                width: 0;
+            }
+
+            .vs-sidebar__item__text {
+                font-size: 15px;
+                font-family: "din", sans-serif;
+                font-weight: 400;
+            }
+
+            .vs-sidebar__item__icon {
+                background: #EBF9FC;
+                color: #404445;
+
+            }
+
+            &.active {
+                color: #FE5634;
+                background: #ffffff;
+                border-top-left-radius: 36px;
+                border-bottom-left-radius: 36px;
+
+
+                .vs-sidebar__item__icon {
+                    background: #ffffff;
+                    border-top-left-radius: 36px;
+                    border-bottom-left-radius: 36px;
+                    color: #FE5634;
+
+                }
+            }
+        }
+
+    }

@@ -1,0 +1,191 @@
+@import "_color.scss";
+@import "_font.scss";
+@font-face {
+    font-family: "din";
+    src: url("../assets/fonts/din-next-regular.ttf");
+}
+@font-face {
+    font-family: "din-bold";
+    src: url("../assets/fonts/din-next-bold.ttf");
+}
+
+$regularFont : 'din', sans-serif;
+$boldFont : 'din-bold', sans-serif;
+.meun {
+    
+    direction: rtl;
+
+
+    .workbooks {
+
+
+        .selected-category{
+            background: #FE5634 !important;
+            color: #FFF !important;
+        }
+
+
+        h3 {
+            font-family: $regularFont;
+            font-weight: 700;
+            font-size: 24px;
+            text-align: right;
+
+        }
+
+        .content {
+            direction: rtl;
+
+            .nav {
+                flex-wrap: nowrap;
+                overflow-x: scroll;
+                overflow-y: hidden;
+                scrollbar-width: thin;
+                scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+                border: none;
+                width: 100%;
+                padding-bottom: 6px;
+
+
+                &::-webkit-scrollbar {
+                    height: 5px;
+
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: var(--scrollbarBG);
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: var(--thumbBG);
+                    border-radius: 6px;
+                }
+
+                .nav-link {
+                    width: 80px;
+                    height: 114px;
+                    border: none;
+                    background: $mainColor;
+                    margin-left: 26px;
+                    padding: 0;
+                    border-radius: 6px;
+
+                    &.active {
+                        background: $subColor;
+
+                        p {
+
+                            color: #ffffff;
+                        }
+                    }
+
+                    img {
+                        width: 48px;
+                        margin: 15px 0;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        font-family: $regularFont;
+                        color: #000;
+                    }
+                }
+
+            }
+
+            .products {
+                box-shadow: 0px 0px 6px #C5F8D9;
+                direction: rtl;
+            }
+
+            .size {
+                background-color: $mainColor;
+              
+                font-family: $regularFont;
+
+                width: 28px;
+                height: 25px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                padding: 0 9px;
+                font-size: 14px;
+                margin: 0 2px 10px;
+            }
+
+            .meunItem {
+                background-color: $mainColor;
+                margin-bottom: 5px;
+                font-size: 16px;
+                font-family: $regularFont;
+                border-radius: 6px;
+                height: 58px;
+                align-items: center;
+                overflow-y: hidden;
+                overflow-x: scroll;
+                padding-right: 13px;
+                
+                .col-md-7{
+                    text-align: start;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+
+                &::-webkit-scrollbar {
+                    height: 5px;
+
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: var(--scrollbarBG);
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: var(--thumbBG);
+                    border-radius: 6px;
+                }
+
+                .prices{
+                    display: flex;
+                    width: 100%;
+                    justify-content: flex-end !important;
+                    margin-left: 15px;
+                }
+
+                .price {
+                    background-color: #ffffff;
+                    border-radius: 50%;
+                    padding: 6px 6px 3px 4px;
+                    color: #1D1D1D;
+                    font-weight: 500;
+                    cursor: pointer;
+                    font-size: 12px;
+                    margin: 0 4px;
+                    min-width: 25px;
+                    -webkit-touch-callout: none; /* iOS Safari */
+                    -webkit-user-select: none; /* Safari */
+                    -khtml-user-select: none; /* Konqueror HTML */
+                    -moz-user-select: none; /* Old versions of Firefox */
+                    -ms-user-select: none; /* Internet Explorer/Edge */
+                    user-select: none; 
+
+                    
+
+                    &:hover {
+                        background-color: $subColor;
+                        color: #ffffff;
+                    }
+
+                    &.null-price{
+                        &:hover{
+                            background-color: #FFF;
+                            color:#333;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
