@@ -1,5 +1,14 @@
 <template>
   <div>
+
+
+    <div class="invoice-logo" >
+      <img
+        src="@/images/logo.png"
+     
+        alt=""
+      />
+    </div>
     
     <h6
       class="text-center mt-2 mb-2"
@@ -305,6 +314,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.invoice-logo{
+  text-align: center;
+}
 .custom-table{
   border: 1px solid #000 !important;
     margin: 5px 0px !important;

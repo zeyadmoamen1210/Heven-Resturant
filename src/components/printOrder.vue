@@ -2,13 +2,7 @@
   <div>
 
 
-    <div v-if="printAllProducts" class="invoice-logo" >
-      <img
-        src="@/images/logo.png"
-     
-        alt=""
-      />
-    </div>
+    
 
 
 
@@ -94,6 +88,23 @@ export default {
   this.getAllPrinters();
 
   ipcRenderer.on("directData", (e, a) => {
+
+
+
+    this.dataForPrint = [];
+      this.index = 0;
+      this.categories =  [];
+      this.printers = [];
+      this.inVoiceDetails = {};
+      this.productsToPrint = [];
+      this.printAllProducts =  true;
+      this.allOrderPrice = 0;
+      this.isKitchenPrinters = true;
+
+      this.table_id =  null;
+      this.notes =  null;
+
+
     this.isKitchenPrinters = true;
     this.getAllPrinters();
     this.notes = a.notes;
@@ -122,13 +133,26 @@ export default {
     
 
 
-      setTimeout(() => {
-        ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter);
-      }, 1000)
+      ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter);
 
   });
 
     ipcRenderer.on("data", (event, arg) => {
+
+      this.dataForPrint = [];
+      this.index = 0;
+      this.categories =  [];
+      this.printers = [];
+      this.inVoiceDetails = {};
+      this.productsToPrint = [];
+      this.printAllProducts =  true;
+      this.allOrderPrice = 0;
+      this.isKitchenPrinters = true;
+
+      this.table_id =  null;
+      this.notes =  null;
+
+      
       this.isKitchenPrinters = true;
       this.getAllPrinters();
 
@@ -183,7 +207,6 @@ export default {
 
 
           if(arg.type_id && arg.type_id == 3){
-            console.log("from type id == 3")
             this.printAllProducts = false;
             this.isKitchenPrinters = true;
 
@@ -195,9 +218,7 @@ export default {
 
 
             // deleted
-        setTimeout(() => {
-          ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
-        }, 1000)
+        ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
 
 
 
@@ -205,12 +226,8 @@ export default {
             // this.currPrinter = 
             // console.log("curr printer " ,this.productsToPrint[this.index][0].printer_id)
           }else{
-            console.log("print the total")
-            console.log("print specific printer ", this.productsToPrint[this.index])
-            console.log("print specific printer ", this.productsToPrint[this.index][0].printer_id)
-             setTimeout(() => {
-                ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter );
-             }, 1000)
+  
+              ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter );
 
           }
 
@@ -218,36 +235,22 @@ export default {
           
 
       }
-
-      // console.log("this is Categories ", this.categories);
-      // console.log("this is Printers " , this.printers);
-      // console.log("my order ", this.dataForPrint)
-      // console.log("hey data for print ",this.dataForPrint)
-
-      
+  
     })
 
 
 
-    console.log("data for print ",this.dataForPrint)
 
     ipcRenderer.on('printed', () => {
       this.index = Number(this.index) + 1;
 
-
-        // 
-
       if(this.index < this.productsToPrint.length){
+
         let printer = this.printers.find(ele => ele.id == this.productsToPrint[this.index][0].printer_id);
-        setTimeout(() => {
-          ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
-        }, 1000)
-        console.log("print specific printer ", )
-        console.log("this is index");
+        ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
+
       }else{
-          setTimeout(() => {
-            ipcRenderer.send("closePrinting");
-          }, 1000)
+          ipcRenderer.send("closePrinting");
       }
 
     });
@@ -268,16 +271,11 @@ export default {
 
       if(this.isKitchenPrinters && (this.index < this.productsToPrint.length)){
 
-
-
         let printer = this.printers.find(ele => ele.id == this.productsToPrint[this.index][0].printer_id);
-
-
-        console.log("this is kitchen products ", this.productsToPrint[this.index])
 
         ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
 
-        console.log("print specific printer ", this.productsToPrint[this.index][0].printer_id)
+
       }else{
           ipcRenderer.send("closePrinting");
       }
@@ -299,9 +297,6 @@ export default {
 
 <style lang="scss">
 
-.invoice-logo{
-  text-align: center;
-  margin:auto
-}
+
 
 </style>
