@@ -179,7 +179,7 @@ app.on("ready", async () => {
       margins: { 
         marginType: 'custom',
         top: 0,
-        right: 15,
+        right: 10,
         left: 0,
         bottom: 0
       }
@@ -220,7 +220,7 @@ app.on("ready", async () => {
       margins: { 
         marginType: 'custom',
         top: 0,
-        right: 15,
+        right: 10,
         left: 0,
         bottom: 0
       }
@@ -271,7 +271,7 @@ app.on("ready", async () => {
       margins: { 
         marginType: 'custom',
         top: 0,
-        right: 15,
+        right: 10,
         left: 0,
         bottom: 0
       }
