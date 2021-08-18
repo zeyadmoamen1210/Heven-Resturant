@@ -156,19 +156,19 @@ $boldFont : 'din-bold', sans-serif;
                 .price {
                     background-color: #ffffff;
                     border-radius: 50%;
-                    padding: 6px 6px 3px 4px;
+                    text-align: center;
+                    padding: 2px 6px 3px 4px;
                     color: #1D1D1D;
                     font-weight: 500;
                     cursor: pointer;
                     font-size: 12px;
-                    margin: 0 4px;
-                    min-width: 25px;
-                    -webkit-touch-callout: none; /* iOS Safari */
-                    -webkit-user-select: none; /* Safari */
-                    -khtml-user-select: none; /* Konqueror HTML */
-                    -moz-user-select: none; /* Old versions of Firefox */
-                    -ms-user-select: none; /* Internet Explorer/Edge */
-                    user-select: none; 
+                    margin: 0 2px;
+                    min-width: 28px;
+                    -webkit-touch-callout: none;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
 
                     
 

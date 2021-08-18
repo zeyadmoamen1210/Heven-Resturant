@@ -39,4 +39,26 @@ export default {
 .el-select-dropdown{
   z-index: 9999999999 !important;
 }
+
+@font-face {
+  font-family: "CairoBold";
+  src: url('./assets/fonts/Cairo/Cairo-Bold.ttf');
+}
+@font-face {
+  font-family: "CairoSemiBold";
+  src: url('./assets/fonts/Cairo/Cairo-SemiBold.ttf');
+}
+@font-face {
+  font-family: "CairoRegular";
+  src: url('./assets/fonts/Cairo/Cairo-Regular.ttf');
+}
+h1,h2,h3{
+  font-family: "CairoBold";
+}
+h4,h5,h6{
+  font-family: "CairoSemiBold";
+}
+p, span, input, label, div{
+  font-family: "CairoRegular";
+}
 </style>

@@ -61,9 +61,9 @@
         <!-- Render Tabs, supply a unique `key` to each tab -->
         <div class="tab">
           <div class="order-type d-flex justify-content-between">
-            <div class="d-flex">
-              <h6 class="mt-0">نوع الطلب /</h6>
-              <h6 class="mt-0 text-success">{{ tab.orderType.name }}</h6>
+            <div class="d-flex" style="font-size:20px">
+              <h6 class="mt-0 mb-0">نوع الطلب /</h6>
+              <h6 class="mt-0 mb-0 text-success">{{ tab.orderType.name }}</h6>
             </div>
             <div
               class="d-flex justify-content-center"
@@ -1828,7 +1828,7 @@ export default {
       margin: 0 auto;
       margin-bottom: 13px;
 
-      padding: 8px 15px 1px;
+      padding: 8px 17px 1px;
       margin-bottom: 0;
       h6 {
         color: #fe5634 !important;
@@ -1904,8 +1904,10 @@ export default {
     padding-right: 13px;
 
     .price {
+      text-align: center;
       background-color: #ffffff;
       width: 32px;
+      text-align: center;
       height: 32px;
       border-radius: 50%;
       display: block;

@@ -3,7 +3,7 @@
     
     <h6
       class="text-center mt-2 mb-2"
-      style="margin-top:100px;font-size:18px;padding: 8px;font-weight: 500;margin-top: 8px;font-family: auto !important;"
+      style="margin-top:100px;font-size:18px;padding: 8px;font-weight: 500;margin-top: 8px;"
       v-if="inVoiceDetails && inVoiceDetails.branch"
     >
       <b>
@@ -13,7 +13,7 @@
     <!-- <h6 class="text-center mt-2 mb-2">haVen</h6> -->
 
     <div class="container-fluid">
-      <table class="custom-table" style="font-family: auto !important;">
+      <table class="custom-table" >
         <tr v-if="inVoiceDetails">
           <td width="35%">رقم الطلب</td>
           <td>
@@ -68,7 +68,7 @@
         </tr>
 
 
-        <tr v-if="inVoiceDetails && inVoiceDetails.customer && inVoiceDetails.customer.mobile">
+        <tr v-if="inVoiceDetails && inVoiceDetails.customer && inVoiceDetails.customer.mobile && inVoiceDetails.customer.mobile != 0">
           <td>الهاتف</td>
           <td>
             {{ inVoiceDetails.customer.mobile }}
@@ -119,7 +119,7 @@
 
       <div style="height: 10px;"></div>
 
-      <table class="custom-table" style="font-family: auto !important;">
+      <table class="custom-table" >
         <thead>
           <tr>
             <td>الكمية</td>
@@ -189,10 +189,10 @@
                 inVoiceDetails.restaurant_cost > 0)
           "
         >
-          <td style="width: 180px;background:#f7f7f7;    font-weight: bold;font-family: auto !important;">
+          <td style="width: 180px;background:#f7f7f7;    font-weight: bold;">
             الإجمالي
           </td>
-          <td style="font-family: auto !important;"> 
+          <td> 
             {{
               allOrderPrice - 
               (inVoiceDetails.driver_cost
@@ -214,10 +214,10 @@
                 inVoiceDetails.restaurant_cost > 0)
           "
         >
-          <td style="width: 180px;background:#f7f7f7;    font-weight: bold;font-family: auto !important;">
+          <td style="width: 180px;background:#f7f7f7;    font-weight: bold;">
             سعر التوصيل
           </td>
-          <td style="font-family: auto !important;">
+          <td >
             {{
               (inVoiceDetails.driver_cost
                 ? Number(inVoiceDetails.driver_cost)
@@ -231,10 +231,10 @@
         </tr>
 
         <tr>
-          <td style="background:#f7f7f7;    font-weight: bold;font-family: auto !important;">
+          <td style="background:#f7f7f7;    font-weight: bold;">
             إجمالي الفاتورة
           </td>
-          <td style="width: 100px;font-family: auto !important;" v-if="inVoiceDetails && inVoiceDetails.total">
+          <td style="width: 100px;" v-if="inVoiceDetails && inVoiceDetails.total">
             <b>{{
               Number(inVoiceDetails.total) +
                 (inVoiceDetails.driver_cost
@@ -246,7 +246,7 @@
             }}</b>
             ج.م
           </td>
-          <td v-else style="font-family: auto !important;">
+          <td v-else >
             <b>{{ allOrderPrice }}</b> ج.م
           </td>
         </tr>
@@ -255,28 +255,27 @@
       <div style="height: 5px;"></div>
 
       <div
-        class="d-flex justify-content-center p-1   custom-table"
-        style="border:1px solid #333;margin:5px 0;"
+        class="d-flex justify-content-center pt-1 shared-value"
       >
-        <h6 style="margin:0 10px;margin-bottom:0;font-size:8px;font-family: auto !important;"><b>الاسعار شاملة ضريبة القيمة المضافة</b></h6>
+        <h6><b>الاسعار شاملة ضريبة القيمة المضافة</b></h6>
         
       </div>
 
 
       <div
-        class="d-flex justify-content-center p-1  custom-table"
-        style="border:1px solid #333;margin:5px 0"
+        class="d-flex justify-content-center p-1 phone"
+        style=""
       >
-        <h6 style="margin:0 5px;margin-bottom:0;font-size:8px;font-family: auto !important;"><b>للتوصيل</b></h6>
-        <h6 style="margin-bottom:0;font-size:8px" v-if="inVoiceDetails && inVoiceDetails.branch && inVoiceDetails.branch.phone">
+        <h6 class="head"><b>للتوصيل</b></h6>
+        <h6 class="value" v-if="inVoiceDetails && inVoiceDetails.branch && inVoiceDetails.branch.phone">
            {{ inVoiceDetails.branch.phone }} <i class="fas fa-phone-alt"></i>
         </h6>
       </div>
 
       <h6
       v-if="inVoiceDetails && inVoiceDetails.branch"
-      class="custom-table"
-        style="padding: 5px;font-weight: 500;background: #f7f7f7;margin-top: 8px; font-weight: bold;font-size:8px;font-family: auto !important;"
+      class="address"
+       
       >
         {{ inVoiceDetails.branch.address }}
       </h6>
@@ -305,9 +304,42 @@ export default {
   border: 1px solid #000 !important;
     margin: 5px 0px !important;
     border-radius: 5px !important;
-    font-family: auto !important;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
     td{
       border: 1px solid #000 !important;
+      text-align: center;
+          font-size: 12px;
+    font-family: "CairoBold";
     }
+}
+
+.shared-value{
+  border: 1px solid #000;
+  margin: 0 ;
+  h6{
+    margin:0 10px;
+    margin-bottom:0;
+    font-size:12px;
+    padding: 8px;
+    font-family: "CairoBold";
+  }
+}
+.phone{
+    padding: 10px;
+    border: 1px solid #000;
+    margin: 10px 0;
+    .head{
+      margin:0 5px;margin-bottom:0;font-size:12px;font-family: "CairoBold";
+    }
+    .value{
+      margin:0;font-size:12px;font-family: "CairoBold"
+    }
+}
+h6.address{
+  font-family: "CairoBold";
+  text-align: center;
+  padding: 5px;font-weight: 500;background: #f7f7f7;margin-top: 8px; font-weight: bold;font-size:12px;
 }
 </style>

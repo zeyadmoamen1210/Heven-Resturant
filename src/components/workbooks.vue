@@ -114,8 +114,8 @@
 
           <div v-else class="tables">
             <div class="row">
-              <div class="col-md-4">
-                <h6>المقاعد الممتلئة</h6>
+              <div class="col-md-4 text-center">
+                <h5>المقاعد الممتلئة</h5>
                 <div class="table-img complete">
                   <img src="@/images/table-1.png" alt="">
                 </div>
@@ -125,8 +125,8 @@
                 
               </div>
 
-              <div class="col-md-4">
-                 <h6>المقاعد المحجوزة</h6>
+              <div class="col-md-4 text-center">
+                 <h5>المقاعد المحجوزة</h5>
                 <div class="table-img reserved">
                   <img src="@/images/table-3.png" alt="">
                 </div>
@@ -137,8 +137,8 @@
 
               </div>
 
-              <div class="col-md-4">
-                 <h6>المقاعد الفارغة</h6>
+              <div class="col-md-4 text-center">
+                 <h5>المقاعد الفارغة</h5>
                 <div class="table-img empty">
                   <img src="@/images/table-2.png" alt="">
                 </div>
@@ -447,6 +447,7 @@ export default {
     h6{
               margin-right: 0;
     font-size: 17px;
+    margin-top: 0 !important;
     margin-bottom: 4px;
     }
 

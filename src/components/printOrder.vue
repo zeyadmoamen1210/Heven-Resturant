@@ -289,6 +289,9 @@ export default {
 
 <style lang="scss">
 
-
+.invoice-logo{
+  text-align: center;
+  margin:auto
+}
 
 </style>

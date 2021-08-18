@@ -4,10 +4,10 @@
       <!-- <div class="logo">
         <img src="@/images/logo.png" alt="" />
       </div> -->
-      <h6 style="font-weight: bold;font-family: auto !important;" class="text-center mt-2 mb-2" v-if="productsToPrint && productsToPrint.length > 0 && productsToPrint[0].kitchen_type == 2"> 
+      <h6 class="text-center mt-2 mb-2" v-if="productsToPrint && productsToPrint.length > 0 && productsToPrint[0].kitchen_type == 2"> 
         <img style="width: 20px" src="@/assets/pizza-slice.svg" alt="">
         مطبخ بيتزا </h6>
-      <h6 style="font-weight: bold;font-family: auto !important;" class="text-center mt-2 mb-2" v-if="productsToPrint && productsToPrint.length > 0 && productsToPrint[0].kitchen_type == 3">
+      <h6 class="text-center mt-2 mb-2" v-if="productsToPrint && productsToPrint.length > 0 && productsToPrint[0].kitchen_type == 3">
         <img style="width: 20px" src="@/assets/spaguetti.svg" alt="">
         مطبخ بستا</h6>
 
@@ -112,10 +112,19 @@ export default {
   border: 1px solid #000 !important;
     margin: 5px 0px !important;
     border-radius: 5px !important;
-    font-family: auto !important;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
     td{
       border: 1px solid #000 !important;
+      text-align: center;
+      font-size: 12px;
+    font-family: "CairoBold";
     }
+}
+
+.kitchen-table{
+  h6{font-family: "CairoBold";}
 }
 
 </style>

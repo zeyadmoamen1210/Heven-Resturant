@@ -43,13 +43,19 @@ html {
         >div{
             background-color: #EBF9FC;
             border-radius: 6px;
+            
             padding-right: 13px;
             >div{
                 padding: 8px 15px;
                 border-radius: 8px;
                 cursor: pointer;
-                margin: 15px 16px;
+                margin: 15px 10px;
                 background: #FFF;
+                font-size: 14px;
+                transition: all .5s ease;
+                &:hover{
+                    transform: translateY(-5px);
+                }
                 p{margin: 0}
                 &.active{
                     background-color: #FE5634 !important;
