@@ -825,13 +825,13 @@ export default {
   }),
 
   created() {
-    // this.getAllPrinters();
-    // this.getAreas();
+    this.getAllPrinters();
+    this.getAreas();
     this.getAllCategories();
-    // this.getCities();
-    // this.getEmployeeDepartments();
-    // this.getPartenars();
-    // this.getPreparationTime();
+    this.getCities();
+    this.getEmployeeDepartments();
+    this.getPartenars();
+    this.getPreparationTime();
     
   },
   watch: {
@@ -1399,9 +1399,6 @@ export default {
 
         this.determinePrintersFirst = true;
 
-        // setTimeout(() => {
-        //   this.$bvModal.hide("determinePrintersFirst");
-        // }, 2000);
 
         return;
       }

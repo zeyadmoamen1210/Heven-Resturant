@@ -14,6 +14,14 @@
         </template>
         اﻟﺮﺋﺴﻴﺔ
       </vs-sidebar-item>
+
+
+      <vs-sidebar-item class="mt-3" to="/operations" id="operations">
+        <template #icon>
+          <i class="fas fa-qrcode"></i>
+        </template>
+        العمليات
+      </vs-sidebar-item>
      
 
       <vs-sidebar-item class="mt-2" @click.native="logout()" id="logout">

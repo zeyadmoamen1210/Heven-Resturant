@@ -367,7 +367,7 @@ export default new Vuex.Store({
     },
 
     UpdateUserStatus: (state, payload) => {
-      state.isLoggedIn = payload;
+      state.isLoggedIn = true;
     },
     addition: (state) => {
       state.showAddition = !state.showAddition

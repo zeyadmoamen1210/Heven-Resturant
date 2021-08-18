@@ -19,6 +19,13 @@ Vue.use(IconsPlugin);
 // import "@/fontawesome-free-5.9.0-web/css/all.css";
 
 
+
+
+  import veusax from 'vuesax'
+  import 'vuesax/dist/vuesax.css'
+
+  Vue.use(veusax)
+
 import {
   initialize
 } from '@/plugins/general.js';
