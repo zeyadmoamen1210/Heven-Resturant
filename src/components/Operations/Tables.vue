@@ -18,7 +18,6 @@ export default {
     
     h6{
         margin-bottom:0;
-        font-family: "din";
     padding: 5px 18px;
     margin-bottom: 27px;
     
@@ -26,6 +25,11 @@ export default {
     color: #333;
     border-radius: 8px;
     margin-right: 10px;
+
+    margin-top: 0;
+        font-family: "CairoSemiBold";
+        text-align: center;
+        font-size: 15px;
     }
 }
 </style>

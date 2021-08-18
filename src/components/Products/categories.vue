@@ -1108,11 +1108,13 @@ export default {
   .nav.nav-pills.card-header-pills {
     padding: 0;
   }
+
+  
   .card-header {
-    padding: 18px 18px 5px !important;
     margin-bottom: 0;
     background-color: transparent !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    
   }
   .tab-content{
     height: 100vh;

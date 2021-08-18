@@ -16,6 +16,7 @@ $boldFont : 'din-bold', sans-serif;
         background-color: #EBF9FC;
         border-radius: 0;
         z-index: 2000 !important;
+        direction: ltr !important;
 
         .vs-sidebar__logo {
 
@@ -58,6 +59,10 @@ $boldFont : 'din-bold', sans-serif;
                 background: #ffffff;
                 border-top-left-radius: 36px;
                 border-bottom-left-radius: 36px;
+
+                path{
+                    fill: #FE5634 !important;
+                }
 
 
                 .vs-sidebar__item__icon {

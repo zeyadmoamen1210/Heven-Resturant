@@ -1,9 +1,9 @@
 <template>
   <div class="register-page">
-    <div class="container">
+    <div class="container-fluid">
       <div class="header d-flex justify-content-between">
         <div>
-          <h3 class="header text-right">إنشاء حساب جديد</h3>
+          <h2 class="header text-right">إنشاء حساب جديد</h2>
         </div>
         
       </div>
@@ -72,7 +72,7 @@
             </div>
           </div>
 
-          <div class="col-md-12 text-right mt-2">
+          <div class="col-md-12 text-right mt-4">
               <el-button
                 type="primary"
                 plain
@@ -149,7 +149,7 @@ export default {
 <style lang="scss">
 .register-page{
     .header{
-        padding-top: 26px;
+        padding-top: 10px;
         margin-bottom: 10px;
     }
 }

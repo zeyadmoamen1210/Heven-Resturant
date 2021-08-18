@@ -47,7 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 .driver{
-    font-family: "din";
+    text-align: center;
     // box-shadow: 0 4px 25px 0 #0000001a;
     padding: 6px 6px;
     margin-bottom: 27px;
@@ -71,6 +71,10 @@ export default {
     }
     h6{
         margin-bottom:5px;
+        margin-top: 0;
+        font-family: "CairoSemiBold";
+        text-align: center;
+        font-size: 15px;
         
         span{
             color: #FE5634;

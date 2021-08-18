@@ -3,7 +3,7 @@
     
     <h6
       class="text-center mt-2 mb-2"
-      style="margin-top:100px;font-size:18px;padding: 8px;font-weight: 500;margin-top: 8px;"
+      style="margin: 0;font-size: 18px;padding: 0;font-weight: 500;"
       v-if="inVoiceDetails && inVoiceDetails.branch"
     >
       <b>

@@ -33,24 +33,27 @@ export default {
     h6{
             /* margin-bottom: 8px; */
     font-size: 15px;
-    padding: 11px 11px;
     /* background: #f7f7f7; */
     /* border-bottom: 1px solid #ccc; */
     margin: 0;
+    margin-top: 0;
+        font-family: "CairoSemiBold";
+        text-align: center;
+        font-size: 15px;
     }
     .edit-delete{
         margin-right: 16px;
         margin-top: 1px;
         button{
-               padding: 4px 10px;
+               
     margin: 2px;
         }
     }
 
     .emp-dept-delete{
-    background: var(--bs-danger);
+    background: #e74c3c;;
     color: #fff;
-    padding: 3px 6px 0;
+    
     cursor: pointer;
 }
 

@@ -24,7 +24,6 @@ export default {
 
 <style lang="scss" scoped>
 .branch{
-    font-family: "din";
     // box-shadow: 0 4px 25px 0 #0000001a;
     border: 1px solid #ddd;
     padding: 6px 6px;
@@ -33,9 +32,13 @@ export default {
     border-radius: 8px;
     margin-right: 10px;
     width: 220px;
-    height: 170px;
+    text-align: center;
     h6{
         margin-bottom:5px;
+        margin-top: 0;
+        font-family: "CairoSemiBold";
+        text-align: center;
+        font-size: 15px;
         
         span{
             color: #FE5634;

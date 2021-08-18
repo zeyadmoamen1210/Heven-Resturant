@@ -38,10 +38,10 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="الاجرائات">
+          <el-table-column label="الاجراءات">
             <template slot-scope="scope">
-              <el-button type="primary" plain @click="updateUser(scope.row)"> تعديل </el-button>
-              <el-button type="danger" plain @click="deleteUser(scope.row)"> حذف </el-button>
+              <el-button class="ml-2 mr-2" type="primary" plain @click="updateUser(scope.row)"> تعديل </el-button>
+              <el-button class="ml-2 mr-2" type="danger" plain @click="deleteUser(scope.row)"> حذف </el-button>
             </template>
           </el-table-column>
 
@@ -119,14 +119,16 @@
           <span  class="dialog-footer mt-4">
   
             <el-form-item
+            
             >
-                   <el-button @click="updateUserPopup = false">إلغاء</el-button>
+                   <el-button class="ml-2" @click="updateUserPopup = false">إلغاء</el-button>
             </el-form-item>
             
 
             <el-form-item
+            
             >
-                    <el-button type="primary" @click="submitUpdateUserForm('currUser')">تعديل</el-button>
+                    <el-button class="ml-2" type="primary" @click="submitUpdateUserForm('currUser')">تعديل</el-button>
             </el-form-item>
 
         </span>
@@ -205,6 +207,7 @@ export default {
             .delete(`/users/${this.currUser.id}`)
             .then((res) => {
                 this.$notify({
+                    message: "تم ",
                     message: "تم الحذف بنجاح",
                     type: "success"
                 })

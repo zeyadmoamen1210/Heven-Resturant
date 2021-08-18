@@ -238,6 +238,7 @@ export default {
       // box-shadow: 0 4px 25px 0 #0000000f;
       border-radius: 17px;
       margin-top: 15px;
+      text-align: center !important;
       img {
         width: 67px;
       }

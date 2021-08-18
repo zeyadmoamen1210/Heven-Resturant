@@ -1,6 +1,6 @@
 <template>
   <div class="stores-page">
-    <div class="container">
+    <div class="container-fluid">
       <div class="header d-flex justify-content-between">
           <div>
               <h3 class="header text-right">المخازن</h3>
@@ -28,7 +28,7 @@
               </tr>
             </table>
 
-            <div>
+            <div class="mt-3">
                 <button class="btn emp-dept-update" @click="openUpdateStoreModel(store)"><img src="@/images/Icon-feather-edit-3.svg" alt=""></button>
                 <button class="btn emp-dept-delete" @click="openDeleteModel(store)" > <img src="@/images/Icon-material-delete.svg" alt=""> </button>
 
@@ -134,7 +134,7 @@
 
          
 
-          <span  class="dialog-footer mt-4">
+          <span  class="dialog-footer mt-3">
                     
 
             <el-form-item
@@ -482,7 +482,10 @@ export default {
         margin-bottom: 15px;
         table{
             width: 100%;
-            font-family: 'din';
+            border-collapse: collapse;
+            tr, td{
+              border: 1px solid #EEE;
+            }
         }
         
     }

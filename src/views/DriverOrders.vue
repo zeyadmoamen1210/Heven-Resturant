@@ -265,15 +265,8 @@ export default {
 
     window.onscroll = () => {
 
-      console.log("first ", getScrollTop() )
-      console.log("second ", window.innerHeight )
-      console.log("thired ", document.getElementById('driverTable').clientHeight )
-      
-
-
-    
      
-      if(getScrollTop() + window.innerHeight > document.getElementById('driverTable').clientHeight - 1000){
+      if(document.getElementById('driverTable') && getScrollTop() + window.innerHeight > document.getElementById('driverTable').clientHeight - 1000){
         console.log("hello there")
            if( this.lastPage > this.currPage){
                 this.currPage += 1;

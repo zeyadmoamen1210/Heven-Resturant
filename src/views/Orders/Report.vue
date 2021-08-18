@@ -1,18 +1,22 @@
 <template>
   <div class="receiving-orders">
 
-    <b-modal id="determinePrintersFirst" hide-footer hide-header>
+    <el-dialog
+      :visible.sync="determinePrintersFirst"
+      width="30%">
+
       <div class="d-block text-center">
-        <div>
+        <div class="text-center">
           <img
             style="width: 90px;margin-bottom: 10px;"
             src="@/assets/printer.svg"
             alt=""
           />
         </div>
-        <h3>من فضلك حدد الطابعات علي الجهاز اولاً</h3>
+        <h3 class="text-center">من فضلك حدد الطابعات علي الجهاز اولاً</h3>
       </div>
-    </b-modal>
+      
+    </el-dialog>
     
     <div class="container-fluid">
 
@@ -483,6 +487,7 @@ export default {
   watch: {},
   data() {
     return {
+      determinePrintersFirst: false,
       showModelToUpdatePaymentWay:false,
     
           dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'6:00:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'6:00:00')],
@@ -619,7 +624,7 @@ export default {
 
       if(!this.printers || this.printers.length == 0){
 
-        this.$bvModal.show("determinePrintersFirst");
+        this.determinePrintersFirst = true;
 
         // setTimeout(() => {
         //   this.$bvModal.hide("determinePrintersFirst");
@@ -711,7 +716,7 @@ export default {
 
       if(!this.printers || this.printers.length == 0){
 
-        this.$bvModal.show("determinePrintersFirst");
+        this.determinePrintersFirst = true;
 
         // setTimeout(() => {
         //   this.$bvModal.hide("determinePrintersFirst");
@@ -883,6 +888,7 @@ export default {
       // box-shadow: 0 4px 25px 0 #0000000f;
       border-radius: 17px;
       margin-top: 15px;
+      text-align: center !important;
       img {
         width: 67px;
       }

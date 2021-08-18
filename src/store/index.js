@@ -52,7 +52,7 @@ export default new Vuex.Store({
 
     isLoggedIn: null,
     // url:"http://127.0.0.1:8000/images/"
-    url:"http://167.172.157.191:2090/images/",
+    url:"https://haven-pos.herokuapp.com/api/images/",
     // url:"https://haven-pos.herokuapp.com/images/"
 
     ordersTab:"orders"

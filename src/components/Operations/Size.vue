@@ -28,7 +28,11 @@ export default {
     border-radius: 8px;
     margin-right: 10px;
     h6{
-        margin-bottom:0;
+        margin-bottom: 0;
+        margin-top: 0;
+        font-family: "CairoSemiBold";
+        text-align: center;
+        font-size: 15px;
     }
 }
 </style>

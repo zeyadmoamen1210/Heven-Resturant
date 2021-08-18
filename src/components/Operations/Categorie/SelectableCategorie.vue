@@ -74,7 +74,7 @@ export default {
       background: #ebf9fc;
       padding: 3px 6px 0;
       cursor: pointer;
-      border: 1px solid #ccc;
+    
       outline: none !important;
     }
 
@@ -83,9 +83,7 @@ export default {
       color: #fff;
       padding: 3px 6px 0;
       cursor: pointer;
-      padding: 2px 7px 0;
       color: #333;
-      border: 1px solid #ccc;
       box-shadow: none;
       outline: none !important;
     }

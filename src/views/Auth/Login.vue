@@ -9,7 +9,7 @@
               <div class="row text-right">
                 <div class="col-md-12">
                   <div role="group">
-                    <label for="name">اسم المستخدم</label>
+                    <label for="name" style="text-align: right" class="mb-2">اسم المستخدم</label>
          
 
                     <el-select
@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-md-12 mt-2">
                   <div role="group">
-                    <label for="name"> كلمة المرور</label>
+                    <label for="name" style="text-align: right" class="mb-2"> كلمة المرور</label>
                     <el-input
                       id="name"
                       type="password"
@@ -47,7 +47,7 @@
               </div>
             </form>
           </div>
-          <el-button style="color:#000" @click="printBarCode">طباعة</el-button>
+          <!-- <el-button style="color:#000" @click="printBarCode">طباعة</el-button> -->
         </div>
       </div>
     </div>

@@ -2,18 +2,22 @@
   <div class="receiving-orders">
     <div class="container">
 
-      <b-modal id="determinePrintersFirst" hide-footer hide-header>
+      <el-dialog
+      :visible.sync="determinePrintersFirst"
+      width="30%">
+
       <div class="d-block text-center">
-        <div>
+        <div class="text-center">
           <img
             style="width: 90px;margin-bottom: 10px;"
             src="@/assets/printer.svg"
             alt=""
           />
         </div>
-        <h3>من فضلك حدد الطابعات علي الجهاز اولاً</h3>
+        <h3 class="text-center">من فضلك حدد الطابعات علي الجهاز اولاً</h3>
       </div>
-    </b-modal>
+      
+    </el-dialog>
       
 
 
@@ -498,6 +502,7 @@ export default {
       tableData: [],
 
       currOrder: [],
+      determinePrintersFirst: false,
       toggleOrderProducts: false,
       currOrderProducts: [],
       currDeliveryBoy: {},
@@ -670,7 +675,7 @@ export default {
 
       if(!this.printers || this.printers.length == 0){
 
-        this.$bvModal.show("determinePrintersFirst");
+        this.determinePrintersFirst = true;
 
         // setTimeout(() => {
         //   this.$bvModal.hide("determinePrintersFirst");
@@ -823,6 +828,7 @@ export default {
       // box-shadow: 0 4px 25px 0 #0000000f;
       border-radius: 17px;
       margin-top: 15px;
+      text-align: center !important;
       img {
         width: 67px;
       }

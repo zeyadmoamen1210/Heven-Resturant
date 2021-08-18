@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 
 import VueApexCharts from 'vue-apexcharts'
+import "./plugins/moment"
 import './plugins/swiper'
 Vue.use(VueApexCharts)
 

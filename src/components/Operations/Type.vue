@@ -20,7 +20,6 @@ export default {
 <style lang="scss" scoped>
 .type{
     direction: ltr;
-    font-family: "din";
     // box-shadow: 0 4px 25px 0 #0000001a;
     padding: 15px 18px;
     margin-bottom: 27px;
@@ -29,8 +28,14 @@ export default {
     color: #333;
     border-radius: 8px;
     margin-right: 10px;
+    text-align: center !important;
     h6{
         margin-bottom:0;
+        margin-top: 0;
+        font-family: "CairoSemiBold";
+        text-align: center;
+        font-size: 15px;
+
     }
 }
 </style>
