@@ -122,7 +122,9 @@ export default {
     
 
 
-      ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter);
+      setTimeout(() => {
+        ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter);
+      }, 1000)
 
   });
 
@@ -193,7 +195,9 @@ export default {
 
 
             // deleted
-        ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
+        setTimeout(() => {
+          ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
+        }, 1000)
 
 
 
@@ -204,7 +208,9 @@ export default {
             console.log("print the total")
             console.log("print specific printer ", this.productsToPrint[this.index])
             console.log("print specific printer ", this.productsToPrint[this.index][0].printer_id)
-              ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter );
+             setTimeout(() => {
+                ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter );
+             }, 1000)
 
           }
 
@@ -233,11 +239,15 @@ export default {
 
       if(this.index < this.productsToPrint.length){
         let printer = this.printers.find(ele => ele.id == this.productsToPrint[this.index][0].printer_id);
-        ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
+        setTimeout(() => {
+          ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
+        }, 1000)
         console.log("print specific printer ", )
         console.log("this is index");
       }else{
-          ipcRenderer.send("closePrinting");
+          setTimeout(() => {
+            ipcRenderer.send("closePrinting");
+          }, 1000)
       }
 
     });
