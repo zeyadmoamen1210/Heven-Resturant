@@ -12,7 +12,7 @@
     </h6>
     <!-- <h6 class="text-center mt-2 mb-2">haVen</h6> -->
 
-    <div class="container-fluid">
+    <div>
       <table class="custom-table" >
         <tr v-if="inVoiceDetails">
           <td width="35%">رقم الطلب</td>
