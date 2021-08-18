@@ -17,7 +17,7 @@
         <tr v-if="inVoiceDetails">
           <td width="35%">رقم الطلب</td>
           <td>
-            <b>{{ inVoiceDetails.id }}</b>
+            <b>{{ inVoiceDetails.order }}</b>
           </td>
         </tr>
 
@@ -68,22 +68,27 @@
         </tr>
 
 
-        <tr v-if="inVoiceDetails && inVoiceDetails.customer && inVoiceDetails.customer.mobile && inVoiceDetails.customer.mobile != 0">
+        <tr v-if="inVoiceDetails && inVoiceDetails.customer && inVoiceDetails.customer.mobile && inVoiceDetails.customer.id != 1 && inVoiceDetails.customer.mobile != 0">
           <td>الهاتف</td>
           <td>
             {{ inVoiceDetails.customer.mobile }}
           </td>
         </tr>
-        <tr v-if="inVoiceDetails && inVoiceDetails.customer && inVoiceDetails.customer.phone">
+        <tr v-if="inVoiceDetails && inVoiceDetails.customer && inVoiceDetails.customer.id != 1 && inVoiceDetails.customer.phone">
           <td >رقم التليفون</td>
           <td >
             {{ inVoiceDetails.customer.phone }}
           </td>
         </tr>
 
-        <tr v-if="inVoiceDetails && inVoiceDetails.address">
+        <tr v-if="inVoiceDetails && inVoiceDetails.address && inVoiceDetails.customer.id != 1">
           <td width="35%">العنوان</td>
           <td >{{ inVoiceDetails.address }}</td>
+        </tr>
+
+        <tr v-if="inVoiceDetails && inVoiceDetails.user">
+          <td width="35%">الكاشير</td>
+          <td >{{ inVoiceDetails.user.name }}</td>
         </tr>
 
 

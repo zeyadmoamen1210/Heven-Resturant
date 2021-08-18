@@ -177,7 +177,11 @@ app.on("ready", async () => {
       silent: false,
       printBackground: true,
       margins: { 
-        marginType: 'none',
+        marginType: 'custom',
+        top: 0,
+        right: 5,
+        left: 0,
+        bottom: 0
       }
       // copies: 2,
     }
@@ -214,7 +218,11 @@ app.on("ready", async () => {
       printBackground: false,
       color: false,
       margins: { 
-        marginType: 'none',
+        marginType: 'custom',
+        top: 0,
+        right: 5,
+        left: 0,
+        bottom: 0
       }
       // copies: 2,
     }
@@ -260,9 +268,13 @@ app.on("ready", async () => {
       silent: true,
       printBackground: true,
       color: false,
-      margins: {
-          marginType: 'none',
-      },
+      margins: { 
+        marginType: 'custom',
+        top: 0,
+        right: 5,
+        left: 0,
+        bottom: 0
+      }
 
       // header: 'Header of the Page',
       // footer: 'Footer of the Page'
