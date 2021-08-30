@@ -950,7 +950,10 @@ export default {
         .get("product-categories")
         .then((res) => {
           this.categories = res.data;
-          this.selectCategory(this.categories[0])
+          if(this.categories.length > 0){
+            this.selectCategory(this.categories[0])
+          }
+          
         })
         .finally(() => loading.close());
     },
