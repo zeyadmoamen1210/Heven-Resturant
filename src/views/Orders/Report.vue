@@ -135,13 +135,14 @@
              <el-tag v-if="scope.row.status==1">ﻓﻲ اﻟﻤﻄﺒﺦ</el-tag>
              <el-tag type="warning" v-if="scope.row.status==2">ﻓﻲ اﻟﻄﺮﻳﻖ</el-tag>
              <el-tag type="success" v-if="scope.row.status==3">ﺗﻢ اﻟﺘﻮﺻﻴﻞ </el-tag>
-             <el-tag type="danger" v-if="scope.row.status==4">ﻣﺮﻓﻮﺽ</el-tag>
+             <el-tag type="danger" v-if="scope.row.status==4"> ﻣﺮﻓﻮﺽ بعد</el-tag>
+             <el-tag type="danger" v-if="scope.row.status==5">ﻣﺮﻓﻮﺽ قبل</el-tag>
            </template>
         </el-table-column>
        
         <el-table-column   width="180" label="اﻟﻌﻤﻴﻞ" >
            <template slot-scope="scope">
-             <span>{{scope.row.customer.name }} - {{scope.row.customer.mobile}}</span>
+             <span>{{scope.row.customer.name }}</span>
 
            </template>
            </el-table-column>
@@ -157,7 +158,7 @@
       
         <el-table-column label="اﻟﺴﺎﺋﻖ" prop="employee.name" v-if="employee_id>1"> </el-table-column>
         
-        <el-table-column label="اﻟﺴﺎﺋﻖ" v-else> </el-table-column>
+        <el-table-column label="اﻟﺴﺎﺋﻖ"  prop="employee.name"  v-else> </el-table-column>
       
         <el-table-column width="200" sortable label="اﻟﺘﻮﻗﻴﺖ">
      
@@ -360,7 +361,7 @@
           </el-option>
         </el-select>
       </div>
-      <div class="con-form" v-if="updateStatus==4">
+      <div class="con-form" v-if="updateStatus==4||updateStatus==5">
           <el-select
               clearable
               v-model="rejectedReason"
@@ -522,7 +523,8 @@ export default {
         { label: "ﻗﻴﺪ اﻹﻧﺘﻈﺎﺭ", value: 1 },
         { label: "ﻓﻲ اﻟﻄﺮﻳﻖ", value: 2 },
         { label: "ﺗﻢ اﻟﺘﻮﺻﻴﻞ", value: 3 },
-        { label: "ﺗﻢ اﻟﺮﻓﺾ", value: 4 },
+        { label: " مرفوض بعد التشغيل", value: 4 },
+        { label: " مرفوض قبل التشغيل", value: 5 },
       ],
       selectedOrderType:{},
       showModelToUpdateStatus: false,

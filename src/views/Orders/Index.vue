@@ -224,13 +224,18 @@
              <el-tag v-if="scope.row.status==1">في المطبخ</el-tag>
              <el-tag type="warning" v-if="scope.row.status==2">في الطريق</el-tag>
              <el-tag type="success" v-if="scope.row.status==3">تم التوصيل </el-tag>
-             <el-tag type="danger" v-if="scope.row.status==4">مرفوض</el-tag>
+              <el-tag type="danger" v-if="scope.row.status==4"> ﻣﺮﻓﻮﺽ بعد</el-tag>
+             <el-tag type="danger" v-if="scope.row.status==5">ﻣﺮﻓﻮﺽ قبل</el-tag>
            </template>
         </el-table-column>
       
         <el-table-column label="العميل" prop="customer.name"> </el-table-column>
         <el-table-column label="الفون" prop="customer.mobile"> </el-table-column>
         <el-table-column label="بواسطة" prop="user.name"> </el-table-column>
+         <el-table-column label="اﻟﺴﺎﺋﻖ" prop="employee.name" v-if="employee_id>1"> </el-table-column>
+        
+        <el-table-column label="اﻟﺴﺎﺋﻖ"  prop="employee.name"  v-else> </el-table-column>
+      
         <el-table-column width="200" sortable label="التوقيت">
      
             <template slot-scope="scope">
@@ -248,7 +253,7 @@
                         الإجرائات<i class="el-icon-arrow-down el-icon--right"></i>
                       </el-button>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native="openModelToUpdateStatus(scope.row)" v-if="scope.row.status<3 && scope.row.order_type_id!=2 ">تم الإستلام</el-dropdown-item>
+                        <el-dropdown-item @click.native="openModelToUpdateStatus(scope.row)" v-if="scope.row.status<3 && scope.row.order_type_id!=2 && scope.row.area_id==1 ">تم الإستلام</el-dropdown-item>
                         <el-dropdown-item v-if="scope.row.status<3 && scope.row.area_id > 1 " @click.native="openAssignToDeliveryModel(scope.row)">إسناد إلي سائق</el-dropdown-item>
 
                       </el-dropdown-menu>

@@ -894,7 +894,7 @@ export default {
   methods: {
     getPreparationTime(){
         axiosApi.get(`/settings`).then(res => {
-          this.preparation_time = res.data[0].preparation_time
+          this.preparation_time = res.data.preparation_time
         })
     },
     calcTotal(){

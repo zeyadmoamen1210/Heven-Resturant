@@ -338,6 +338,27 @@
             </div>
           </div>
         </el-tab-pane>
+
+          <el-tab-pane label="الاعدادات" color="#FE5634" name="settings">
+
+ <el-form :model="setting" ref="settingForm">
+          <el-form-item
+            label="وقت التجهيز"
+            prop="preparation_time"
+            :rules="[{ required: true, message: '  مطلوب' }]"
+          >
+            <el-input placeholder="وقت التجهيز" v-model="setting.preparation_time"></el-input>
+          </el-form-item>
+
+             <el-form-item>
+              <el-button type="primary" class="mt-2" @click="updateSetting()"
+                >تعديل الاعدادات</el-button
+              >
+            </el-form-item>
+
+
+ </el-form>
+         </el-tab-pane>
       </el-tabs>
     </b-container>
 
@@ -1215,6 +1236,9 @@ export default {
   },
   data() {
     return {
+       setting:{
+        preparation_time:45,
+      },
       cities: [],
       emps: [],
       printers: [],
@@ -1291,7 +1315,30 @@ export default {
             }).finally(() => loading.close());
 
         },
+ getSetting(){
+      axiosApi.get('settings').then(res => {
+                this.setting = res.data;
+               
+      });
+    },
+    updateSetting(){
 
+       this.$refs['settingForm'].validate((valid) => {
+        if (valid) {
+        
+      axiosApi.put('settings/1',this.setting).then(res => {
+                this.setting = res.data;
+
+                 this.$notify({
+            title: "تمت العملية بنجاح",
+            message: "تم تعديل الاعدادات العامة بنجاح",
+            type: "success",
+            duration: 1500,
+          });
+               
+      });
+        }});
+    },
 
     handleDelete(type, theObject) {
       this.currDeleteStatus = type;
