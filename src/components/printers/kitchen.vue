@@ -53,7 +53,7 @@
         <tr v-if="inVoiceDetails.id">
           <td width="35%">رقم الطلب</td>
           <td>
-            <b>{{ inVoiceDetails.id }}</b>
+            <b>{{ inVoiceDetails.order }}</b>
           </td>
         </tr>
 

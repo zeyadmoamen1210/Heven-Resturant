@@ -1,6 +1,6 @@
 <template>
   <div class="receiving-orders">
-    <div class="container">
+    <div class="container-fluid">
         <!-- style="width:48%" -->
       <div class="d-flex justify-content-center  mt-2 ">
       <div class="ml-2 mr-2 mb-3">
@@ -135,7 +135,8 @@ export default {
   created() {
     this.getMostSoldProducts();
     this.getBranches();
-    this.getMostSoldProducts()
+    this.getProductsCategories()
+    this.getProductsSizes()
   },
 
   methods: {

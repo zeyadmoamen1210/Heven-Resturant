@@ -208,7 +208,7 @@
         style="width: 100%"
       >
         <el-table-column label="#" type="index" width="50"> </el-table-column>
-        <el-table-column sortable width="100" label="رقم " prop="id">
+        <el-table-column sortable width="100" label="رقم " prop="order">
         </el-table-column>
 
         <el-table-column  width="100" label="القيمة">
