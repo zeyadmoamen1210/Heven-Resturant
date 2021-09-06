@@ -35,6 +35,26 @@
       
     </el-dialog>
 
+    <el-dialog
+      :visible.sync="determinePrinterSettingsFirst"
+      width="30%">
+
+      <div class="d-block text-center">
+        <div class="text-center">
+          <img
+            style="width: 90px;margin-bottom: 10px;"
+            src="@/assets/printer.svg"
+            alt=""
+          />
+        </div>
+        <h3 class="text-center">من فضلك حدد إعدادات الطابعة من صفحة العمليات اولاًً</h3>
+      </div>
+      
+    </el-dialog>
+
+
+    
+
 
 
     
@@ -757,6 +777,7 @@ export default {
     activeOrderTab: Boolean
   },
   data: () => ({
+    printerSettings: null,
     orderSuccess: false,
     cityAreas: [],
     determinePrintersFirst: false,
@@ -820,7 +841,8 @@ export default {
     toggleNewAddress: false,
     form: {},
     currTab: {},
-    preparation_time: ""
+    preparation_time: "",
+    determinePrinterSettingsFirst: false
     
   }),
 
@@ -1302,6 +1324,8 @@ export default {
       this.printers = JSON.parse(localStorage.getItem("printers"));
       console.log("printer has device printer")
 
+      
+
     },
     getAllCategories() {
       axiosApi.get(`/product-categories`).then((res) => {
@@ -1393,6 +1417,10 @@ export default {
     },
     saveOrderInBackend() {
 
+      if(localStorage.getItem("printerSettings")){
+        this.printerSettings = JSON.parse(localStorage.getItem("printerSettings"));
+      }
+
 
 
       if(!this.printers || this.printers.length == 0){
@@ -1400,6 +1428,11 @@ export default {
         this.determinePrintersFirst = true;
 
 
+        return;
+      }
+
+      if(!this.printerSettings){
+        this.determinePrinterSettingsFirst = true;
         return;
       }
 
