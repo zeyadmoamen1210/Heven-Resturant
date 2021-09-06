@@ -49,11 +49,24 @@ export default {
       isKitchenPrinters:true,
 
       table_id: null,
-      notes: null
+      notes: null,
+      numberOfMainReset: 0,
+      numberOfKitchenReset: 0
     }
   },
 
   methods:{
+
+
+    printKitchenReset(productsToPrint, printerName){
+      this.numberOfKitchenReset--;
+      ipcRenderer.send("printSpecificPrinter", {data: productsToPrint, printer: printerName});
+    },
+
+    printMainReset(printerName){
+      this.numberOfMainReset--;
+      ipcRenderer.send("printTotalOrder", printerName );
+    },
     
     getAllCategories(){
       axiosApi.get(`/product-categories`).then(res => {
@@ -82,6 +95,8 @@ export default {
   },
   created(){
 
+    
+
   
 
   this.getAllCategories();
@@ -89,8 +104,13 @@ export default {
 
   ipcRenderer.on("directData", (e, a) => {
 
+    this.numberOfMainReset = 0;
+    this.numberOfKitchenReset = 0;
 
-
+    if(localStorage.getItem("printerSettings")){
+        this.numberOfMainReset = JSON.parse(localStorage.getItem("printerSettings")).numberOfMainReset;
+        this.numberOfKitchenReset = JSON.parse(localStorage.getItem("printerSettings")).numberOfKitchenReset;
+    }
 
     this.isKitchenPrinters = true;
     this.getAllPrinters();
@@ -119,15 +139,24 @@ export default {
 
     
 
-
-      ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter);
+     
+          // ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter);
+          if(this.numberOfMainReset > 0){
+            this.printMainReset(this.printers[0].devicePrinter);
+          }
+       
 
   });
 
     ipcRenderer.on("data", (event, arg) => {
 
+      this.numberOfMainReset = 0;
+      this.numberOfKitchenReset = 0;
 
-
+      if(localStorage.getItem("printerSettings")){
+        this.numberOfMainReset = JSON.parse(localStorage.getItem("printerSettings")).numberOfMainReset;
+        this.numberOfKitchenReset = JSON.parse(localStorage.getItem("printerSettings")).numberOfKitchenReset;
+    }
 
       this.isKitchenPrinters = true;
       this.getAllPrinters();
@@ -194,16 +223,25 @@ export default {
 
 
             // deleted
-        ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
 
-
-
-
+              if(this.numberOfKitchenReset > 0){
+                this.printKitchenReset(this.productsToPrint[this.index], printer.devicePrinter);
+              }
+              
+   
             // this.currPrinter = 
             // console.log("curr printer " ,this.productsToPrint[this.index][0].printer_id)
           }else{
   
-              ipcRenderer.send("printTotalOrder", this.printers[0].devicePrinter );
+              
+
+              if(this.numberOfMainReset > 0){
+                this.printMainReset(this.printers[0].devicePrinter);
+              }
+              
+               
+
+
 
           }
 
@@ -218,12 +256,30 @@ export default {
 
 
     ipcRenderer.on('printed', () => {
-      this.index = Number(this.index) + 1;
+      let currPrinter = this.printers.find(ele => ele.id == this.productsToPrint[this.index][0].printer_id);
+      if(this.numberOfKitchenReset > 0){
+         this.printKitchenReset(this.productsToPrint[this.index], currPrinter.devicePrinter );
+         return;
+      }
 
-      if(this.index < this.productsToPrint.length){
+
+      this.index = Number(this.index) + 1;
+      this.numberOfKitchenReset = JSON.parse(localStorage.getItem("printerSettings")).numberOfKitchenReset;
+
+      if(this.index < this.productsToPrint.length && this.numberOfKitchenReset > 0){
 
         let printer = this.printers.find(ele => ele.id == this.productsToPrint[this.index][0].printer_id);
-        ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
+        
+
+      
+            // ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
+
+              this.printKitchenReset(this.productsToPrint[this.index], printer.devicePrinter)
+         
+
+         
+
+
 
       }else{
           ipcRenderer.send("closePrinting");
@@ -234,6 +290,14 @@ export default {
 
     ipcRenderer.on('printedTotal', () => {
 
+      
+      if(this.numberOfMainReset > 0){
+         this.printMainReset(this.printers[0].devicePrinter);
+         return;
+      }
+      
+      
+      
       if(this.isKitchenPrinters){
         this.printAllProducts = false;
       }else{
@@ -245,13 +309,18 @@ export default {
         
       
 
-      if(this.isKitchenPrinters && (this.index < this.productsToPrint.length)){
+      if(this.isKitchenPrinters && (this.index < this.productsToPrint.length) && this.numberOfKitchenReset > 0){
+        
+        
+        
+          let printer = this.printers.find(ele => ele.id == this.productsToPrint[this.index][0].printer_id);
 
-        let printer = this.printers.find(ele => ele.id == this.productsToPrint[this.index][0].printer_id);
+            // ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
 
-        ipcRenderer.send("printSpecificPrinter", {data: this.productsToPrint[this.index], printer: printer.devicePrinter});
-
-
+          if(this.numberOfKitchenReset > 0){
+            this.printKitchenReset(this.productsToPrint[this.index], printer.devicePrinter);
+          }
+      
       }else{
           ipcRenderer.send("closePrinting");
       }
@@ -270,7 +339,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss">
 
 

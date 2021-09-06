@@ -202,7 +202,7 @@
               إضافة طابعة</el-button
             >
           </div>
-<!-- 
+          <!-- 
           <h6 style="text-align:start">الطابعات المتصلة بالجهاز</h6>
           <div class="d-flex">
             <div v-for="printer in printersOptions" :key="printer.name">
@@ -210,7 +210,9 @@
             </div>
           </div> -->
 
-          <el-button class="d-flex" @click="openAssingPrinter = true">إسناد الطابعات بالأجهزة</el-button>
+          <el-button class="d-flex" @click="openAssingPrinter = true"
+            >إسناد الطابعات بالأجهزة</el-button
+          >
 
           <hr />
 
@@ -314,8 +316,8 @@
               type="primary"
               plain
               icon="el-icon-plus"
-              >إضافة قسم </el-button
-            >
+              >إضافة قسم
+            </el-button>
           </div>
           <div class="flex-grid">
             <div v-for="dept in employeeDepts" :key="dept.id">
@@ -339,26 +341,83 @@
           </div>
         </el-tab-pane>
 
-          <el-tab-pane label="الاعدادات" color="#FE5634" name="settings">
+        <el-tab-pane label="الاعدادات" color="#FE5634" name="settings">
+          <el-form :model="setting" ref="settingForm">
+            <el-form-item
+              label="وقت التجهيز"
+              prop="preparation_time"
+              :rules="[{ required: true, message: '  مطلوب' }]"
+            >
+              <el-input
+                placeholder="وقت التجهيز"
+                v-model="setting.preparation_time"
+              ></el-input>
+            </el-form-item>
 
- <el-form :model="setting" ref="settingForm">
-          <el-form-item
-            label="وقت التجهيز"
-            prop="preparation_time"
-            :rules="[{ required: true, message: '  مطلوب' }]"
-          >
-            <el-input placeholder="وقت التجهيز" v-model="setting.preparation_time"></el-input>
-          </el-form-item>
-
-             <el-form-item>
+            <el-form-item>
               <el-button type="primary" class="mt-2" @click="updateSetting()"
                 >تعديل الاعدادات</el-button
               >
             </el-form-item>
+          </el-form>
+        </el-tab-pane>
 
 
- </el-form>
-         </el-tab-pane>
+
+
+
+
+        <el-tab-pane label="اعدادات الطابعة" color="#FE5634" name="printerSettings">
+          <el-form :model="printerSettings" ref="printerSettings">
+
+            <div class="row">
+              <div class="col-md-6">
+                <el-form-item
+                  label="عدد مرات طباعة الشيك للعميل"
+                  prop="numberOfMainReset"
+                  :rules="[{ required: true, message: '  مطلوب' }, { type: 'number', message: 'يجب ان يكون رقم صحيح'}]"
+                >
+                  <el-input
+                      type="number"
+                      placeholder="عدد مرات طباعة الشيك للعميل"
+                      v-model.number="printerSettings.numberOfMainReset"
+                  ></el-input>
+                </el-form-item>
+              </div>
+
+              <div class="col-md-6">
+                <el-form-item
+                  label="عدد مرات طباعة الشيك للمطبخ"
+                  prop="numberOfKitchenReset"
+                  :rules="[{ required: true, message: '  مطلوب' }, { type: 'number', message: 'يجب ان يكون رقم صحيح'}]"
+                >
+                  <el-input
+                    type="number"
+                      placeholder="عدد مرات طباعة الشيك للمطبخ"
+                      v-model.number="printerSettings.numberOfKitchenReset"
+                  ></el-input>
+                </el-form-item>
+              </div>
+
+              <el-form-item>
+                <el-button type="primary" class="mt-2 text-center" @click="savePrinterSettings()"
+                  >حفظ اعدادات الطابعة</el-button
+                >
+              </el-form-item>
+
+            </div>
+            
+
+
+            
+
+            
+          </el-form>
+
+
+        </el-tab-pane>
+
+
       </el-tabs>
     </b-container>
 
@@ -378,9 +437,7 @@
         <span v-else-if="addType == 'size'">إضافة مقاس جديد</span>
         <span v-else-if="addType == 'categories'">إضافة صنف جديد</span>
         <span v-else-if="addType == 'emp'">إضافة موظف جديد</span>
-        <span v-else-if="addType == 'employee_dept'">
-          إضافة قسم جديد</span
-        >
+        <span v-else-if="addType == 'employee_dept'"> إضافة قسم جديد</span>
         <span v-else-if="addType == 'reject-reasons'">إضافة سبب جديد</span>
         <span v-else-if="addType == 'city'">إضافة مدينة جديدة</span>
       </template>
@@ -448,10 +505,7 @@
             prop="name"
             :rules="[{ required: true, message: ' الإجابة مطلوب' }]"
           >
-            <el-input
-              placeholder="اسم قسم"
-              v-model="add.name"
-            ></el-input>
+            <el-input placeholder="اسم قسم" v-model="add.name"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -672,15 +726,9 @@
               <el-form-item
                 prop="phone"
                 label="الهاتف"
-                :rules="[
-                  { required: true, message: ' الإجابة مطلوب' },
-                ]"
+                :rules="[{ required: true, message: ' الإجابة مطلوب' }]"
               >
-                <el-input
-                  placeholder="الهاتف"
-                  v-model="add.phone"
-                >
-                </el-input>
+                <el-input placeholder="الهاتف" v-model="add.phone"> </el-input>
               </el-form-item>
             </div>
             <div class="form-group">
@@ -712,33 +760,28 @@
             </div>
 
             <div class="device-printers mt-2">
-                <el-form-item
-                    prop="devicePrinter"
-                    label="أسم الطابعة علي الجهاز"
-                    :rules="[{ required: true, message: '  مطلوب' }]"
+              <el-form-item
+                prop="devicePrinter"
+                label="أسم الطابعة علي الجهاز"
+                :rules="[{ required: true, message: '  مطلوب' }]"
+              >
+                <el-select
+                  v-model="add.devicePrinter"
+                  filterable
+                  clearable
+                  placeholder="الطابعات المتصلة بالجهاز"
                 >
-
-                  <el-select
-                    v-model="add.devicePrinter"
-                    filterable
-                    clearable
-                    placeholder="الطابعات المتصلة بالجهاز"
+                  <el-option
+                    v-for="x in printersOptions"
+                    :key="x.name"
+                    :value="x.name"
+                    :label="x.name"
                   >
-                    <el-option
-                      v-for="x in printersOptions"
-                      :key="x.name"
-                      :value="x.name"
-                      :label="x.name"
-                    >
-                      {{ x.name }}
-                    </el-option>
-                  </el-select>
-
-                  </el-form-item>
-
-                </div>
-
-
+                    {{ x.name }}
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </div>
           </section>
 
           <span class="dialog-footer mt-4">
@@ -796,9 +839,7 @@
         <span v-else-if="currUpdateStatus == 'size'">تعديل مقاس </span>
         <span v-else-if="currUpdateStatus == 'categories'">تعديل صنف </span>
         <span v-else-if="currUpdateStatus == 'emp'">تعديل موظف </span>
-        <span v-else-if="currUpdateStatus == 'employee_dept'">
-          تعديل قسم  </span
-        >
+        <span v-else-if="currUpdateStatus == 'employee_dept'"> تعديل قسم </span>
         <span v-else-if="currUpdateStatus == 'reject-reasons'">تعديل سبب </span>
         <span v-else-if="currUpdateStatus == 'city'">تعديل مدينة </span>
       </template>
@@ -870,10 +911,7 @@
             prop="name"
             :rules="[{ required: true, message: ' الإجابة مطلوب' }]"
           >
-            <el-input
-              placeholder="اسم قسم"
-              v-model="update.name"
-            ></el-input>
+            <el-input placeholder="اسم قسم" v-model="update.name"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -1094,9 +1132,7 @@
               <el-form-item
                 prop="phone"
                 label="الهاتف"
-                :rules="[
-                  { required: true, message: ' الإجابة مطلوب' },
-                ]"
+                :rules="[{ required: true, message: ' الإجابة مطلوب' }]"
               >
                 <el-input
                   placeholder="الهاتف"
@@ -1156,23 +1192,21 @@
       <!-- This is Popup Footer -->
     </vs-dialog>
 
-    <vs-dialog v-model="openAssingPrinter"  width="550px">
+    <vs-dialog v-model="openAssingPrinter" width="550px">
       <h4 class="mb-4">ربط الطابعات بالأجهزة</h4>
 
       <div>
         <div v-for="(printer, index) in printersForAssigned" :key="printer.id">
           <div class="printer-device mb-3">
-            
             <div class="row">
               <div class="col-md-6">
-                  <h6> الطابعة </h6>
+                <h6>الطابعة</h6>
                 <Printer style="margin-bottom: 0" :printer="printer"></Printer>
               </div>
 
               <div class="col-md-6">
-
                 <div class="device-printers">
-                    <h6> الطابعات المتصلة بالجهاز </h6>
+                  <h6>الطابعات المتصلة بالجهاز</h6>
                   <el-select
                     v-model="printer.printerVal"
                     filterable
@@ -1233,11 +1267,19 @@ export default {
     this.getBranches();
     this.getPrintersForAssigned();
     this.getEmployeeDepts();
+
+
+    if(localStorage.getItem("printerSettings")){
+      this.printerSettings = JSON.parse(localStorage.getItem("printerSettings"))
+    }
+
+
   },
   data() {
     return {
-       setting:{
-        preparation_time:45,
+      printerSettings: {},
+      setting: {
+        preparation_time: 45,
       },
       cities: [],
       emps: [],
@@ -1276,11 +1318,37 @@ export default {
       currObject: {},
       currObjectToDelete: {},
       openAssingPrinter: false,
-      printersForAssigned:[],
+      printersForAssigned: [],
       printerValue: {},
     };
   },
   methods: {
+    savePrinterSettings(){
+
+      this.$refs["printerSettings"].validate((valid) => {
+        if (valid){
+            if(this.printerSettings.numberOfMainReset < 0 || this.printerSettings.numberOfKitchenReset < 0){
+              this.$notify.error({
+                      title: "خطأ!",
+                      message: "القيم يجب ان تكون اكبر من او يساوي الصفر",
+                      duration: 1500,
+              });
+            }else{
+              const loading = this.$vs.loading();
+              localStorage.setItem("printerSettings", JSON.stringify(this.printerSettings));
+              this.$notify({
+                      title: "تمت العملية بنجاح",
+                      message: "تم حفظ اعدادات الطابعة بنجاح",
+                      type: "success",
+                      duration: 1500,
+              });
+              loading.close();
+            }
+        }
+      });
+
+      
+    },
     submitAddForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -1289,55 +1357,55 @@ export default {
       });
     },
 
-    cachePrintersInLocalStorage(val, e){
-            console.log(val,e)
-            this.printersForAssigned[val].devicePrinter = e;
+    cachePrintersInLocalStorage(val, e) {
+      console.log(val, e);
+      this.printersForAssigned[val].devicePrinter = e;
 
-            localStorage.setItem("printers", JSON.stringify(this.printersForAssigned));
-        },
-        getPrintersForAssigned(){
+      localStorage.setItem(
+        "printers",
+        JSON.stringify(this.printersForAssigned)
+      );
+    },
+    getPrintersForAssigned() {
+      const loading = this.$vs.loading();
+      axiosApi
+        .get("printers")
+        .then((res) => {
+          this.printersForAssigned = res.data;
 
-            const loading = this.$vs.loading();
-            axiosApi.get('printers').then(res => {
-                this.printersForAssigned = res.data;
-                
+          if (JSON.parse(localStorage.getItem("printers"))) {
+            this.printersForAssigned = JSON.parse(
+              localStorage.getItem("printers")
+            );
+          }
 
+          let { remote } = require("electron");
 
-                if( JSON.parse(localStorage.getItem("printers"))){
-                    this.printersForAssigned = JSON.parse(localStorage.getItem("printers")); 
-                }
-
-
-                let { remote } = require("electron");
-
-                let webContents = remote.getCurrentWebContents();
-                this.printersOptions = webContents.getPrinters(); //list the printers
-            }).finally(() => loading.close());
-
-        },
- getSetting(){
-      axiosApi.get('settings').then(res => {
-                this.setting = res.data;
-               
+          let webContents = remote.getCurrentWebContents();
+          this.printersOptions = webContents.getPrinters(); //list the printers
+        })
+        .finally(() => loading.close());
+    },
+    getSetting() {
+      axiosApi.get("settings").then((res) => {
+        this.setting = res.data;
       });
     },
-    updateSetting(){
-
-       this.$refs['settingForm'].validate((valid) => {
+    updateSetting() {
+      this.$refs["settingForm"].validate((valid) => {
         if (valid) {
-        
-      axiosApi.put('settings/1',this.setting).then(res => {
-                this.setting = res.data;
+          axiosApi.put("settings/1", this.setting).then((res) => {
+            this.setting = res.data;
 
-                 this.$notify({
-            title: "تمت العملية بنجاح",
-            message: "تم تعديل الاعدادات العامة بنجاح",
-            type: "success",
-            duration: 1500,
+            this.$notify({
+              title: "تمت العملية بنجاح",
+              message: "تم تعديل الاعدادات العامة بنجاح",
+              type: "success",
+              duration: 1500,
+            });
           });
-               
+        }
       });
-        }});
     },
 
     handleDelete(type, theObject) {
@@ -1726,19 +1794,25 @@ export default {
             message: "تم إضافة الطابعة بنجاح",
             type: "success",
           });
-            
-            if( JSON.parse(localStorage.getItem("printers")) ){
-                let printersForAssigned = JSON.parse(localStorage.getItem("printers")); 
-                printersForAssigned.push({...res.data[res.data.length - 1], devicePrinter: this.add.devicePrinter, printerVal:this.add.devicePrinter });
-                localStorage.setItem("printers", JSON.stringify(printersForAssigned));
-            }
-            
-                this.getPrintersForAssigned();
-                this.getPrinters();
 
+          if (JSON.parse(localStorage.getItem("printers"))) {
+            let printersForAssigned = JSON.parse(
+              localStorage.getItem("printers")
+            );
+            printersForAssigned.push({
+              ...res.data[res.data.length - 1],
+              devicePrinter: this.add.devicePrinter,
+              printerVal: this.add.devicePrinter,
+            });
+            localStorage.setItem(
+              "printers",
+              JSON.stringify(printersForAssigned)
+            );
+          }
 
+          this.getPrintersForAssigned();
+          this.getPrinters();
 
-          
           this.add = {};
           this.openAddModel = false;
         })
@@ -2180,15 +2254,21 @@ export default {
             type: "success",
           });
 
-            if( JSON.parse(localStorage.getItem("printers")) ){
-                    let printersForAssigned = JSON.parse(localStorage.getItem("printers")); 
-                    let printerIndex = printersForAssigned.findIndex(ele => ele.id === this.update.id)
-                    printersForAssigned[printerIndex].name = this.update.name;
-                    localStorage.setItem("printers", JSON.stringify(printersForAssigned));
-            }
+          if (JSON.parse(localStorage.getItem("printers"))) {
+            let printersForAssigned = JSON.parse(
+              localStorage.getItem("printers")
+            );
+            let printerIndex = printersForAssigned.findIndex(
+              (ele) => ele.id === this.update.id
+            );
+            printersForAssigned[printerIndex].name = this.update.name;
+            localStorage.setItem(
+              "printers",
+              JSON.stringify(printersForAssigned)
+            );
+          }
 
-            this.getPrintersForAssigned();
-
+          this.getPrintersForAssigned();
 
           this.update = {};
           this.showConfirmModelToUpdate = false;
@@ -2445,10 +2525,13 @@ export default {
             type: "success",
           });
 
-          if( JSON.parse(localStorage.getItem("printers")) ){
-              let printers = JSON.parse(localStorage.getItem("printers"));
-              printers.splice( printers.findIndex(ele => ele.id === this.currObject.id), 1 );
-              localStorage.setItem("printers", JSON.stringify(printers))
+          if (JSON.parse(localStorage.getItem("printers"))) {
+            let printers = JSON.parse(localStorage.getItem("printers"));
+            printers.splice(
+              printers.findIndex((ele) => ele.id === this.currObject.id),
+              1
+            );
+            localStorage.setItem("printers", JSON.stringify(printers));
           }
           this.getPrintersForAssigned();
 
