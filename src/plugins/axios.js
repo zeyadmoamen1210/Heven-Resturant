@@ -13,4 +13,5 @@ const axiosApi = axios.create({
 })
 
 Vue.use(VueAxios, axios)
+
 export default axiosApi;
