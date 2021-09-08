@@ -212,15 +212,7 @@
             الإجمالي
           </td>
           <td> 
-            {{
-              allOrderPrice - 
-              (inVoiceDetails.driver_cost
-                ? Number(inVoiceDetails.driver_cost)
-                : 0) +
-                (inVoiceDetails.restaurant_cost
-                  ? Number(inVoiceDetails.restaurant_cost)
-                  : 0)
-            }}
+            {{inVoiceDetails.total}}
             ج.م
           </td>
         </tr>
