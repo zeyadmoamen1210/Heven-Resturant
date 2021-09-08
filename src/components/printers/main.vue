@@ -202,11 +202,7 @@
 
 
         <tr
-          v-if="
-            inVoiceDetails &&
-              (inVoiceDetails.driver_cost > 0 ||
-                inVoiceDetails.restaurant_cost > 0)
-          "
+          v-if="inVoiceDetails"
         >
           <td style="width: 180px;background:#f7f7f7;    font-weight: bold;">
             الإجمالي
