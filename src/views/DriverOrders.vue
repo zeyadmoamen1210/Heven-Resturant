@@ -89,7 +89,28 @@
                     <td>{{ order.total_driver_cost }}</td>
                   </tr>
                 </tbody>
-                <tfoot>
+                
+              </table>
+              <table style="margin-top:10px;">
+                <thead>
+                  <tr>
+                    <td>اجمالي الطلبات</td>
+                    <td>اجمالي اللواغي</td>
+                    <td>اجمالي مستحق المطعم</td>
+                    <td>اجمالي مستحق السائق</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{totalHeven}}</td>
+                    <td>{{totalNotPaied}}</td>
+                    <td>{{totalHeven-totalNotPaied}}</td>
+                    <td>{{totalDriver}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- <tfoot>
                   <tr>
                     <td>إجمالي مستحق المطعم:</td>
                     <td>{{ totalHeven }}</td>
@@ -97,8 +118,7 @@
                     <td>إجمالي مستحق السائق:</td>
                     <td>{{ totalDriver }}</td>
                   </tr>
-                </tfoot>
-              </table>
+                </tfoot> -->
             </div>
             <div v-else-if="allOrders.length == 0">
               <NoData />
@@ -122,7 +142,7 @@
               style="width: 100%"
             >
              
-              <el-table-column sortable label="رقم " prop="id">
+              <el-table-column sortable label="رقم " prop="order">
               </el-table-column>
 
               <el-table-column   label="القيمة">
@@ -237,6 +257,7 @@ export default {
       currDelivery: null,
       totalHeven: 0,
       totalDriver: 0,
+      totalNotPaied: 0,
       currTabName: "ordersDetails",
       tableData:[],
       lastPage:1,
@@ -322,7 +343,8 @@ export default {
       axiosApi
         .get(link)
         .then((res) => {
-          this.allOrders = res.data.data;
+          this.allOrders = res.data.orders;
+          this.totalNotPaied = res.data.notPaiedOrders.total_canceled_orders?res.data.notPaiedOrders.total_canceled_orders:0;
 
           this.totalHeven = 0;
           this.totalDriver = 0;

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="d-flex justify-content-center  mt-2 ">
       <div class="ml-2 mr-2 mb-3">
          <el-select

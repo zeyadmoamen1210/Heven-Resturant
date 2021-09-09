@@ -255,6 +255,7 @@
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="openModelToUpdateStatus(scope.row)" v-if="scope.row.status<3 && scope.row.order_type_id!=2 && scope.row.area_id==1 ">تم الإستلام</el-dropdown-item>
                         <el-dropdown-item v-if="scope.row.status<3 && scope.row.area_id > 1 " @click.native="openAssignToDeliveryModel(scope.row)">إسناد إلي سائق</el-dropdown-item>
+                        <el-dropdown-item v-if="scope.row.status<3 && scope.row.area_id > 1 " @click.native="resetOrder(scope.row)"> إلغاء السائق</el-dropdown-item>
 
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -687,6 +688,22 @@ export default {
         .put(`/orders/${this.currOrder.id}/status`, {
           status: 3,
         })
+        .then(() => {
+          this.$notify({
+            title: "تم بنجاح",
+            message: "تم تحديث حالة الطلب بنجاح",
+            type: "success",
+          });
+          this.getOrdersByType();
+        })
+        .finally(() => loading.close());
+    },
+    resetOrder(order) {
+      this.showModelToUpdateStatus = false;
+      const loading = this.$vs.loading();
+      // orders-reset/{id}
+      axiosApi
+        .post(`/orders-reset/${order.id}`)
         .then(() => {
           this.$notify({
             title: "تم بنجاح",
