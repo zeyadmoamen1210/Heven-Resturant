@@ -40,12 +40,7 @@
           </td>
         </tr>
 
-        <tr v-if="notes">
-          <td width="35%">ملاحظات</td>
-          <td>
-            <b>{{ notes }}</b>
-          </td>
-        </tr>
+        
 
 
 
@@ -54,6 +49,7 @@
           <td width="35%">رقم الطلب</td>
           <td>
             <b>{{ inVoiceDetails.order }}</b>
+            <!-- <b>50</b> -->
           </td>
         </tr>
 
@@ -77,12 +73,7 @@
         </tr>
 
 
-        <tr v-if="inVoiceDetails.notes">
-          <td width="35%">ملاحظات</td>
-          <td>
-            <b>{{ inVoiceDetails.notes }}</b>
-          </td>
-        </tr>
+        
 
 
       </table>
@@ -107,6 +98,34 @@
           </tr>
         </tbody>
       </table>
+
+
+      <table class="custom-table">
+        <template  v-if="notes">
+          <tr>
+            <td width="35%">ملاحظات</td>
+            
+          </tr>
+          <tr>
+            <td>
+              <b>{{ notes }}</b>
+            </td>
+          </tr>
+        </template>
+
+        <template v-if="inVoiceDetails.notes">
+          <tr >
+            <td width="35%">ملاحظات</td>
+          </tr>
+          <tr>
+            <td>
+              <b>{{ inVoiceDetails.notes }}</b>
+            </td>
+          </tr>
+        </template>
+
+
+      </table>
     </div>
   </div>
 </template>
@@ -120,16 +139,16 @@ export default {
 <style scoped lang="scss">
 
 .custom-table{
-  border: 1px solid #000 !important;
-    margin: 5px 0px !important;
-    border-radius: 5px !important;
-    width: 100%;
-    border-collapse: collapse;
+      border: none !important;
+    /* border-bottom: 1px solid #000 !important; */
     text-align: center;
+    font-size: 10px;
+    font-family: "CairoBold";
     td{
-      border: 1px solid #000 !important;
+      border: none !important;
+      border-bottom: 1px solid #000 !important;
       text-align: center;
-      font-size: 12px;
+          font-size: 10px;
     font-family: "CairoBold";
     }
 }
