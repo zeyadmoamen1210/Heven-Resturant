@@ -1000,7 +1000,7 @@ export default {
 .custom-table {
   width: 100%;
   direction: rtl;
-  font-family: "din";
+  font-family: "Cairo";
   thead {
     font-family: "din-bold";
   }

@@ -146,4 +146,16 @@ h6{
     border: 1px solid #EBEEF5 !important;
   }
 }
+.categories-selection .nav-pills .nav-link {
+
+    text-decoration: none;
+}
+.el-message--success{
+  text-align: center !important;
+  justify-content: center;
+}
+.el-message--danger{
+  text-align: center !important;
+  justify-content: center;
+}
 </style>

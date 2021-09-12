@@ -36,7 +36,7 @@ export default {
 
 <style lang="scss">
 .categorie.category-component {
-  font-family: "din";
+  font-family: "Cairo";
   padding-top: 7px;
   background: #ebf9fc;
   color: #333;
