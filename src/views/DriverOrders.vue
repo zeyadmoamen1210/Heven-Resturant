@@ -177,7 +177,7 @@
               <el-table-column  sortable label="التوقيت">
                 <template slot-scope="scope">
                   <span>{{
-                    scope.row.created_at
+                    scope.row.updated_at
                       | moment("dddd | Do / MM / YYYY | h:mm A")
                   }}</span>
                 </template>
@@ -247,7 +247,7 @@ export default {
   },
   data() {
     return {
-          dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'6:00:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'6:00:00')],
+          dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
       format:'yyyy-MM-dd HH:mm A',
       valueFormat:'yyyy-MM-dd HH:mm:ss',
       currTabName:'ordersByArea',

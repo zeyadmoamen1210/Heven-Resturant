@@ -115,7 +115,7 @@ export default {
     return {
         format: "yyyy-MM-dd HH:mm A",
       valueFormat: "yyyy-MM-dd HH:mm:ss",
-      dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'6:00:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'6:00:00')],
+      dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
 
       category:null,
       categories:[],
@@ -124,7 +124,7 @@ export default {
       branch:null,
       branches:[],
       mostSoldProducts: [],
-      dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'6:00:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'6:00:00')],
+      dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
 
       tableData: [],
 
