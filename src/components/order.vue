@@ -1,6 +1,7 @@
 <template>
   <div class="order">
 
+    
 
 
     <el-dialog
@@ -217,6 +218,7 @@
                       <td>
                         <div class="quantity">
                           <el-input-number
+                            :disabled="item.offerId ? true: false"
                             size="mini"
                             v-model="item.qty"
                             :min="1"
@@ -676,6 +678,10 @@
                 <b>سعر التوصيل</b>
               </td>
               <td v-if="tab.total"><b>الاجمالى</b></td>
+
+              <td v-if="tab.discount"><b>الخصم</b></td>
+
+              <td v-if="tab.afterDiscounts && tab.afterDiscounts != tab.total"><b>بعد الخصم</b></td>
             </tr>
 
             <tr>
@@ -688,10 +694,22 @@
                 >
               </td>
 
-              <td>
+              <td v-if="tab.total">
                 <var> {{ tab.total }}<sup class="ml-1">LE</sup></var>
               </td>
+
+              <td v-if="tab.discount">
+                <var> {{ tab.discount }}<sup class="ml-1">LE</sup></var>
+              </td>
+
+              <td v-if="tab.afterDiscounts && tab.afterDiscounts != tab.total">
+                <var> {{ tab.afterDiscounts }}<sup class="ml-1">LE</sup></var>
+              </td>
+
             </tr>
+
+
+            
           </table>
         </div>
       </div>
@@ -1417,6 +1435,7 @@ export default {
     },
     saveOrderInBackend() {
 
+
       if(localStorage.getItem("printerSettings")){
         this.printerSettings = JSON.parse(localStorage.getItem("printerSettings"));
       }
@@ -1483,7 +1502,8 @@ export default {
       //   this.tab.selectedAddress.description = 
       // }
 
-      
+            
+
 
 
       axiosApi
@@ -1680,6 +1700,8 @@ export default {
       this.$store.commit(`deleteProductInOrder`, index);
       this.$store.commit("updateOrder", this.tab);
       this.$store.commit("calcPrice");
+      // this.$store.commit("calcDiscounts");
+      
     },
     addAdditionToOrder(product, price) {
       // console.log(price);

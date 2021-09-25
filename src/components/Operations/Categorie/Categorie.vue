@@ -14,7 +14,7 @@ export default {
 
 <style lang="scss" scoped>
 .categorie.category-component{
-    font-family: "Cairo";
+    font-family: "din";
     box-shadow: 0 4px 25px 0 #0000001a;
     padding: 5px 18px;
     margin-bottom: 27px;
@@ -22,7 +22,6 @@ export default {
     color: #333;
     
     border-radius: 8px;
-    margin-right: 10px;
     height:78px;
     text-align: center;
     h6{

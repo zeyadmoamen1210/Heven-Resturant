@@ -27,6 +27,9 @@ export default new Vuex.Store({
         phone:""
       },
       total:0,
+      discount: 0,
+      afterDiscounts: 0,
+
       payment_status: 1,
       selectFromOldAddresses:"",
       orderType: {table:{}},
@@ -82,6 +85,21 @@ export default new Vuex.Store({
       orderTab.selectedCustomer = {phone: " " };
     },
 
+    // calcDiscounts: (state) => {
+    //   orderTab.discounts
+    //   const orderTab = state.orders[state.selectedOrder];
+    //   let discounts = [];
+    //   orderTab.products.forEach(ele => {
+    //     if(ele.offerDiscount > 0){
+    //       discounts.push(Number(ele.offerDiscount));
+    //     }
+    //   })
+
+    //   discounts = [... new Set(discounts)];
+    //   console.log(discounts);
+    //   discounts.forEach(ele => orderTab.discounts += Number(ele));
+    // },
+
     calcPrice: (state) => {
 
       
@@ -124,6 +142,9 @@ export default new Vuex.Store({
 
       orderTab.total = Number(sum);
 
+      state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
+      state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
+
 
     },
 
@@ -165,8 +186,25 @@ export default new Vuex.Store({
     
 
     deleteProductInOrder: (state, payload) => {
+      let targetProduct = state.orders[state.selectedOrder].products[payload];
+      console.log(targetProduct)
+      if(targetProduct.offerId){
 
-      state.orders[state.selectedOrder].products.splice(payload, 1)
+        let i = state.orders[state.selectedOrder].products.length;
+
+        while (i--) {
+          if (state.orders[state.selectedOrder].products[i].offerId == targetProduct.offerId) {
+            state.orders[state.selectedOrder].products.splice(i, 1);
+          }
+        }
+
+        state.orders[state.selectedOrder].discount -= Number(targetProduct.discount);
+        state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
+        state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
+
+      }else{
+        state.orders[state.selectedOrder].products.splice(payload, 1)
+      }
       localStorage.setItem('HevenOrders', JSON.stringify(state.orders));
 
 
@@ -184,6 +222,8 @@ export default new Vuex.Store({
         date: new Date().toISOString(),
 
         notes:"",
+        discount: 0,
+      afterDiscounts: 0,
         products:[],
         newUser:"",
         payment_status: 1,
@@ -242,6 +282,23 @@ export default new Vuex.Store({
 
       
     },
+
+    AddProductsToOrder: (state, payload) => {
+      
+      
+      
+      payload.forEach(ele => {
+        state.orders[state.selectedOrder].total = Number(state.orders[state.selectedOrder].total) + Number(ele.priceObject.price);
+      })
+
+      state.orders[state.selectedOrder].products = [...state.orders[state.selectedOrder].products, ...payload];
+
+      state.orders[state.selectedOrder].discount += Number(payload[0].discount);
+      state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
+
+      localStorage.setItem('HevenOrders', JSON.stringify(state.orders));
+    },
+
     AddProductToOrder: (state, payload) => {
       // console.log("payload ", payload)
 
@@ -256,6 +313,7 @@ export default new Vuex.Store({
 
 
         state.orders[state.selectedOrder].total = Number(state.orders[state.selectedOrder].total) + Number(payload.priceObject.price);
+        state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
 
 
         // if(targetProduct >= 0){
@@ -263,6 +321,8 @@ export default new Vuex.Store({
         // }else{
           state.orders[state.selectedOrder].products.push(payload);
         // }
+
+        
       
       
       

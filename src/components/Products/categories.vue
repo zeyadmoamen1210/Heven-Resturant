@@ -1056,7 +1056,7 @@ export default {
   > h6 {
     text-align: right;
     font-size: 25px;
-    font-family: "Cairo";
+    font-family: "din";
   }
   padding-top: 50px;
 
@@ -1066,7 +1066,7 @@ export default {
   }
 
   .products {
-    font-family: "Cairo";
+    font-family: "din";
   }
 
   .nav-pills .nav-link.active,
@@ -1085,7 +1085,7 @@ export default {
     background: linear-gradient(-180deg, #edfafd, #ffffff);
     margin-bottom: 5px;
     font-size: 16px;
-    font-family: "Cairo";
+    font-family: "din";
     border-radius: 6px;
     height: 58px;
     align-items: center;

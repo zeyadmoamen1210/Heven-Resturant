@@ -410,7 +410,7 @@ export default {
   margin: 0 !important;
   padding: 0 !important;
   text-align: right !important;
-  font-family: "Cairo" !important;
+  font-family: "din" !important;
 }
 
 .driver-orders {
@@ -428,7 +428,7 @@ export default {
 
   table {
     width: 100% !important;
-    font-family: "Cairo";
+    font-family: "din";
     tr {
       &:nth-of-type(even) {
         background-color: #f9f9f9;

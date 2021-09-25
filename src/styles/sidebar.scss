@@ -1,6 +1,6 @@
 
 @font-face {
-    font-family: "Cairo";
+    font-family: "din";
     src: url("../assets/fonts/din-next-regular.ttf");
 }
 @font-face {
@@ -30,7 +30,7 @@ $boldFont : 'din-bold', sans-serif;
 
         p {
             font-size: 10px;
-            font-family: "Cairo", sans-serif;
+            font-family: "CairoRegular";
             color: #FE5634;
             font-weight: 700;
             display: block !important;
@@ -44,7 +44,7 @@ $boldFont : 'din-bold', sans-serif;
 
             .vs-sidebar__item__text {
                 font-size: 19px;
-                font-family: "Cairo", sans-serif;
+                font-family: "CairoRegular";
                 font-weight: 400;
             }
 

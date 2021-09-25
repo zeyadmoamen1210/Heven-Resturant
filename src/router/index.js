@@ -14,6 +14,10 @@ import BranchesSales from "../views/Orders/BranchesSales.vue"
 import Stores from "../views/Stores.vue"
 import Register from "../views/Register.vue"
 
+import Offers from "../views/offers/index.vue"
+import AddOffer from "../views/offers/add.vue"
+import UpdateOffer from "../views/offers/update.vue"
+
 
 
 
@@ -32,7 +36,30 @@ Vue.use(VueRouter);
 
 const routes = [
   
-
+  {
+    path: "/offers",
+    name: "Offers",
+    component: Offers,
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
+    path: "/offers/add",
+    name: "AddOffer",
+    component: AddOffer,
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
+    path: "/offers/update",
+    name: "OffUpdateers",
+    component: UpdateOffer,
+    meta: {
+      requiresAuth: true
+    },
+  },
 
 
   {
