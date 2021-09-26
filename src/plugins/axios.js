@@ -4,6 +4,7 @@ import VueAxios from 'vue-axios'
 
 const axiosApi = axios.create({
     baseURL:  `http://167.172.157.191:2090/api/`,
+    
     // baseURL: `http://127.0.0.1:8000/api/`,
     // baseURL: 'http://167.172.157.191:5050/',
     // baseURL: `https://haven-pos.herokuapp.com/api/`,
