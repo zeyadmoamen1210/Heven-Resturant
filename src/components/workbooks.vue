@@ -557,7 +557,7 @@ export default {
             id: prod.id,
             size: this.sizes.find(
               (ele2) => ele2.id == prod.pivot.product_size_id
-            ),
+            ).name,
 
             qty: 1,
             type: 1,
