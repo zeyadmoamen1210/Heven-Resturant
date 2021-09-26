@@ -242,7 +242,28 @@
 
 
 
-        <tr
+       
+
+
+
+        <tr>
+          <td style="background:#f7f7f7;    font-weight: bold;">
+            إجمالي الفاتورة
+          </td>
+          <td style="width: 100px;" v-if="inVoiceDetails && inVoiceDetails.total">
+            <b>{{
+              (Number(inVoiceDetails.total) + (inVoiceDetails.driver_cost ? Number(inVoiceDetails.driver_cost) : 0) + (inVoiceDetails.restaurant_cost ? Number(inVoiceDetails.restaurant_cost) : 0)) 
+            }}</b>
+            ج.م
+          </td>
+          <td v-else >
+            <b>{{ allOrderPrice }}</b> ج.م
+          </td>
+        </tr>
+
+
+
+         <tr
           v-if="
             inVoiceDetails &&
               inVoiceDetails.discount > 0
@@ -260,9 +281,10 @@
         </tr>
 
 
-        <tr>
+
+        <tr v-if="inVoiceDetails && inVoiceDetails.discount > 0">
           <td style="background:#f7f7f7;    font-weight: bold;">
-            إجمالي الفاتورة
+            إجمالي الفاتورة بعد الخصم
           </td>
           <td style="width: 100px;" v-if="inVoiceDetails && inVoiceDetails.total">
             <b>{{
@@ -274,6 +296,9 @@
             <b>{{ allOrderPrice }}</b> ج.م
           </td>
         </tr>
+
+
+        
       </table>
 
       <div style="height: 5px;"></div>
