@@ -577,8 +577,8 @@
             <div class="row">
               <div
                 class="col-md-6"
-                v-for="offer in offers"
-                :key="offer.id"
+                v-for="(offer, index) in offers"
+                :key="index"
                 :name="offer.id"
               >
                 <el-collapse-item class="mb-3">
@@ -662,8 +662,8 @@
                   </template>
                   <div
                     class="offer-product"
-                    v-for="product in offer.products"
-                    :key="product.id"
+                    v-for="(product, index2) in offer.products"
+                    :key="index2"
                   >
                     <div class="d-flex">
                       <div>

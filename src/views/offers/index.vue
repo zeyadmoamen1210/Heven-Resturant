@@ -188,7 +188,7 @@
                         </div>
 
                         <div>
-                          <span style="color: #fe5634 !important"> {{sizes.find(ele => ele.id == product.pivot.product_size_id).name}} </span>
+                          <span style="color: #fe5634 !important"> {{sizes.find(ele => ele.id == (product.product_size_id || (product.pivot && product.pivot.product_size_id))).name}} </span>
                         </div>
 
 
@@ -615,6 +615,7 @@
                             <td> المنتج </td>
                             <td> السعر </td>
                             <td>الحجم</td>
+                            <td>الكمية</td>
                             <td> حذف </td>
                         </tr>
                         <tr  v-for="(prod, index) in currOfferToUpdate.products" :key="index">
@@ -637,10 +638,33 @@
                                 prod.prices.find(
                                   (ele) =>
                                     ele.product_size_id ==
-                                    prod.pivot.product_size_id
+                                    (prod.pivot && prod.pivot.product_size_id)
                                 ).product_size.name
                               }}
                             </td>
+
+                            <td v-if="prod.pivot">
+                              <div class="quantity">
+                                <el-input-number
+                                  size="mini"
+                                  v-model="prod.pivot.qty"
+                                  :min="1"
+                                  @change="addPriceAfterIncreateQty"
+                                ></el-input-number>
+                              </div>
+                            </td>
+                            <td v-else>
+                              <div class="quantity">
+                                <el-input-number
+                                  size="mini"
+                                  v-model="prod.qty"
+                                  :min="1"
+                                  @change="addPriceAfterIncreateQty"
+                                ></el-input-number>
+                              </div>
+                            </td>
+
+
                                     <td>
                                 <div class="edit-delete">
                                         <el-button
@@ -771,7 +795,7 @@ export default {
       sizes: [],
 
       categories: [],
-      selectedTab: {},
+      selectedTab: 0,
       selectedCategory: {},
       products: {},
       currOfferToUpdate: {
@@ -827,6 +851,18 @@ export default {
     },
   },
   methods: {
+
+    addPriceAfterIncreateQty(){
+      let sum = 0;
+      this.currOfferToUpdate.products.map(ele => {
+        sum += (ele.pivot ? Number(ele.prices.find(ele2 => ele2.product_size_id == ele.pivot.product_size_id).price) : Number(ele.price)) * (ele.pivot ? Number(ele.pivot.qty) : Number(ele.qty));
+      })
+
+      this.totalPrice = sum;
+     
+    },
+
+
     returnToOffers(){
       this.getOffers();
       this.openUpdatePage = false;
@@ -842,13 +878,13 @@ export default {
             console.log("inside ")
             product.prices.map(ele2 => {
                 console.log(ele2)
-                if(ele2.product_size_id == product.pivot.product_size_id){
-                    this.totalPrice = Number(this.totalPrice) - Number(ele2.price)
+                if(ele2.product_size_id == (product.pivot && product.pivot.product_size_id)){
+                    this.totalPrice = Number(this.totalPrice) - (Number(ele2.price) * Number(product.pivot.qty));
                 }
             })
 
         }else{
-            this.totalPrice = Number(this.totalPrice) - Number(product.price)
+            this.totalPrice = Number(this.totalPrice) - (Number(product.price) * Number(product.qty))
         }
 
 
@@ -861,25 +897,44 @@ export default {
         price: price.price,
         product_size_id: price.product_size_id,
         size: price.product_size.name,
+        qty: 1,
       };
       console.log(prod);
       let ifExist = this.currOfferToUpdate.products.findIndex(
         (ele) =>
-          (ele.product_id || ele.pivot.product_id) ==
+          (ele.product_id || (ele.pivot && ele.pivot.product_id)) ==
             (product.id || product.pivot.product_id) &&
-          (ele.product_size_id || ele.pivot.product_size_id) ==
+          (ele.product_size_id || (ele.pivot && ele.pivot.product_size_id)) ==
             price.product_size_id
       );
       if (ifExist <= -1) {
         this.totalPrice = Number(this.totalPrice) + Number(prod.price);
         this.currOfferToUpdate.products.push({ ...prod });
       } else {
-        this.$notify({
-          title: "موجود من قبل",
-          message: "هذا المنتج تم إضافته من قبل في العرض",
-          type: "error",
-          duration: 1500,
-        });
+        let theProduct = this.currOfferToUpdate.products.find(
+        (ele) =>
+          (ele.product_id || (ele.pivot && ele.pivot.product_id)) ==
+            (product.id || product.pivot.product_id) &&
+          (ele.product_size_id || (ele.pivot && ele.pivot.product_size_id)) ==
+            price.product_size_id
+      );
+      console.log(theProduct)
+      if(theProduct.pivot){
+
+
+        theProduct.pivot.qty++;
+
+        theProduct.prices.map(ele2 => {
+                if(ele2.product_size_id == (theProduct.pivot && theProduct.pivot.product_size_id)){
+                    this.totalPrice += Number(ele2.price)
+                }
+            })
+
+      }else{
+        theProduct.qty++;
+        this.totalPrice = Number(this.totalPrice) + Number(theProduct.price);
+
+      }
       }
     },
     getSizes() {
@@ -914,6 +969,7 @@ export default {
         prods.push({
           product_id: ele.product_id || (ele.pivot && ele.pivot.product_id),
           product_size_id: (ele.product_size_id || (ele.pivot && ele.pivot.product_size_id)),
+          qty:  ele.qty || (ele.pivot && ele.pivot.qty),
         });
       });
 
@@ -959,7 +1015,7 @@ export default {
         .finally(() => loading.close());
     },
     selectCategory(category) {
-      this.selectedTab = {};
+      this.selectedTab = 0;
       this.selectedCategory = category;
       this.getProductsByCategorie(category);
     },
@@ -993,8 +1049,8 @@ export default {
       this.totalPrice = 0;
       this.currOfferToUpdate.products.map(ele => {
           ele.prices.map(ele2 => {
-              if(ele2.product_size_id == ele.pivot.product_size_id){
-                 this.totalPrice += Number(ele2.price)
+              if(ele2.product_size_id == (ele.pivot && ele.pivot.product_size_id)){
+                 this.totalPrice += (Number(ele2.price) * Number(ele.pivot && ele.pivot.qty))
               }
           })
       })

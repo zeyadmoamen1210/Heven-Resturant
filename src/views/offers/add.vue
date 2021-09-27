@@ -395,12 +395,23 @@
                             <td> المنتج </td>
                             <td> السعر </td>
                             <td> الحجم </td>
+                            <td> الكمية </td>
                             <td> حذف </td>
                         </tr>
                         <tr v-for="(prod, index) in newOffer.products" :key="index">
                             <td> {{ prod.name }} </td>
                             <td> {{ prod.price }} </td>
                             <td> {{ prod.size }} </td>
+                            <td>
+                              <div class="quantity">
+                                <el-input-number
+                                  size="mini"
+                                  v-model="prod.qty"
+                                  :min="1"
+                                  @change="addPriceAfterIncreateQty"
+                                ></el-input-number>
+                              </div>
+                            </td>
                                     <td>
                                 <div class="edit-delete">
                                         <el-button
@@ -487,7 +498,7 @@ export default {
   data() {
     return {
       categories: [],
-      selectedTab: {},
+      selectedTab: 0,
       selectedCategory: {},
       products: {},
       newOffer: {
@@ -538,8 +549,17 @@ export default {
     this.getSizes();
   },
   methods: {
+    addPriceAfterIncreateQty(){
+      let sum = 0;
+      this.newOffer.products.map(ele => {
+        sum += Number(ele.price) * Number(ele.qty);
+      })
+
+      this.totalPrice = sum;
+     
+    },
       deleteProductFromOffer(product, index){
-        this.totalPrice -= Number(this.newOffer.products[index].price);
+        this.totalPrice -= Number(this.newOffer.products[index].price) * Number(this.newOffer.products[index].qty);
         this.newOffer.products.splice(index, 1);
       },
     addPriceToOffer(product, price) {
@@ -549,6 +569,7 @@ export default {
         price: price.price,
         product_size_id: price.product_size_id,
         size: price.product_size.name,
+        qty: 1,
 
       };
       console.log(prod);
@@ -560,12 +581,12 @@ export default {
         this.totalPrice += Number(prod.price);
         this.newOffer.products.push({ ...prod });
       } else {
-        this.$notify({
-          title: "موجود من قبل",
-          message: "هذا المنتج تم إضافته من قبل في العرض",
-          type: "error",
-          duration: 1500,
-        });
+        let theProduct = this.newOffer.products.find(
+            (ele) =>
+            ele.product_id == product.id && ele.product_size_id == price.product_size_id
+        );
+        theProduct.qty++;
+        this.totalPrice += Number(theProduct.price);
       }
     },
     getSizes() {
@@ -628,7 +649,7 @@ export default {
         .finally(() => loading.close());
     },
     selectCategory(category) {
-      this.selectedTab = {};
+      this.selectedTab = 0;
       this.selectedCategory = category;
       this.getProductsByCategorie(category);
     },

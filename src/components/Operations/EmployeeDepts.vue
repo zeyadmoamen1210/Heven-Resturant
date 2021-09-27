@@ -22,7 +22,7 @@ export default {
 .dept{
     flex-direction: row-reverse;
         direction: ltr;
-    font-family: "Cairo";
+    font-family: "din";
     /* padding: 20px 23px; */
     margin-bottom: 27px;
     border-radius: 3px;
