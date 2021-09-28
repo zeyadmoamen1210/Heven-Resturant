@@ -62,7 +62,7 @@
               v-model="area"
               placeholder="ابحث بالمناطق"
             >
-              <el-option :key="5" label="5" :value="5"> </el-option>
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
 
               <el-option
                 v-for="area in areas"
@@ -232,10 +232,15 @@
         <el-table-column label="العميل" prop="customer.name"> </el-table-column>
         <el-table-column label="الفون" prop="customer.mobile"> </el-table-column>
         <el-table-column label="بواسطة" prop="user.name"> </el-table-column>
-         <el-table-column label="اﻟﺴﺎﺋﻖ" prop="employee.name" v-if="employee_id>1"> </el-table-column>
+         
+        <el-table-column label="اﻟﺴﺎﺋﻖ"> 
+            <template slot-scope="scope">
+              <span v-if="scope.row.employee.id>1">{{scope.row.employee.name}}</span>
+              
+            </template>
+
+        </el-table-column>
         
-        <el-table-column label="اﻟﺴﺎﺋﻖ"  prop="employee.name"  v-else> </el-table-column>
-      
         <el-table-column width="200" sortable label="التوقيت">
      
             <template slot-scope="scope">

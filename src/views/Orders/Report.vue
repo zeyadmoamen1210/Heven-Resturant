@@ -23,6 +23,7 @@
 
 
       <swiper class="swiper" :options="swiperOptionBestSeller">
+        
         <swiper-slide v-for="type in types" :key="type.id">
           <Type
             :class="{ 'selected-type': type.id == selectedOrderType.id }"
@@ -64,13 +65,49 @@
               v-model="area"
               placeholder="اﺑﺤﺚ ﺑﺎﻟﻤﻨﺎﻃﻖ"
             >
-              <el-option :key="5" label="5" :value="5"> </el-option>
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
 
               <el-option
                 v-for="area in areas"
                 :key="area.id"
                 :label="area.name"
                 :value="area.id"
+              >
+              </el-option>
+            </el-select>
+          </div>
+          <div>
+            <el-select
+              clearable
+              @change="getOrders"
+              v-model="status"
+              placeholder="حالة الطلب"
+            >
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
+
+              <el-option
+                v-for="option in statusOptions"
+                :key="option.value"
+                :label="option.label"
+                :value="option.value"
+              >
+              </el-option>
+            </el-select>
+          </div>
+          <div>
+            <el-select
+              clearable
+              @change="getOrders"
+              v-model="payment_type"
+              placeholder="طريقة الدفع"
+            >
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
+
+              <el-option
+                v-for="option in paymentStatus"
+                :key="option.val"
+                :label="option.name"
+                :value="option.val"
               >
               </el-option>
             </el-select>
@@ -156,9 +193,14 @@
            </template>
         </el-table-column>
       
-        <el-table-column label="اﻟﺴﺎﺋﻖ" prop="employee.name" v-if="employee_id>1"> </el-table-column>
+        <el-table-column label="اﻟﺴﺎﺋﻖ"> 
+            <template slot-scope="scope">
+              <span v-if="scope.row.employee.id>1">{{scope.row.employee.name}}</span>
+
+            </template>
+
+        </el-table-column>
         
-        <el-table-column label="اﻟﺴﺎﺋﻖ"  prop="employee.name"  v-else> </el-table-column>
       
         <el-table-column width="200" sortable label="اﻟﺘﻮﻗﻴﺖ">
      
@@ -177,7 +219,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-if="scope.row.status<4" @click.native="openModelToUpdateStatus(scope.row)">ﺗﻐﻴﻴﺮ اﻟﺤﺎﻟﺔ</el-dropdown-item>
                 <el-dropdown-item v-if="scope.row.status<4" @click.native="openModelToUpdatePaymentWay(scope.row)" >طريقة الدفع</el-dropdown-item>
-                <el-dropdown-item @click.native="printOrder(scope.row)">إعادة الطباعة</el-dropdown-item>
+                <el-dropdown-item @click.native="printOrder(scope.row)" v-if="isAdmin">إعادة الطباعة</el-dropdown-item>
 
               </el-dropdown-menu>
             </el-dropdown>
@@ -490,8 +532,8 @@ export default {
     return {
       determinePrintersFirst: false,
       showModelToUpdatePaymentWay:false,
-    
-          dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
+    //  
+      dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
 
 
       format:'yyyy-MM-dd HH:mm A',
@@ -514,11 +556,13 @@ export default {
       drivers: [],
       updateStatus: "",
       showDeliveryModel: false,
+      payment_type:this.$route.query.payment_type?Number(this.$route.query.payment_type):'',
       paymentStatus:[
         {name: 'نقدي', val: 1},
         {name: 'فيزا', val: 2},
       ],
       paymentWay: '',
+      status:this.$route.query.status?Number(this.$route.query.status):'',
       statusOptions: [
         { label: "ﻗﻴﺪ اﻹﻧﺘﻈﺎﺭ", value: 1 },
         { label: "ﻓﻲ اﻟﻄﺮﻳﻖ", value: 2 },
@@ -574,8 +618,19 @@ export default {
       },
     };
   },
+   computed: {
+    isAdmin() {
+      let user = localStorage.getItem("heavenDashboardUser");
+      if (JSON.parse(user).role_id == 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
 
   created() {
+  
     this.getOrders();
     this.getOrderRejectReasons();
     this.getAllAreas();
@@ -591,6 +646,10 @@ export default {
         .get("order-types")
         .then((res) => {
           this.types = res.data;
+          this.types.unshift({
+            id:0,
+            name:'الكل'
+          })
         })
         .finally(() => loading.close());
       if (inCreated) {
@@ -832,10 +891,19 @@ export default {
       if (this.area != "") {
         url += "&area=" + this.area;
       }
-      if (Object.keys(this.selectedOrderType).length > 0) {
+      if (this.payment_type !="") {
+        url += "&payment_type=" + this.payment_type;
+      }
+      if (this.status != "") {
+        url += "&status=" + this.status;
+      }
+      if (Object.keys(this.selectedOrderType).length > 0 &&this.selectedOrderType.id>0)  {
         url += "&order_type=" + this.selectedOrderType.id;
       }
-        if (this.dateRange != null) {
+        if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
+      localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
           url += "&start=" + this.dateRange[0];
           url += "&end=" + this.dateRange[1];
         }
@@ -1000,7 +1068,7 @@ export default {
 .custom-table {
   width: 100%;
   direction: rtl;
-  font-family: "din";
+  font-family: "Cairo";
   thead {
     font-family: "din-bold";
   }

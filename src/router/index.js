@@ -89,7 +89,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
 
       let user = localStorage.getItem("heavenDashboardUser");
-      if(user && JSON.parse(user).role_id != 1){
+      if(user && JSON.parse(user).role_id == 2){
         next({name: "Home"});
       }else{
         next();

@@ -75,10 +75,10 @@ export default {
 
       format:'yyyy-MM-dd HH:mm A',
       valueFormat:'yyyy-MM-dd HH:mm:ss',
-      
+      dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
       false: false,
       true: true,
-      dateRange: null,
+ 
       totalExpenses:0,
       tableData: [],
     };
@@ -90,7 +90,8 @@ export default {
       return Math.floor(number * 100) / 100;
     },
     getExpensesReport() {
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         const loading = this.$loading({
           lock: true,
           text: "جاري تحميل البيانات",
@@ -100,7 +101,8 @@ export default {
 
 
         let url = `expenses/category`;
-        if (this.dateRange != null) {
+        if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
           url += `?start=${this.dateRange[0]}`;
           url += `&end=${this.dateRange[1]}`;
         }

@@ -20,7 +20,7 @@ export default {
 
 <style lang="scss" scoped>
 .printer{
-    font-family: "din";
+    font-family: "Cairo";
     // box-shadow: 0 4px 25px 0 #0000001a;
     padding: 5px 18px;
     margin-bottom: 27px;

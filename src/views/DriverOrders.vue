@@ -15,7 +15,8 @@
         </template>
       </el-autocomplete> -->
 
-
+   <div class="row">
+              <div class="col-md-4">
 
       <el-select
         style="    max-width: 413px;margin-bottom: 20px"
@@ -30,6 +31,9 @@
         </el-option>
       </el-select>
 
+              </div>
+              <div class="col-md-4">
+
       
               <el-date-picker
               class="mr-2"
@@ -42,13 +46,35 @@
                 start-placeholder="بداية الفترة"
                 end-placeholder="نهاية الفترة">
               </el-date-picker>
+              </div>
+              <div class="col-md-4">
 
 
+        <el-form :model="taslimForm"  :inline="true" ref="taslimForm" v-if="currDelivery">
+            <el-form-item
+              prop="amount"
+              :rules="[{ required: true, message: '  مطلوب' }]"
+            >
+              <el-input
+              type="number"
+                placeholder="المبلغ المُستلم"
+                v-model="taslimForm.amount"
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary"  @click="addTaslim()"
+                >حفظ عملية التحصيل</el-button
+              >
+            </el-form-item>
+          </el-form>
+              </div>
+   </div>
 
 
       <table v-if="currDelivery">
         <tr>
-            <td>الأسم</td>
+            <td>الاسم</td>
             <td>{{ currDelivery.name }}</td>
         </tr>
         <tr>
@@ -63,7 +89,7 @@
         tab-position="right"
         v-model="currTabName"
       >
-        <el-tab-pane label="الأحصائيات" color="#FE5634" name="orderDriver">
+        <el-tab-pane label=" الاحصائيات للمناطق" color="#FE5634" name="ordersByArea">
           <div class="flex-grid">
             <div
               class="table-container"
@@ -125,6 +151,65 @@
             </div>
           </div>
         </el-tab-pane>
+        <el-tab-pane label=" التسليمات" color="#FE5634" name="driverTaslims">
+          <div class="flex-grid">
+            <div
+              class="table-container"
+              v-if="
+                Object.keys(currDelivery).length > 0 && driverTaslims.length != 0
+              "
+            >
+              
+              <table>
+                <thead>
+                  <tr>
+                    <td>المبلغ</td>
+                    <td>بواسطة</td>
+                    <td>التوقيت</td>
+               
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="taslim in driverTaslims" :key="taslim.id">
+                    <td>{{ taslim.amount }}</td>
+                    <td>{{ taslim.user.name }}</td>
+                    <td>{{ taslim.created_at   | moment("dddd | Do / MM / YYYY | h:mm A")}}</td>
+                  </tr>
+                </tbody>
+                
+              </table>
+              <table style="margin-top:10px;">
+                <thead>
+                  <tr>
+                    <td>اجمالي مستحق المطعم</td>
+                    <td>اجمالي التسليمات</td>
+                    <td>المتبقي</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{totalHeven-totalNotPaied}}</td>
+                    <td>{{totalTaslims}}</td>              
+                    <td>{{totalHeven-totalNotPaied-totalTaslims}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- <tfoot>
+                  <tr>
+                    <td>إجمالي مستحق المطعم:</td>
+                    <td>{{ totalHeven }}</td>
+
+                    <td>إجمالي مستحق السائق:</td>
+                    <td>{{ totalDriver }}</td>
+                  </tr>
+                </tfoot> -->
+            </div>
+            <div v-else-if="driverTaslims.length == 0">
+              <NoData />
+            </div>
+          </div>
+        </el-tab-pane>
 
         <el-tab-pane
           label="تفاصيل الطلبات"
@@ -142,7 +227,7 @@
               style="width: 100%"
             >
              
-              <el-table-column sortable label="رقم " prop="order">
+              <el-table-column width="100" sortable label="رقم " prop="order">
               </el-table-column>
 
               <el-table-column   label="القيمة">
@@ -168,17 +253,19 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="العميل" v-if="tableData.customer" prop="customer.name">
+              <el-table-column label="العميل" v-if="isAdmin"  prop="customer.name">
               </el-table-column>
-              <el-table-column label="الفون" v-if="tableData.customer" prop="customer.mobile">
+              <el-table-column label="الفون" v-if="isAdmin" prop="customer.mobile">
               </el-table-column>
-              <el-table-column label="بواسطة" v-if="tableData.user" prop="user.name">
+              <el-table-column label="بواسطة"  prop="user.name">
+              </el-table-column>
+              <el-table-column label="تم الاسناد"  v-if="isAdmin"  prop="assigned_by">
               </el-table-column>
               <el-table-column  sortable label="التوقيت">
                 <template slot-scope="scope">
                   <span>{{
                     scope.row.updated_at
-                      | moment("dddd | Do / MM / YYYY | h:mm A")
+                      | moment(" Do / MM / YYYY | h:mm A")
                   }}</span>
                 </template>
               </el-table-column>
@@ -224,6 +311,8 @@
                       </template>
                     </el-table-column>
                   </el-table>
+                  <p>{{props.row.address}}</p>
+                  <p>{{props.row.notes}}</p>
                 </template>
               </el-table-column>
             </el-table>
@@ -247,18 +336,23 @@ export default {
   },
   data() {
     return {
-          dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
+      taslimForm:{
+        amount:'',
+        employee_id:null,
+      },
+          dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
       format:'yyyy-MM-dd HH:mm A',
       valueFormat:'yyyy-MM-dd HH:mm:ss',
       currTabName:'ordersByArea',
+      driverTaslims: [],
       allDeliveries: [],
+      totalTaslims:0,
       state: "",
       allOrders: [],
       currDelivery: null,
       totalHeven: 0,
       totalDriver: 0,
       totalNotPaied: 0,
-      currTabName: "ordersDetails",
       tableData:[],
       lastPage:1,
       currPage:1
@@ -267,7 +361,18 @@ export default {
   created(){
    
   },
+   computed: {
+    isAdmin() {
+      let user = localStorage.getItem("heavenDashboardUser");
+      if (JSON.parse(user).role_id == 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
   mounted() {
+    
     this.getAllDrivers();
 
 
@@ -299,10 +404,27 @@ export default {
 
   },
   methods: {
-
+addTaslim(){
+  if(this.taslimForm.amount>0&&this.taslimForm.employee_id){
+  const loading = this.$vs.loading();
+ 
+      axiosApi
+        .post(`driver-taslims`,this.taslimForm)
+        .then(() => {
+           this.$notify({
+                      title: "تمت العملية بنجاح",
+                      message: "تم حفظ عمليةالتحصيل بنجاح",
+                      type: "success",
+                      duration: 1500,
+              });
+           this.getDriverTaslims();
+        }).finally(() => loading.close());
+  }
+},
     getDeliveryOrders(){
+      this.taslimForm.employee_id=this.currDelivery.id;
 
-      console.log("call===========")
+     
        this.getOrderToDelivery();
     this.getOrdersDetails();
     },
@@ -311,10 +433,12 @@ export default {
     getOrdersDetails(currPageIncreased) {
       const loading = this.$vs.loading();
   let url = `/orders-details/drivers/${this.currDelivery.id}?page=${this.currPage}`;
-       if (this.dateRange != null) {
+       if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "&start=" + this.dateRange[0];
         url += "&end=" + this.dateRange[1];
       }
+      this.getDriverTaslims();
       axiosApi
         .get(url)
         .then((res) => {
@@ -328,6 +452,24 @@ export default {
           this.currPage = res.data.current_page;
         }).finally(() => loading.close());
     },
+    getDriverTaslims() {
+      const loading = this.$vs.loading();
+      this.totalTaslims=0;
+  let url = `/driver-taslims/${this.currDelivery.id}`;
+       if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
+        url += "&start=" + this.dateRange[0];
+        url += "&end=" + this.dateRange[1];
+      }
+      axiosApi
+        .get(url)
+        .then((res) => {
+            this.driverTaslims = res.data;
+            this.driverTaslims.map((taslim)=>{
+              this.totalTaslims+= Number(taslim.amount)
+            })
+        }).finally(() => loading.close());
+    },
 
     handleSelect(item) {
       this.currDelivery = item;
@@ -336,7 +478,8 @@ export default {
     getOrderToDelivery() {
       const loading = this.$vs.loading();
       let link=`/orders/drivers/${this.currDelivery.id}`
-       if (this.dateRange != null) {
+       if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         link += "?start=" + this.dateRange[0];
         link += "&end=" + this.dateRange[1];
       }
@@ -386,7 +529,8 @@ export default {
         url += "&employee=" + this.selectedDelivery.id;
       
      
-       if (this.dateRange != null) {
+       if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "&start_date=" + this.dateRange[0];
         url += "&end_date=" + this.dateRange[1];
       }
@@ -410,7 +554,7 @@ export default {
   margin: 0 !important;
   padding: 0 !important;
   text-align: right !important;
-  font-family: "din" !important;
+  font-family: "Cairo" !important;
 }
 
 .driver-orders {
@@ -428,7 +572,7 @@ export default {
 
   table {
     width: 100% !important;
-    font-family: "din";
+    font-family: "Cairo";
     tr {
       &:nth-of-type(even) {
         background-color: #f9f9f9;

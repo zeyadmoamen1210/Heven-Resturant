@@ -25,19 +25,27 @@
             >
 
               <div slot="edit-delete"> 
-                <button
-                  class="btn emp-dept-update"
+                  <!-- class="btn emp-dept-update" -->
+                <div class="d-flex justify-content-center ">
+                  <el-button
+                  class="mr-2"
+                  style="padding:10px"
                   @click.stop="openUpdateCategoryModel(category)"
                 >
                   <i class="el-icon-edit"></i>
-                </button>
+                </el-button>
 
-                <button
-                  class="btn emp-dept-delete"
+                  <!-- class="btn emp-dept-delete" -->
+                <el-button
+                  type="danger"
+                  plain
+                  style="padding:10px"
+                  class="mr-1"
                   @click.stop="handleDeleteEmployeeDept(category)"
                 >
                   <i class="el-icon-delete-solid"></i>
-                </button>
+                </el-button>
+                </div>
               </div>
 
             </Category>
@@ -987,17 +995,17 @@ export default {
       products: [],
       categories: [],
       swiperOptionBestSeller: {
-        slidesPerView: 12,
+        slidesPerView: 9,
         spaceBetween: 5,
         slidesPerGroup: 1,
         loopFillGroupWithBlank: false,
         breakpoints: {
           1200: {
-            slidesPerView: 12,
+            slidesPerView: 9,
             spaceBetween: 5,
           },
           1024: {
-            slidesPerView: 11,
+            slidesPerView: 8,
             spaceBetween: 5,
           },
           768: {
@@ -1048,7 +1056,7 @@ export default {
   > h6 {
     text-align: right;
     font-size: 25px;
-    font-family: "din";
+    font-family: "Cairo";
   }
   padding-top: 50px;
 
@@ -1058,7 +1066,7 @@ export default {
   }
 
   .products {
-    font-family: "din";
+    font-family: "Cairo";
   }
 
   .nav-pills .nav-link.active,
@@ -1077,7 +1085,7 @@ export default {
     background: linear-gradient(-180deg, #edfafd, #ffffff);
     margin-bottom: 5px;
     font-size: 16px;
-    font-family: "din";
+    font-family: "Cairo";
     border-radius: 6px;
     height: 58px;
     align-items: center;

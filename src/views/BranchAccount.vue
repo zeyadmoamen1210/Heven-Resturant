@@ -107,6 +107,23 @@
           <el-table-column label="#" type="index" width="80"> </el-table-column>
           <el-table-column label="البيان " prop="name"> </el-table-column>
           <el-table-column label="القيمة " prop="totalCost"> </el-table-column>
+          <el-table-column label="تفاصيل " >
+             <template slot-scope="scope">
+
+                <router-link
+                v-if="scope.row.link"
+                    title=" تفاصيل"
+                    class="btn btn-sm btn-success"
+                    :to="{
+                      path: scope.row.link,
+                    }"
+                  >
+                    <i class="fa fa-eye ml-1"></i>
+
+                    عرض التفاصيل
+                  </router-link>
+            </template>
+             </el-table-column>
         </el-table>
       </el-card>
 
@@ -169,7 +186,7 @@ export default {
     return {
       format: "yyyy-MM-dd HH:mm A",
       valueFormat: "yyyy-MM-dd HH:mm:ss",
-      dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
+      dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
 
       branch:null,
       branches:[],
@@ -214,7 +231,10 @@ export default {
         if (this.branch != null) {
         url += "&branch=" + this.branch;
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
+        localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "&start=" + this.dateRange[0];
         url += "&end=" + this.dateRange[1];
       }
@@ -239,7 +259,8 @@ export default {
         if (this.branch != null) {
         url += "branch=" + this.branch + "&";
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "start=" + this.dateRange[0] + "&";
         url += "end=" + this.dateRange[1] + "&";
       }
@@ -266,7 +287,8 @@ export default {
         if (this.branch != null) {
         url += "branch=" + this.branch + "&";
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "start=" + this.dateRange[0] + "&";
         url += "end=" + this.dateRange[1] + "&";
       }
@@ -282,6 +304,7 @@ export default {
           // });
 
           this.getRejectedOrders();
+          this.getOrdersPaiedByVisa();
         })
         .finally(() => loading.close());
     },
@@ -293,7 +316,8 @@ export default {
         if (this.branch != null) {
         url += "branch=" + this.branch + "&";
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "start=" + this.dateRange[0] + "&";
         url += "end=" + this.dateRange[1] + "&";
       }
@@ -301,11 +325,41 @@ export default {
       axiosApi
         .get(url)
         .then((res) => {
-          this.notPaiedSales.push(res.data[0]);
+          let data=res.data[0];
+        
+          data['link']='/orders/report?status=4';
+          this.notPaiedSales.push(data);
           this.notPaiedSales.map(function(value) {
             vm.totalNotpaiedSales += value["totalCost"];
           });
          this.totalDriverCost -=res.data[0].totalDriverCost;
+        })
+        .finally(() => loading.close());
+    },
+    getOrdersPaiedByVisa() {
+      const loading = this.$vs.loading();
+
+      
+      let url = `orders-paied-by-visa?`;
+        if (this.branch != null) {
+        url += "branch=" + this.branch + "&";
+      }
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
+        url += "start=" + this.dateRange[0] + "&";
+        url += "end=" + this.dateRange[1] + "&";
+      }
+      const vm = this;
+      axiosApi
+        .get(url)
+        .then((res) => {
+            let data=res.data[0];
+        
+          data['link']='/orders/report?payment_type=2';
+          this.notPaiedSales.push(data);
+          this.notPaiedSales.map(function(value) {
+            vm.totalNotpaiedSales += value["totalCost"];
+          });
         })
         .finally(() => loading.close());
     },
@@ -316,7 +370,8 @@ export default {
          if (this.branch != null) {
         url += "branch=" + this.branch + "&";
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "start=" + this.dateRange[0] + "&";
         url += "end=" + this.dateRange[1] + "&";
       }

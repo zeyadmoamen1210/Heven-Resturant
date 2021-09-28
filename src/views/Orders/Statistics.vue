@@ -148,7 +148,7 @@ export default {
       ],
       mostSoldProducts: [],
       ordersByType: [],
-      dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
+      dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
 
       driverMobile: "",
       driverName: "",
@@ -252,7 +252,8 @@ export default {
       if (this.area != "") {
         url += "&area=" + this.area;
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "&start=" + this.dateRange[0];
         url += "&end=" + this.dateRange[1];
       }
@@ -317,7 +318,8 @@ export default {
       if (this.area != "") {
         url += "&area=" + this.area;
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "&start=" + this.dateRange[0];
         url += "&end=" + this.dateRange[1];
       }

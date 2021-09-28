@@ -11,7 +11,7 @@
                 <el-select
                 clearable
                   class="mt-2"
-                  v-model="category_id"
+                  v-model="category"
                   placeholder="حدد الوصف"
                   @change="getExpensesReport"
                 >
@@ -71,19 +71,101 @@
         
           <el-table-column width="300" label="المصروف" prop="expense_category.name">
           </el-table-column>
-          <el-table-column    label="المبلغ" prop="cost"> </el-table-column>
+          <el-table-column width="150 "   label="المبلغ" prop="cost"> </el-table-column>
           <el-table-column  width="200"  label="بواسطة" prop="user.name"> </el-table-column>
-          <el-table-column  width="200"  label="المُستلم" prop="for_who"> </el-table-column>
+          <el-table-column  width="150"  label="المُستلم" prop="for_who"> </el-table-column>
           <el-table-column  width="200"  label="تعليق" prop="comment"> </el-table-column>
-          <el-table-column  width="200"  label="التوقيت" >
+          <el-table-column    label="التوقيت" >
              <template slot-scope="scope">
+
               <span>{{scope.row.created_at | moment("dddd | Do / MM / YYYY | h:mm A")}}</span>
             </template>
              </el-table-column>
-        
+            <el-table-column width="150" label="الاجراء">
+              <template slot-scope="scope">
+                <el-row>
+                  <el-col :xl="6" :lg="6" :md="12" :sm="12">
+                  <el-popconfirm
+                    confirm-button-text="موافق"
+                    cancel-button-text="إلغاء"
+                    icon="el-icon-info"
+                    icon-color="red"
+                    title="هل تريد مسح المصروف؟"
+                    @confirm="deleteItem(scope)"
+                  >
+                    <div slot="reference">
+                      <el-button type="danger" icon="el-icon-delete" title="مسح" size="mini"  ></el-button>
+                    </div>
+                  </el-popconfirm>
+                  </el-col>
+                  <el-button type="primary" icon="el-icon-edit" title="تعديل" size="mini" class="mr-2"  @click.native.prevent="editItem(scope)"></el-button>
+                </el-row>
+              </template>
+            </el-table-column>
         
         </el-table>
+         <!-- <el-dialog title="تعديل بيانات المصروف" :visible.sync="editFormVisible" v-if="selectedExpenses">
+         
+        </el-dialog> -->
+
+          <vs-dialog
+          v-if="selectedExpenses"
+        title="إضافة"
+        v-model="editFormVisible"
+        width="40%"
+        class="add-operation-dialog"
+      >
+        <!-- center -->
+        <template #header>
+          <span>تعديل بيانات المصروف</span>
+        </template>
+
+       <el-form :model="selectedExpenses">
+            <el-row dir="rtl" :gutter="10">
+             
+              <el-col :xl="10" :lg="10" :md="6" :sm="10">
+                <el-form-item label="التعليق ">
+                  <el-input
+                    class="form-control"
+                    v-model="selectedExpenses.comment"
+                    autocomplete="off"
+                    @focus="$event.target.select()"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :xl="10" :lg="10" :md="6" :sm="12">
+                <el-form-item label="المستلم ">
+                  <el-input
+                    v-model="selectedExpenses.for_who"
+                    autocomplete="off"
+                    @focus="$event.target.select()"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+               <el-col :xl="4" :lg="4" :md="6" :sm="12">
+                <el-form-item label="المبلغ">
+                  <el-input
+                  type="number"
+                    v-model="selectedExpenses.cost"
+                    autocomplete="off"
+                    @focus="$event.target.select()"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+         
+
+        <!-- This is Popup Footer -->
+        <span slot="footer" class="dialog-footer">
+           <el-button type="primary" @click="update">حفظ التعديلات</el-button>
+            <el-button class="mr-3" @click="editFormVisible = false"
+              >إلغاء</el-button
+            >
+        </span>
+      </vs-dialog>
       </el-main>
+         
     </el-container>
   </div>
 </template>
@@ -97,31 +179,88 @@ export default {
       false: false,
       true: true,
       categories: [],
-
-      category_id:null,
-      dateRange: null,
+editFormVisible: false,
+      selectedExpenses:null,
+      category:'',
+      
       totalExpenses:0,
       tableData: [],
 
       format:'yyyy-MM-dd HH:mm A',
       valueFormat:'yyyy-MM-dd HH:mm:ss',
+      dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
+
     };
   },
 
 created() {
   
-  if(this.$route.query.category){
-    console.log("this.$route.query.category",this.$route.query.category)
-    this.category_id=this.$route.query.category;
-    } 
-  
+ 
     
 
-    this.getExpensesReport();
       this.getCategories();
 },
   methods: {
   
+    deleteItem(scope) {
+      const loading = this.$vs.loading();
+      axiosApi
+      .delete(`expenses/${scope.row.id}`)
+        .then(() => {
+          this.getExpensesReport();
+          this.$notify({
+            title: "تمت العملية بنجاح",
+            message: "تم مسح بيانات المنتج بنجاح",
+            type: "success",
+            duration: 1500,
+          });
+        })
+        .catch((e) => {
+          this.$notify.error({
+            title: "حدث خطأ",
+            message: "عفوا تأكد من بيانات المطلوبة",
+            duration: 1500,
+          });
+          console.log(e);
+        })
+        .finally(() => loading.close());
+      console.log("delete",scope.row);
+    },
+    editItem(scope) {
+      this.selectedExpenses = scope.row;
+      this.editFormVisible = true;
+    },
+    update(){
+      const loading = this.$vs.loading();
+       axiosApi
+        .put(`expenses/${this.selectedExpenses.id}`, this.selectedExpenses)
+        .then(()=>{
+          this.getExpensesReport();
+          this.editFormVisible = false;
+          this.$notify({
+            title: "تمت العملية بنجاح",
+            message: "تم تحديث بيانات المنتج بنجاح",
+            type: "success",
+            duration: 1500,
+          });
+        })
+        .catch((e)=>{
+          if(e.response.data.code){
+            this.$notify.error({
+              title: "حدث خطأ",
+              message: "عفوا تأكد من عدم تكرار كود المنتج  ",
+              duration: 1500,
+            });
+          }else{
+            this.$notify.error({
+              title: "حدث خطأ",
+              message: "عفوا تأكد من بيانات المطلوبة",
+              duration: 1500,
+            });
+          }
+        })
+        .finally(() => loading.close());
+    },
     numberToFixed(number) {
       return Math.floor(number * 100) / 100;
     },
@@ -130,13 +269,16 @@ created() {
         .get("expense-categories")
         .then((res) => {
           this.categories = res.data;
+          this.category=this.$route.query.category?Number(this.$route.query.category):''
+    this.getExpensesReport();
+
         })
         .catch((error) => console.log(error))
         .finally(() => {});
     },
 
     getExpensesReport() {
-      if (this.dateRange != null) {
+     
         const loading = this.$loading({
           lock: true,
           text: "جاري تحميل البيانات",
@@ -147,8 +289,14 @@ created() {
 
 
         let url = `expenses?limit=5`;
-        if (this.category_id != "") {
-          url+=`&category=${this.category_id}`
+        if (this.category !='') {
+          url+=`&category=${this.category}`
+        }
+
+          if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
+          url += `&start=${this.dateRange[0]}`;
+          url += `&end=${this.dateRange[1]}`;
         }
         
         this.totalExpenses=0;
@@ -171,7 +319,7 @@ created() {
           .finally(() => {
             loading.close();
           });
-      }
+      
     },
   },
 };
