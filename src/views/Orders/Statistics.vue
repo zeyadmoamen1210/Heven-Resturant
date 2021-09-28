@@ -1,6 +1,6 @@
 <template>
   <div class="receiving-orders">
-    <div class="container">
+    <div class="container-fluid">
       <div class="show-orders">
         <!-- <h6 class="text-right" style="color: #949494;font-size: 12px;">ابحث برقم الهاتف و المناطق و رقم الطلب</h6> -->
 

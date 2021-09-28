@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
       <div class="categories-selection">
         <h6>التصنيفات</h6>
         <div class="addNewCategory">
