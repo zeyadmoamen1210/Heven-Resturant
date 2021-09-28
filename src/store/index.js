@@ -63,6 +63,8 @@ export default new Vuex.Store({
   },
   mutations: {
 
+    
+
     setEmployeeDepts: (state, payload) => {
       state.employeesDepts = payload;
     },
@@ -191,17 +193,32 @@ export default new Vuex.Store({
       if(targetProduct.offerId){
 
         let i = state.orders[state.selectedOrder].products.length;
+        let sum = state.orders[state.selectedOrder].total;
+        let discount = state.orders[state.selectedOrder].discount;
+        // console.log("before ", discount)
 
+        let product = null;
         while (i--) {
           if (state.orders[state.selectedOrder].products[i].offerId == targetProduct.offerId) {
+            product = state.orders[state.selectedOrder].products[i]
+            // console.log("in ", discount)
+
+            sum -= (Number(state.orders[state.selectedOrder].products[i].qty) * Number(state.orders[state.selectedOrder].products[i].price))
             state.orders[state.selectedOrder].products.splice(i, 1);
           }
         }
+        if(product){
+          discount -= Number(product.offerCount) * Number(product.discount);
+        }
+        
 
-        state.orders[state.selectedOrder].discount -= Number(targetProduct.discount);
-        state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
-        state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
 
+
+        state.orders[state.selectedOrder].total = sum;
+        // console.log("aftter ", discount)
+        state.orders[state.selectedOrder].discount = discount;
+
+        
       }else{
         state.orders[state.selectedOrder].products.splice(payload, 1)
       }
@@ -288,13 +305,36 @@ export default new Vuex.Store({
       
       
       payload.forEach(ele => {
-        state.orders[state.selectedOrder].total = Number(state.orders[state.selectedOrder].total) + Number(ele.priceObject.price);
+        console.log(ele)
+        state.orders[state.selectedOrder].total = Number(state.orders[state.selectedOrder].total) + (Number(ele.priceObject.price) * Number(ele.qty));
       })
 
       state.orders[state.selectedOrder].products = [...state.orders[state.selectedOrder].products, ...payload];
 
       state.orders[state.selectedOrder].discount += Number(payload[0].discount);
       state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
+
+      localStorage.setItem('HevenOrders', JSON.stringify(state.orders));
+    },
+
+    IncreaseOfferQty: (state, payload) => {
+      console.log(payload.products)
+      payload.products.map(ele => {
+        state.orders[state.selectedOrder].products.map(ele2 => {
+          if(ele.pivot.product_size_id == ele2.priceObject.product_size_id && ele.pivot.product_id == ele2.id && ele.pivot.offer_id == ele2.offerId ){
+            ele2.offerCount++;
+            ele2.qty += Number(ele.pivot.qty);
+            state.orders[state.selectedOrder].total += Number(ele2.price)*Number(ele.pivot.qty);
+          }
+        })
+      })
+
+
+      state.orders[state.selectedOrder].discount += Number(payload.discount);
+      state.orders[state.selectedOrder].afterDiscounts = state.orders[state.selectedOrder].total - state.orders[state.selectedOrder].discount;
+      
+
+      
 
       localStorage.setItem('HevenOrders', JSON.stringify(state.orders));
     },

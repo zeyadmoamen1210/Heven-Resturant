@@ -726,7 +726,7 @@
                         </svg>
                       </div>
                       <div style="flex: 1">
-                        <h6>{{ product.name }}</h6>
+                        <h6> <span class="quantity">{{product.pivot ? product.pivot.qty : ''}}</span> {{ product.name }}</h6>
                       </div>
 
                       <div>
@@ -962,13 +962,19 @@ export default {
         }
       });
 
-      if (!isOfferExist) {
-        let products = [];
+
+
+
+      let products = [];
+
+ 
 
         offer.products.map((prod) => {
           let price = prod.prices.find(
             (ele) => ele.product_size_id == prod.pivot.product_size_id
           ).price;
+
+          
 
           products.push({
             priceObject: prod.prices.find(
@@ -982,10 +988,11 @@ export default {
               (ele2) => ele2.id == prod.pivot.product_size_id
             ).name,
 
-            qty: 1,
+            qty: prod.pivot.qty,
             type: 1,
 
             offerId: offer.id,
+            offerCount: 1,
             discount: Number(offer.discount),
             kitchen_type: this.categories.find(
               (ele2) => ele2.id == prod.product_category_id
@@ -999,14 +1006,23 @@ export default {
         });
 
         console.log(products);
+        
+        let offerPrice = 0;
+        products.forEach(ele => {
+          offerPrice += (ele.price * ele.qty)
+        })
 
+        products.forEach(ele => {
+          ele.offerPrice = offerPrice;
+        })
+
+
+      if (!isOfferExist) {
+        
         if (
           this.$store.state.orders[this.$store.state.selectedOrder].orderType.id
         ) {
-          console.log(document.querySelector("#idToScrollBottom"));
-
           this.$store.commit("AddProductsToOrder", [...products]);
-          console.log("added");
         } else {
           this.$notify.error({
             title: "خطأ!",
@@ -1020,6 +1036,9 @@ export default {
           const div = document.querySelector("#idToScrollBottom");
           div.scrollTop = div.scrollHeight;
         }, 0);
+      }else{
+        console.log('IncreaseOfferQty')
+        this.$store.commit("IncreaseOfferQty", offer)
       }
     },
     addItem(item, price) {
@@ -1077,6 +1096,12 @@ export default {
     .offer-add {
       display: block !important;
     }
+  }
+
+  .quantity{
+        padding: 5px;
+    /* border-radius: 50%; */
+    color: #FE5634 !important;
   }
 
   .offer-price {

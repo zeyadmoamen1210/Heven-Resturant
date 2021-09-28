@@ -184,7 +184,7 @@
                           </svg>
                         </div>
                         <div style="flex: 1">
-                          <h6>{{ product.name }}</h6>
+                          <h6>  <span class="quantity">{{product.pivot ? product.pivot.qty : ''}}</span>  {{ product.name }}</h6>
                         </div>
 
                         <div>
