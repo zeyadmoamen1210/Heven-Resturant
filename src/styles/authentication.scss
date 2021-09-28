@@ -1,7 +1,7 @@
 @import "_color.scss";
 @import "_font.scss";
 @font-face {
-  font-family: "Cairo";
+  font-family: "din";
   src: url("../../assets/fonts/din-next-regular.ttf");
 }
 @font-face {
@@ -9,8 +9,8 @@
   src: url("../../assets/fonts/din-next-bold.ttf");
 }
 
-$regularFont: "Cairo", sans-serif;
-$boldFont: "din-bold", sans-serif;
+$regularFont: "CairoRegular", sans-serif;
+$boldFont: "CairoBold", sans-serif;
 .authentication {
 
   .el-input__inner {

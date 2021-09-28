@@ -9,7 +9,7 @@ html {
 }
 
 @font-face {
-    font-family: "Cairo";
+    font-family: "din";
     src: url("../assets/fonts/din-next-regular.ttf");
 }
 
@@ -369,7 +369,7 @@ sans-serif;
                             .itemName {
                                 max-width: 170px;
                                 font-size: 16px;
-                                font-family: "Cairo", sans-serif, sans-serif;
+                                font-family: "CairoRegular";
                                 /* font-weight: 600; */
                                 border: 1px solid #F1F1F1;
                                 border-radius: 6px;

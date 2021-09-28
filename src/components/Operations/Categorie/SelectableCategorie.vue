@@ -36,12 +36,11 @@ export default {
 
 <style lang="scss">
 .categorie.category-component {
-  font-family: "Cairo";
+  font-family: "din";
   padding-top: 7px;
   background: #ebf9fc;
   color: #333;
   border-radius: 8px;
-  margin-right: 10px;
   padding-bottom: 10px;
   transition: all 0.5s ease;
   cursor: pointer;

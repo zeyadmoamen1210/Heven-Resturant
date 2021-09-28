@@ -1,7 +1,7 @@
 @import "_color.scss";
 @import "_font.scss";
 @font-face {
-    font-family: "Cairo";
+    font-family: "din";
     src: url("../assets/fonts/din-next-regular.ttf");
 }
 @font-face {
@@ -18,6 +18,64 @@ $boldFont : 'din-bold', sans-serif;
 
     .workbooks {
 
+        .toggle-offer-product{
+
+        }
+
+        .offers-section{
+            .el-collapse{
+                border-top: none !important;
+                border-bottom: none !important;
+                .el-collapse-item{
+                    border: none;
+                }
+                .collapse-title{
+                    width: 100% !important;
+                }
+                .el-collapse-item__header{
+                    background-color: #EBF9FC;
+                    border: none;
+                }
+                .el-collapse-item__content{
+                    padding:10px;
+                    background-color: #EBF9FC;
+                }
+                .el-collapse-item__wrap{
+                    border: none;
+                }
+                h6{
+                    margin-bottom: 0;
+                    margin-right: 13px;
+                
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    .el-button{
+                        background: #FFF;
+                        font-size: 13px;
+                        padding: 8px 12px;
+                        border: none;
+                    }
+                }
+            }
+            .offer-product{
+                padding: 5px;
+                background: #fff;
+                margin-bottom: 5px;
+                margin: 8px 10px;
+                h6{
+                    display: inline-block;
+                   
+                }
+                svg{
+                    path{
+                        fill:#FE5634 
+                    }
+                }
+                
+            }
+        }
+
 
         .selected-category{
             background: #FE5634 !important;
@@ -30,7 +88,8 @@ $boldFont : 'din-bold', sans-serif;
             font-weight: 700;
             font-size: 24px;
             text-align: right;
-
+            margin-top: 5px;
+            color: #fe5634 !important;
         }
 
         .content {

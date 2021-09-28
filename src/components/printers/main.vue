@@ -240,19 +240,20 @@
           </td>
         </tr>
 
+
+
+
+       
+
+
+
         <tr>
           <td style="background:#f7f7f7;    font-weight: bold;">
             إجمالي الفاتورة
           </td>
           <td style="width: 100px;" v-if="inVoiceDetails && inVoiceDetails.total">
             <b>{{
-              Number(inVoiceDetails.total) +
-                (inVoiceDetails.driver_cost
-                  ? Number(inVoiceDetails.driver_cost)
-                  : 0) +
-                (inVoiceDetails.restaurant_cost
-                  ? Number(inVoiceDetails.restaurant_cost)
-                  : 0)
+              (Number(inVoiceDetails.total) + (inVoiceDetails.driver_cost ? Number(inVoiceDetails.driver_cost) : 0) + (inVoiceDetails.restaurant_cost ? Number(inVoiceDetails.restaurant_cost) : 0)) 
             }}</b>
             ج.م
           </td>
@@ -260,6 +261,45 @@
             <b>{{ allOrderPrice }}</b> ج.م
           </td>
         </tr>
+
+
+
+         <tr
+          v-if="
+            inVoiceDetails &&
+              inVoiceDetails.discount > 0
+          "
+        >
+          <td style="width: 180px;background:#f7f7f7;    font-weight: bold;">
+            قيمة الخصم
+          </td>
+          <td >
+            {{
+              inVoiceDetails.discount
+            }}
+            ج.م
+          </td>
+        </tr>
+
+
+
+        <tr v-if="inVoiceDetails && inVoiceDetails.discount > 0">
+          <td style="background:#f7f7f7;    font-weight: bold;">
+            إجمالي الفاتورة بعد الخصم
+          </td>
+          <td style="width: 100px;" v-if="inVoiceDetails && inVoiceDetails.total">
+            <b>{{
+              (Number(inVoiceDetails.total) + (inVoiceDetails.driver_cost ? Number(inVoiceDetails.driver_cost) : 0) + (inVoiceDetails.restaurant_cost ? Number(inVoiceDetails.restaurant_cost) : 0)) - inVoiceDetails.discount 
+            }}</b>
+            ج.م
+          </td>
+          <td v-else >
+            <b>{{ allOrderPrice }}</b> ج.م
+          </td>
+        </tr>
+
+
+        
       </table>
 
       <div style="height: 10px;"></div>
