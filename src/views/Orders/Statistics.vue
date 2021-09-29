@@ -26,73 +26,72 @@
 
           <div class="mr-2">
             <!-- range-separator="الي" -->
-           
 
             <el-date-picker
-            @change="getMostSoldProducts"
-            :format="format"
-            :value-format="valueFormat"
-            v-model="dateRange"
-            type="datetimerange"
-            range-separator="إلي"
-            start-placeholder="بداية الفترة"
-            end-placeholder="نهاية الفترة">
-          </el-date-picker>
-
-
+              @change="getMostSoldProducts"
+              :format="format"
+              :value-format="valueFormat"
+              v-model="dateRange"
+              type="datetimerange"
+              range-separator="إلي"
+              start-placeholder="بداية الفترة"
+              end-placeholder="نهاية الفترة"
+            >
+            </el-date-picker>
           </div>
         </div>
         <div class="row">
+          <div class="col-6">
+            <el-card
+              class="box-card"
+              v-if="
+                mostSoldProducts.length > 0 &&
+                mostSoldOptions.labels.length == mostSold.length
+              "
+            >
+              <div slot="header" class="clearfix">
+                <span>المنتجات اﻷكثر مبيعاً</span>
+              </div>
 
-          <el-card class="box-card"   v-if="
-                  mostSoldProducts.length > 0 &&
-                  mostSoldOptions.labels.length == mostSold.length
-                ">
-  <div slot="header" class="clearfix">
-    <span>المنتجات اﻷكثر مبيعاً</span>
-  </div>
-
-   <apexchart
-               
+              <apexchart
                 width="380"
                 type="pie"
                 :options="mostSoldOptions"
                 :series="mostSold"
               ></apexchart>
-          <apexchart
-            v-if="mostSoldProducts.length > 0"
-            type="bar"
-            height="350"
-            :options="mostSoldBarOptions"
-            :series="mostSoldBar"
-          ></apexchart>
-  
-</el-card>
-             
-                <el-card class="box-card mr-auto"  v-if="
-                
-                ordersByTypeOptions.labels.length ==ordersByType.length
-                ">
-  <div slot="header" class="clearfix">
-    <span>المبيعات حسب انواع الطلبات</span>
-  </div>
+              <apexchart
+                v-if="mostSoldProducts.length > 0"
+                type="bar"
+                height="350"
+                :options="mostSoldBarOptions"
+                :series="mostSoldBar"
+              ></apexchart>
+            </el-card>
+          </div>
+          <div class="col-6">
+            <el-card
+              class="box-card mr-auto"
+              v-if="ordersByTypeOptions.labels.length == ordersByType.length"
+            >
+              <div slot="header" class="clearfix">
+                <span>المبيعات حسب انواع الطلبات</span>
+              </div>
 
-   <apexchart
-               
+              <apexchart
                 width="380"
                 type="pie"
                 :options="ordersByTypeOptions"
                 :series="ordersByType"
               ></apexchart>
-          <apexchart
-            v-if="ordersByType.length > 0"
-            type="bar"
-            height="350"
-            :options="ordersByTypeBarOptions"
-            :series="ordersByTypeBar"
-          ></apexchart>
-  
-</el-card>
+              <apexchart
+                v-if="ordersByType.length > 0"
+                type="bar"
+                height="350"
+                :options="ordersByTypeBarOptions"
+                :series="ordersByTypeBar"
+              ></apexchart>
+            </el-card>
+          </div>
         </div>
       </div>
     </div>
@@ -107,8 +106,8 @@ export default {
   watch: {},
   data() {
     return {
-      format:'yyyy-MM-dd HH:mm A',
-      valueFormat:'yyyy-MM-dd HH:mm:ss',
+      format: "yyyy-MM-dd HH:mm A",
+      valueFormat: "yyyy-MM-dd HH:mm:ss",
       mostSoldOptions: {
         dataLabels: {
           enabled: true,
@@ -128,7 +127,7 @@ export default {
 
         labels: [],
       },
-   ordersByTypeBarOptions: {
+      ordersByTypeBarOptions: {
         dataLabels: {
           enabled: true,
         },
@@ -141,14 +140,28 @@ export default {
           data: [],
         },
       ],
-     ordersByTypeBar: [
+      ordersByTypeBar: [
         {
           data: [],
         },
       ],
       mostSoldProducts: [],
       ordersByType: [],
-      dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
+      dateRange: localStorage.getItem("reportsInterval")
+        ? JSON.parse(localStorage.getItem("reportsInterval"))
+        : [
+            this.$moment(new Date(), "DD-MM-YYYY")
+              .locale("en")
+              .format("YYYY-MM-DD") +
+              " " +
+              "11:30:00",
+            this.$moment(new Date(), "DD-MM-YYYY")
+              .add(1, "days")
+              .locale("en")
+              .format("YYYY-MM-DD") +
+              " " +
+              "11:30:00",
+          ],
 
       driverMobile: "",
       driverName: "",
@@ -248,11 +261,12 @@ export default {
       this.getOrdersStatisticsByType();
       //   /orders?area=1&employee=1&user=1&start=2021-05-01&end=2021-06-30
       let url = `/products/most-sold?limit=5`;
-     
+
       if (this.area != "") {
         url += "&area=" + this.area;
       }
-      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+      if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
 
         url += "&start=" + this.dateRange[0];
         url += "&end=" + this.dateRange[1];
@@ -313,12 +327,13 @@ export default {
     getOrdersStatisticsByType() {
       // const loading = this.$vs.loading();
       // /orders-by-type?area=1&employee=1&user=1&start=2021-05-01&end=2021-06-01
-     let url = `/orders-by-type?limit=5`;
-     
+      let url = `/orders-by-type?limit=5`;
+
       if (this.area != "") {
         url += "&area=" + this.area;
       }
-      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+      if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
 
         url += "&start=" + this.dateRange[0];
         url += "&end=" + this.dateRange[1];
@@ -330,7 +345,7 @@ export default {
       axiosApi
         .get(url)
         .then((res) => {
-           res.data.map((type) => {
+          res.data.map((type) => {
             this.ordersByType.push(type.totalCost);
             cost.push(type.totalCost);
             typeLabels.push(type.name);
