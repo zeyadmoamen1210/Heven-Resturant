@@ -285,7 +285,7 @@
                       </div>
                       <div class="col-8" style="border: 1px solid #ebeef5">
                         <p style="margin: 10px 0px">
-                          {{ props.row.customer.phone }}
+                          {{ props.row.customer.mobile }}
                         </p>
                       </div>
                     </div>
@@ -368,6 +368,20 @@
                               "ar-EG"
                             )
                           }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="props.row.rejected_reason"
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">سبب الرفض</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.rejected_reason }}
                         </p>
                       </div>
                     </div>
