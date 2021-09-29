@@ -21,17 +21,17 @@
             </el-row>
 
             <el-date-picker
-                class="mt-3"
-                @change="getExpensesReport"
-                :format="format"
-                :value-format="valueFormat"
-                v-model="dateRange"
-                type="datetimerange"
-                range-separator="إلي"
-                start-placeholder="بداية الفترة"
-                end-placeholder="نهاية الفترة">
+              class="mt-3"
+              @change="getExpensesReport"
+              :format="format"
+              :value-format="valueFormat"
+              v-model="dateRange"
+              type="datetimerange"
+              range-separator="إلي"
+              start-placeholder="بداية الفترة"
+              end-placeholder="نهاية الفترة"
+            >
             </el-date-picker>
-
 
             <el-table
               class="mt-2"
@@ -51,7 +51,16 @@
               </el-table-column>
               <el-table-column label="تفاصيل">
                 <template slot-scope="scope">
-                  <router-link
+                  <el-button
+                    @click="
+                      goTo(
+                        `/expenses/details?category=${scope.row.expense_category_id}`
+                      )
+                    "
+                    type="primary"
+                    >عرض التفاصيل</el-button
+                  >
+                  <!-- <router-link
                     title=" تفاصيل"
                     class="btn btn-sm btn-success"
                     :to="{
@@ -61,7 +70,7 @@
                     <i class="fa fa-eye ml-1"></i>
 
                     عرض التفاصيل
-                  </router-link>
+                  </router-link> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -78,9 +87,9 @@
                 >إضافة وصف مصروف</el-button
               >
             </el-row>
-            <div class="d-flex mt-2">
+            <div class="row">
               <div
-                style="display:flex;margin:10px"
+                class="col-lg-2 col-md-4 col-sm-6"
                 v-for="item in categories"
                 :key="item.id"
               >
@@ -105,6 +114,33 @@
                 </section>
               </div>
             </div>
+            <!-- <div class="d-flex mt-2">
+              <div
+                style="display: flex; margin: 10px"
+                v-for="item in categories"
+                :key="item.id"
+              >
+                <section class="baby-blue-section">
+                  <div>
+                    <h6>{{ item.name }}</h6>
+                  </div>
+                  <div class="edit-delete">
+                    <button
+                      class="btn emp-dept-update"
+                      @click="openUpdateExpenseCategorie(item)"
+                    >
+                      <img src="@/images/Icon-feather-edit-3.svg" alt="" />
+                    </button>
+                    <button
+                      class="btn emp-dept-delete"
+                      @click="openDeleteCategory(item)"
+                    >
+                      <img src="@/images/Icon-material-delete.svg" alt="" />
+                    </button>
+                  </div>
+                </section>
+              </div>
+            </div> -->
           </el-tab-pane>
           <el-tab-pane
             v-if="!notAdmin"
@@ -125,7 +161,10 @@
               <el-button
                 style="float: right"
                 class="addNew mr-auto"
-                @click="openAddPartenerPaymentModel = true;editPartenerPayment=false;"
+                @click="
+                  openAddPartenerPaymentModel = true;
+                  editPartenerPayment = false;
+                "
                 type="primary"
                 plain
                 icon="el-icon-plus"
@@ -134,12 +173,12 @@
             </el-row>
             <div class="d-flex mt-2">
               <div
-                style="margin:10px"
+                style="margin: 10px"
                 v-for="item in parteners"
                 @click="getSelectedPartenerReport(item)"
                 :key="item.id"
               >
-                 <section class="baby-blue-section">
+                <section class="baby-blue-section">
                   <div>
                     <h6>{{ item.name }}</h6>
                   </div>
@@ -188,27 +227,66 @@
                   }}</span>
                 </template>
               </el-table-column>
-               <el-table-column width="150" label="الاجراء">
-              <template slot-scope="scope">
-                <el-row>
-                  <el-col :xl="6" :lg="6" :md="12" :sm="12">
-                  <el-popconfirm
-                    confirm-button-text="موافق"
-                    cancel-button-text="إلغاء"
-                    icon="el-icon-info"
-                    icon-color="red"
-                    title="هل تريد مسح مسحوبات الشريك؟"
-                    @confirm="deleteItem(scope)"
-                  >
-                    <div slot="reference">
-                      <el-button type="danger" icon="el-icon-delete" title="مسح" size="mini"  ></el-button>
-                    </div>
-                  </el-popconfirm>
-                  </el-col>
-                  <el-button type="primary" icon="el-icon-edit" title="تعديل" size="mini" class="mr-2"  @click.native.prevent=" editItem(scope)"></el-button>
-                </el-row>
-              </template>
-            </el-table-column>
+              <el-table-column width="150" label="الاجراء">
+                <template slot-scope="scope">
+                  <div class="row" style="justify-content: center">
+                    <el-button
+                      type="primary"
+                      icon="el-icon-edit"
+                      title="تعديل"
+                      size="mini"
+                      class="ml-2"
+                      @click.native.prevent="editItem(scope)"
+                    ></el-button>
+                    <el-popconfirm
+                      confirm-button-text="موافق"
+                      cancel-button-text="إلغاء"
+                      icon="el-icon-info"
+                      icon-color="red"
+                      title="هل تريد مسح مسحوبات الشريك؟"
+                      @confirm="deleteItem(scope)"
+                    >
+                      <div slot="reference">
+                        <el-button
+                          type="danger"
+                          icon="el-icon-delete"
+                          title="مسح"
+                          size="mini"
+                        ></el-button>
+                      </div>
+                    </el-popconfirm>
+                  </div>
+                  <!-- <el-row>
+                    <el-col :xl="6" :lg="6" :md="12" :sm="12">
+                      <el-popconfirm
+                        confirm-button-text="موافق"
+                        cancel-button-text="إلغاء"
+                        icon="el-icon-info"
+                        icon-color="red"
+                        title="هل تريد مسح مسحوبات الشريك؟"
+                        @confirm="deleteItem(scope)"
+                      >
+                        <div slot="reference">
+                          <el-button
+                            type="danger"
+                            icon="el-icon-delete"
+                            title="مسح"
+                            size="mini"
+                          ></el-button>
+                        </div>
+                      </el-popconfirm>
+                    </el-col>
+                    <el-button
+                      type="primary"
+                      icon="el-icon-edit"
+                      title="تعديل"
+                      size="mini"
+                      class="mr-2"
+                      @click.native.prevent="editItem(scope)"
+                    ></el-button>
+                  </el-row> -->
+                </template>
+              </el-table-column>
             </el-table>
           </el-tab-pane>
 
@@ -225,12 +303,8 @@
               >
             </el-row>
             <div class="d-flex mt-2">
-              <div
-                style=""
-                v-for="item in recipients"
-                :key="item.id"
-              >
-               <section class="baby-blue-section">
+              <div style="" v-for="item in recipients" :key="item.id">
+                <section class="baby-blue-section">
                   <div>
                     <h6>{{ item.name }}</h6>
                   </div>
@@ -393,14 +467,9 @@
       >
         <!-- center -->
         <template #header>
-          <span v-if="editPartenerPayment">
-            تعديل
-          </span>
-          <span v-else>
-            إضافة
-          </span>
-          <span>
-             مسحوبات للشركاء</span>
+          <span v-if="editPartenerPayment"> تعديل </span>
+          <span v-else> إضافة </span>
+          <span> مسحوبات للشركاء</span>
         </template>
 
         <el-row :gutter="10">
@@ -418,7 +487,7 @@
           </el-col>
           <el-col :xl="16" :lg="16" :md="12" :sm="12">
             <el-select
-            :disabled="editPartenerPayment"
+              :disabled="editPartenerPayment"
               searchable
               @focus="index = 0"
               class="mt-2"
@@ -450,10 +519,15 @@
           <el-button @click="openAddPartenerPaymentModel = false"
             >إلغاء</el-button
           >
-          <el-button v-if="editPartenerPayment" type="primary" @click="updatePartenerPayment"
-            >تعديل</el-button>
+          <el-button
+            v-if="editPartenerPayment"
+            type="primary"
+            @click="updatePartenerPayment"
+            >تعديل</el-button
+          >
           <el-button v-else type="primary" @click="addNewPartenerPayment"
-            >إضافة</el-button>
+            >إضافة</el-button
+          >
         </span>
       </vs-dialog>
 
@@ -527,9 +601,7 @@
     >
       <div class="con-content">
         <h6><i class="el-icon-warning-outline"></i></h6>
-        <p>
-          هل أنت متأكد من أتك تريد حذف ؟
-        </p>
+        <p>هل أنت متأكد من أتك تريد حذف ؟</p>
 
         <div class="btns d-flex justify-content-center">
           <vs-button color="#675DEC" @click="deleteCategory()">
@@ -545,14 +617,6 @@
       </div>
     </vs-dialog>
 
-
-
-
-
-
-
-
-
     <vs-dialog
       class="delete-dialog"
       width="550px"
@@ -561,26 +625,18 @@
     >
       <div class="con-content">
         <h6><i class="el-icon-warning-outline"></i></h6>
-        <p>
-          هل أنت متأكد من أتك تريد حذف ؟
-        </p>
+        <p>هل أنت متأكد من أتك تريد حذف ؟</p>
 
         <div class="btns d-flex justify-content-center">
           <vs-button color="#675DEC" @click="deletePartner()">
             تأكيد
           </vs-button>
-          <vs-button
-            color="danger"
-            @click="showDeletePartner = false"
-          >
+          <vs-button color="danger" @click="showDeletePartner = false">
             إلغاء
           </vs-button>
         </div>
       </div>
     </vs-dialog>
-
-
-
 
     <vs-dialog
       class="delete-dialog"
@@ -590,25 +646,18 @@
     >
       <div class="con-content">
         <h6><i class="el-icon-warning-outline"></i></h6>
-        <p>
-          هل أنت متأكد من أتك تريد حذف ؟
-        </p>
+        <p>هل أنت متأكد من أتك تريد حذف ؟</p>
 
         <div class="btns d-flex justify-content-center">
           <vs-button color="#675DEC" @click="deleteRecipients()">
             تأكيد
           </vs-button>
-          <vs-button
-            color="danger"
-            @click="showDeleteRecipients = false"
-          >
+          <vs-button color="danger" @click="showDeleteRecipients = false">
             إلغاء
           </vs-button>
         </div>
       </div>
     </vs-dialog>
-
-    
 
     <!-- Update category -->
     <vs-dialog v-model="updateExpenseCategorie">
@@ -637,17 +686,10 @@
       </el-form>
     </vs-dialog>
 
-
-
-
-
-
-
-
     <!-- Update recipients -->
     <vs-dialog v-model="showUpdateRecipients">
       <template #header>
-        <h4>تعديل مستلم </h4>
+        <h4>تعديل مستلم</h4>
       </template>
 
       <el-form :model="currRecipients" ref="recipients">
@@ -671,10 +713,6 @@
       </el-form>
     </vs-dialog>
 
-
-
-
-
     <!-- Update partener -->
     <vs-dialog v-model="showUpdatePartner">
       <template #header>
@@ -690,7 +728,7 @@
           <el-input v-model="currPartner.name"></el-input>
         </el-form-item>
 
-         <el-form-item
+        <el-form-item
           prop="phone"
           label="الهاتف"
           :rules="[{ required: true, message: 'الهاتف مطلوب' }]"
@@ -731,16 +769,30 @@ export default {
   },
   data() {
     return {
-      editPartenerPayment:false,
-      format:'yyyy-MM-dd HH:mm A',
-      valueFormat:'yyyy-MM-dd HH:mm:ss',
+      editPartenerPayment: false,
+      format: "yyyy-MM-dd HH:mm A",
+      valueFormat: "yyyy-MM-dd HH:mm:ss",
 
       currRecipients: {},
       showUpdateRecipients: false,
       currPartner: {},
       showUpdatePartner: false,
       currTabName: "expenses",
-     dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
+      dateRange: localStorage.getItem("reportsInterval")
+        ? JSON.parse(localStorage.getItem("reportsInterval"))
+        : [
+            this.$moment(new Date(), "DD-MM-YYYY")
+              .locale("en")
+              .format("YYYY-MM-DD") +
+              " " +
+              "11:30:00",
+            this.$moment(new Date(), "DD-MM-YYYY")
+              .add(1, "days")
+              .locale("en")
+              .format("YYYY-MM-DD") +
+              " " +
+              "11:30:00",
+          ],
       addRecipient: {},
       totalExpenses: 0,
       tableData: [],
@@ -773,7 +825,7 @@ export default {
       },
       showConfirmModelToDeleteCategory: false,
       partenerPaymentForm: {
-        id:0,
+        id: 0,
         comment: "",
         cost: "",
         partener_id: null,
@@ -797,12 +849,15 @@ export default {
   mounted() {},
 
   methods: {
-     deleteItem(scope) {
+    goTo(path) {
+      this.$router.push({ path: path });
+    },
+    deleteItem(scope) {
       const loading = this.$vs.loading();
       axiosApi
-      .delete(`parteners-payments/${scope.row.id}`)
+        .delete(`parteners-payments/${scope.row.id}`)
         .then(() => {
-                    this.getSelectedPartenerReport(null);
+          this.getSelectedPartenerReport(null);
 
           this.$notify({
             title: "تمت العملية بنجاح",
@@ -820,28 +875,31 @@ export default {
           console.log(e);
         })
         .finally(() => loading.close());
-      console.log("delete",scope.row);
+      console.log("delete", scope.row);
     },
     editItem(scope) {
       this.partenerPaymentForm = scope.row;
       this.openAddPartenerPaymentModel = true;
       this.editPartenerPayment = true;
     },
-    clearPartenerPaymentForm(){
-  this.partenerPaymentForm.id=0
-  this.partenerPaymentForm.cost=""
-          this.partenerPaymentForm.comment=""
-          this.partenerPaymentForm.partener_id= null
+    clearPartenerPaymentForm() {
+      this.partenerPaymentForm.id = 0;
+      this.partenerPaymentForm.cost = "";
+      this.partenerPaymentForm.comment = "";
+      this.partenerPaymentForm.partener_id = null;
     },
-    updatePartenerPayment(){
+    updatePartenerPayment() {
       const loading = this.$vs.loading();
-       axiosApi
-        .put(`parteners-payments/${this.partenerPaymentForm.id}`, this.partenerPaymentForm)
-        .then(()=>{
+      axiosApi
+        .put(
+          `parteners-payments/${this.partenerPaymentForm.id}`,
+          this.partenerPaymentForm
+        )
+        .then(() => {
           this.clearPartenerPaymentForm();
           this.getSelectedPartenerReport(null);
-             this.openAddPartenerPaymentModel = false;
-      this.editPartenerPayment = false;
+          this.openAddPartenerPaymentModel = false;
+          this.editPartenerPayment = false;
           this.$notify({
             title: "تمت العملية بنجاح",
             message: "تم تحديث بيانات المسحوبات بنجاح",
@@ -849,14 +907,14 @@ export default {
             duration: 1500,
           });
         })
-        .catch((e)=>{
-          if(e.response.data.code){
+        .catch((e) => {
+          if (e.response.data.code) {
             this.$notify.error({
               title: "حدث خطأ",
               message: "عفوا تأكد من عدم تكرار كود المنتج  ",
               duration: 1500,
             });
-          }else{
+          } else {
             this.$notify.error({
               title: "حدث خطأ",
               message: "عفوا تأكد من بيانات المطلوبة",
@@ -866,11 +924,11 @@ export default {
         })
         .finally(() => loading.close());
     },
-    openDeletePartner(item){
+    openDeletePartner(item) {
       this.showDeletePartner = true;
-      this.currPartner = {...item};
+      this.currPartner = { ...item };
     },
-    deletePartner(){
+    deletePartner() {
       const loading = this.$vs.loading();
       axiosApi
         .delete(`/parteners/${this.currPartner.id}`)
@@ -890,11 +948,11 @@ export default {
         })
         .finally(() => loading.close());
     },
-    openUpdatePartner(item){
+    openUpdatePartner(item) {
       this.showUpdatePartner = true;
-      this.currPartner = {...item};
+      this.currPartner = { ...item };
     },
-    deleteRecipients(){
+    deleteRecipients() {
       const loading = this.$vs.loading();
       axiosApi
         .delete(`/recipients/${this.currRecipients.id}`)
@@ -946,7 +1004,7 @@ export default {
       this.showDeleteRecipients = true;
       this.currRecipients = { ...recipients };
     },
-    submitUpdateRecipients(item){
+    submitUpdateRecipients(item) {
       this.showUpdateRecipients = true;
       this.currRecipients = { ...item };
     },
@@ -973,7 +1031,7 @@ export default {
       });
     },
 
-    submitUpdatePartner(formName){
+    submitUpdatePartner(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log("hi");
@@ -982,9 +1040,8 @@ export default {
       });
     },
 
-
-    saveUpdatePartner(){
-        const loading = this.$vs.loading();
+    saveUpdatePartner() {
+      const loading = this.$vs.loading();
       axiosApi
         .put(`/parteners/${this.currPartner.id}`, {
           name: this.currPartner.name,
@@ -1007,8 +1064,7 @@ export default {
         .finally(() => loading.close());
     },
 
-
-    saveRecipients(){
+    saveRecipients() {
       const loading = this.$vs.loading();
       axiosApi
         .put(`/recipients/${this.currRecipients.id}`, {
@@ -1104,12 +1160,17 @@ export default {
       }, 100);
     },
     getExpensesReport() {
-      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+      if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
 
         const loading = this.$vs.loading();
 
         let url = `expenses/category`;
-        if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+        if (this.dateRange != null) {
+          localStorage.setItem(
+            "reportsInterval",
+            JSON.stringify(this.dateRange)
+          );
 
           url += `?start=${this.dateRange[0]}`;
           url += `&end=${this.dateRange[1]}`;
@@ -1122,7 +1183,7 @@ export default {
           .then((response) => {
             this.tableData = response.data;
 
-            this.tableData.map(function(value) {
+            this.tableData.map(function (value) {
               vm.totalExpenses += value["cost"];
             });
           })
@@ -1146,8 +1207,7 @@ export default {
     },
 
     getCategories() {
-      let url = "/expense-categories"
-      
+      let url = "/expense-categories";
 
       axiosApi
         .get(url)
@@ -1209,7 +1269,7 @@ export default {
       axiosApi
         .post("parteners-payments", this.partenerPaymentForm)
         .then(() => {
-        this.clearPartenerPaymentForm();
+          this.clearPartenerPaymentForm();
           this.$notify({
             title: "تمت العملية بنجاح",
             message: "تم حفظ بيانات مسحوبات الشريك بنجاح",

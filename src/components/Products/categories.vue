@@ -606,11 +606,11 @@
         <p>هل أنت متأكد من أتك تريد حذف ؟</p>
 
         <div class="btns d-flex justify-content-center">
-          <vs-button color="danger" @click="showDeleteCategoryModel = false">
-            إلغاء
-          </vs-button>
           <vs-button color="#675DEC" @click="deleteCategory()">
             تأكيد
+          </vs-button>
+          <vs-button color="danger" @click="showDeleteCategoryModel = false">
+            إلغاء
           </vs-button>
         </div>
       </div>
