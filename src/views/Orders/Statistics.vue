@@ -1,6 +1,6 @@
 <template>
   <div class="receiving-orders">
-    <div class="container">
+    <div class="container-fluid">
       <div class="show-orders">
         <!-- <h6 class="text-right" style="color: #949494;font-size: 12px;">ابحث برقم الهاتف و المناطق و رقم الطلب</h6> -->
 
@@ -148,7 +148,7 @@ export default {
       ],
       mostSoldProducts: [],
       ordersByType: [],
-      dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'6:00:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'6:00:00')],
+      dateRange:localStorage.getItem('reportsInterval')?JSON.parse(localStorage.getItem('reportsInterval')): [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'11:30:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'11:30:00')],
 
       driverMobile: "",
       driverName: "",
@@ -252,7 +252,8 @@ export default {
       if (this.area != "") {
         url += "&area=" + this.area;
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "&start=" + this.dateRange[0];
         url += "&end=" + this.dateRange[1];
       }
@@ -317,7 +318,8 @@ export default {
       if (this.area != "") {
         url += "&area=" + this.area;
       }
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         url += "&start=" + this.dateRange[0];
         url += "&end=" + this.dateRange[1];
       }

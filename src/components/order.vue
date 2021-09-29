@@ -1,63 +1,43 @@
 <template>
   <div class="order">
-
-
-
-    <el-dialog
-      :visible.sync="orderSuccess"
-      width="30%">
-
+    <el-dialog :visible.sync="orderSuccess" width="30%">
       <div class="text-center">
-          <img
-            style="width: 130px"
-            src="@/images/payment_successful.gif"
-            alt=""
-          />
-        </div>
+        <img
+          style="width: 130px"
+          src="@/images/payment_successful.gif"
+          alt=""
+        />
+      </div>
       <h3 class="text-center">تم إتمام طلب الاوردر بنجاح</h3>
-      
     </el-dialog>
 
-    <el-dialog
-      :visible.sync="determinePrintersFirst"
-      width="30%">
-
+    <el-dialog :visible.sync="determinePrintersFirst" width="30%">
       <div class="d-block text-center">
         <div class="text-center">
           <img
-            style="width: 90px;margin-bottom: 10px;"
+            style="width: 90px; margin-bottom: 10px"
             src="@/assets/printer.svg"
             alt=""
           />
         </div>
         <h3 class="text-center">من فضلك حدد الطابعات علي الجهاز اولاً</h3>
       </div>
-      
     </el-dialog>
 
-    <el-dialog
-      :visible.sync="determinePrinterSettingsFirst"
-      width="30%">
-
+    <el-dialog :visible.sync="determinePrinterSettingsFirst" width="30%">
       <div class="d-block text-center">
         <div class="text-center">
           <img
-            style="width: 90px;margin-bottom: 10px;"
+            style="width: 90px; margin-bottom: 10px"
             src="@/assets/printer.svg"
             alt=""
           />
         </div>
-        <h3 class="text-center">من فضلك حدد إعدادات الطابعة من صفحة العمليات اولاًً</h3>
+        <h3 class="text-center">
+          من فضلك حدد إعدادات الطابعة من صفحة العمليات اولاًً
+        </h3>
       </div>
-      
     </el-dialog>
-
-
-    
-
-
-
-    
 
     <div class="card">
       <button @click="newTab" class="plus">
@@ -81,7 +61,7 @@
         <!-- Render Tabs, supply a unique `key` to each tab -->
         <div class="tab">
           <div class="order-type d-flex justify-content-between">
-            <div class="d-flex" style="font-size:20px">
+            <div class="d-flex" style="font-size: 20px">
               <h6 class="mt-0 mb-0">نوع الطلب /</h6>
               <h6 class="mt-0 mb-0 text-success">{{ tab.orderType.name }}</h6>
             </div>
@@ -124,30 +104,45 @@
               <div
                 v-if="
                   tab.orderType.table &&
-                    Object.keys(tab.orderType.table).length > 0
+                  Object.keys(tab.orderType.table).length > 0
                 "
               >
                 <div class="table">
                   <h6>طاولة</h6>
                   <h6>{{ tab.orderType.table.name }}</h6>
-                  <el-button
+                  <!--  <el-button
                     type="danger"
                     @click="resetOrderTable()"
                     transparent
                   >
                     <i class="el-icon-delete"></i>
-                  </el-button>
+                  </el-button> -->
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4 pr-3 d-flex"
-              ><p class="sub-heading mt-0">الاوردر</p></div>
+            <div class="col-md-4 pr-3 d-flex">
+              <!--<p class="sub-heading mt-0">الاوردر</p>-->
+            </div>
             <div class="col-md-8">
               <ul class="d-flex flex-row-reverse mt-0">
                 <li @click="saveOrderInBackend()" class="icons save">
-                  <svg style="width:15px;height:15px;margin-top:6px" xmlns="http://www.w3.org/2000/svg" id="Capa_1" enable-background="new 0 0 512.007 512.007" height="512" viewBox="0 0 512.007 512.007" width="512"><g><path d="m511.927 126.537c-.279-2.828-1.38-5.666-3.315-8.027-.747-.913 6.893 6.786-114.006-114.113-2.882-2.882-6.794-4.395-10.612-4.394-9.096 0-329.933 0-338.995 0-24.813 0-45 20.187-45 45v422c0 24.813 20.187 45 45 45h422c24.813 0 45-20.187 45-45 .001-364.186.041-339.316-.072-340.466zm-166.927-96.534v98c0 8.271-6.729 15-15 15h-19v-113zm-64 0v113h-139c-8.271 0-15-6.729-15-15v-98zm64 291h-218v-19c0-8.271 6.729-15 15-15h188c8.271 0 15 6.729 15 15zm-218 161v-131h218v131zm355-15c0 8.271-6.729 15-15 15h-92c0-19.555 0-157.708 0-180 0-24.813-20.187-45-45-45h-188c-24.813 0-45 20.187-45 45v180h-52c-8.271 0-15-6.729-15-15v-422c0-8.271 6.729-15 15-15h52v98c0 24.813 20.187 45 45 45h188c24.813 0 45-20.187 45-45v-98h2.787l104.213 104.214z"/></g></svg>
+                  <svg
+                    style="width: 15px; height: 15px; margin-top: 6px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    id="Capa_1"
+                    enable-background="new 0 0 512.007 512.007"
+                    height="512"
+                    viewBox="0 0 512.007 512.007"
+                    width="512"
+                  >
+                    <g>
+                      <path
+                        d="m511.927 126.537c-.279-2.828-1.38-5.666-3.315-8.027-.747-.913 6.893 6.786-114.006-114.113-2.882-2.882-6.794-4.395-10.612-4.394-9.096 0-329.933 0-338.995 0-24.813 0-45 20.187-45 45v422c0 24.813 20.187 45 45 45h422c24.813 0 45-20.187 45-45 .001-364.186.041-339.316-.072-340.466zm-166.927-96.534v98c0 8.271-6.729 15-15 15h-19v-113zm-64 0v113h-139c-8.271 0-15-6.729-15-15v-98zm64 291h-218v-19c0-8.271 6.729-15 15-15h188c8.271 0 15 6.729 15 15zm-218 161v-131h218v131zm355-15c0 8.271-6.729 15-15 15h-92c0-19.555 0-157.708 0-180 0-24.813-20.187-45-45-45h-188c-24.813 0-45 20.187-45 45v180h-52c-8.271 0-15-6.729-15-15v-422c0-8.271 6.729-15 15-15h52v98c0 24.813 20.187 45 45 45h188c24.813 0 45-20.187 45-45v-98h2.787l104.213 104.214z"
+                      />
+                    </g>
+                  </svg>
                   <p class="green">حفظ</p>
                 </li>
                 <li class="icons">
@@ -161,23 +156,42 @@
                     @confirm="closeTab(currentOrderIndex)"
                   >
                     <div slot="reference">
-                      <svg style="width:15px;height:15px;margin-top:6px" xmlns="http://www.w3.org/2000/svg" height="512pt" viewBox="-57 0 512 512" width="512pt"><path d="m156.371094 30.90625h85.570312v14.398438h30.902344v-16.414063c.003906-15.929687-12.949219-28.890625-28.871094-28.890625h-89.632812c-15.921875 0-28.875 12.960938-28.875 28.890625v16.414063h30.90625zm0 0"/><path d="m344.210938 167.75h-290.109376c-7.949218 0-14.207031 6.78125-13.566406 14.707031l24.253906 299.90625c1.351563 16.742188 15.316407 29.636719 32.09375 29.636719h204.542969c16.777344 0 30.742188-12.894531 32.09375-29.640625l24.253907-299.902344c.644531-7.925781-5.613282-14.707031-13.5625-14.707031zm-219.863282 312.261719c-.324218.019531-.648437.03125-.96875.03125-8.101562 0-14.902344-6.308594-15.40625-14.503907l-15.199218-246.207031c-.523438-8.519531 5.957031-15.851562 14.472656-16.375 8.488281-.515625 15.851562 5.949219 16.375 14.472657l15.195312 246.207031c.527344 8.519531-5.953125 15.847656-14.46875 16.375zm90.433594-15.421875c0 8.53125-6.917969 15.449218-15.453125 15.449218s-15.453125-6.917968-15.453125-15.449218v-246.210938c0-8.535156 6.917969-15.453125 15.453125-15.453125 8.53125 0 15.453125 6.917969 15.453125 15.453125zm90.757812-245.300782-14.511718 246.207032c-.480469 8.210937-7.292969 14.542968-15.410156 14.542968-.304688 0-.613282-.007812-.921876-.023437-8.519531-.503906-15.019531-7.816406-14.515624-16.335937l14.507812-246.210938c.5-8.519531 7.789062-15.019531 16.332031-14.515625 8.519531.5 15.019531 7.816406 14.519531 16.335937zm0 0"/><path d="m397.648438 120.0625-10.148438-30.421875c-2.675781-8.019531-10.183594-13.429687-18.640625-13.429687h-339.410156c-8.453125 0-15.964844 5.410156-18.636719 13.429687l-10.148438 30.421875c-1.957031 5.867188.589844 11.851562 5.34375 14.835938 1.9375 1.214843 4.230469 1.945312 6.75 1.945312h372.796876c2.519531 0 4.816406-.730469 6.75-1.949219 4.753906-2.984375 7.300781-8.96875 5.34375-14.832031zm0 0"/></svg>
+                      <svg
+                        style="width: 15px; height: 15px; margin-top: 6px"
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="512pt"
+                        viewBox="-57 0 512 512"
+                        width="512pt"
+                      >
+                        <path
+                          d="m156.371094 30.90625h85.570312v14.398438h30.902344v-16.414063c.003906-15.929687-12.949219-28.890625-28.871094-28.890625h-89.632812c-15.921875 0-28.875 12.960938-28.875 28.890625v16.414063h30.90625zm0 0"
+                        />
+                        <path
+                          d="m344.210938 167.75h-290.109376c-7.949218 0-14.207031 6.78125-13.566406 14.707031l24.253906 299.90625c1.351563 16.742188 15.316407 29.636719 32.09375 29.636719h204.542969c16.777344 0 30.742188-12.894531 32.09375-29.640625l24.253907-299.902344c.644531-7.925781-5.613282-14.707031-13.5625-14.707031zm-219.863282 312.261719c-.324218.019531-.648437.03125-.96875.03125-8.101562 0-14.902344-6.308594-15.40625-14.503907l-15.199218-246.207031c-.523438-8.519531 5.957031-15.851562 14.472656-16.375 8.488281-.515625 15.851562 5.949219 16.375 14.472657l15.195312 246.207031c.527344 8.519531-5.953125 15.847656-14.46875 16.375zm90.433594-15.421875c0 8.53125-6.917969 15.449218-15.453125 15.449218s-15.453125-6.917968-15.453125-15.449218v-246.210938c0-8.535156 6.917969-15.453125 15.453125-15.453125 8.53125 0 15.453125 6.917969 15.453125 15.453125zm90.757812-245.300782-14.511718 246.207032c-.480469 8.210937-7.292969 14.542968-15.410156 14.542968-.304688 0-.613282-.007812-.921876-.023437-8.519531-.503906-15.019531-7.816406-14.515624-16.335937l14.507812-246.210938c.5-8.519531 7.789062-15.019531 16.332031-14.515625 8.519531.5 15.019531 7.816406 14.519531 16.335937zm0 0"
+                        />
+                        <path
+                          d="m397.648438 120.0625-10.148438-30.421875c-2.675781-8.019531-10.183594-13.429687-18.640625-13.429687h-339.410156c-8.453125 0-15.964844 5.410156-18.636719 13.429687l-10.148438 30.421875c-1.957031 5.867188.589844 11.851562 5.34375 14.835938 1.9375 1.214843 4.230469 1.945312 6.75 1.945312h372.796876c2.519531 0 4.816406-.730469 6.75-1.949219 4.753906-2.984375 7.300781-8.96875 5.34375-14.832031zm0 0"
+                        />
+                      </svg>
                       <p class="red">حذف</p>
                     </div>
                   </el-popconfirm>
                 </li>
               </ul>
-            </div></div>
-
-          <div style="text-align: left;color: #FE5634;">
-              <img src="@/assets/alarm-clock.svg" style="width: 20px;" alt="">
-              {{preparation_time}} دقيقة
             </div>
+          </div>
+
+          <div style="text-align: left; color: #fe5634">
+            <img src="@/assets/alarm-clock.svg" style="width: 20px" alt="" />
+            {{ preparation_time }} دقيقة
+          </div>
 
           <div class="selectedItem" id="idToScrollBottom">
-            
-            <el-tabs type="border-card" :value="$store.state.ordersTab" @tab-click="handleClickOrdersTab">
-              
+            <el-tabs
+              type="border-card"
+              :value="$store.state.ordersTab"
+              @tab-click="handleClickOrdersTab"
+            >
               <el-tab-pane label="الطلبات" name="orders">
                 <table style="width: 100%">
                   <thead>
@@ -195,9 +209,9 @@
                       :key="index2"
                       class="yourOrder"
                     >
-                      <td style="width: 188px;">
+                      <td style="width: 188px">
                         <div class="item">
-                          <div v-if="item" class="itemName ">
+                          <div v-if="item" class="itemName">
                             {{ item.name }}
                           </div>
                           <p
@@ -217,6 +231,7 @@
                       <td>
                         <div class="quantity">
                           <el-input-number
+                            :disabled="item.offerId ? true : false"
                             size="mini"
                             v-model="item.qty"
                             :min="1"
@@ -250,12 +265,12 @@
               </el-tab-pane>
               <el-tab-pane
                 class="customer-info"
-                 name="clients"
+                name="clients"
                 v-if="
                   selectedOrder &&
-                    selectedOrder.orderType &&
-                    selectedOrder.orderType.id != 1 &&
-                    selectedOrder.orderType.id != 3
+                  selectedOrder.orderType &&
+                  selectedOrder.orderType.id != 1 &&
+                  selectedOrder.orderType.id != 3
                 "
                 label="بيانات العميل"
               >
@@ -263,8 +278,8 @@
                   <label
                     v-if="
                       tab.selectedCustomer &&
-                        tab.order_type_id != 4 &&
-                        tab.order_type_id != 5
+                      tab.order_type_id != 4 &&
+                      tab.order_type_id != 5
                     "
                   >
                     بحث بالهاتف
@@ -272,8 +287,8 @@
                   <el-input
                     v-if="
                       tab.selectedCustomer &&
-                        tab.order_type_id != 4 &&
-                        tab.order_type_id != 5
+                      tab.order_type_id != 4 &&
+                      tab.order_type_id != 5
                     "
                     placeholder="تليفون 1"
                     class="form-control mb-4"
@@ -313,59 +328,48 @@
                           </el-option>
                         </el-select>
                       </div>
-
-                     
                     </div>
 
-
-
-                     <div class="col-md-6">
-                        <div>
-                          <label
-                            class="mt-3 "
-                            v-if="
-                              tab.selectedCustomer && tab.order_type_id == 4
-                            "
+                    <div class="col-md-6">
+                      <div>
+                        <label
+                          class="mt-3"
+                          v-if="tab.selectedCustomer && tab.order_type_id == 4"
+                        >
+                          العاملين بالقسم
+                        </label>
+                        <el-select
+                          v-if="tab.selectedCustomer && tab.order_type_id == 4"
+                          v-model="tab.selectedCustomer.deptEmployee"
+                          size="md"
+                          filterable
+                          placeholder="العاملين بالقسم"
+                          value-key="id"
+                          clearable
+                          class="styled-select-box mb-3"
+                          @change="
+                            selectDeptEmp(tab.selectedCustomer.deptEmployee)
+                          "
+                        >
+                          <el-option
+                            v-for="(x, index) in tab.departmentEmployees
+                              .employees"
+                            :key="index"
+                            :label="x.name"
+                            :value="x"
                           >
-                            العاملين بالقسم
-                          </label>
-                          <el-select
-                            v-if="
-                              tab.selectedCustomer && tab.order_type_id == 4
-                            "
-                            v-model="tab.selectedCustomer.deptEmployee"
-                            size="md"
-                            filterable
-                            placeholder="العاملين بالقسم"
-                            value-key="id"
-                            clearable
-                            class="styled-select-box mb-3"
-                            @change="
-                              selectDeptEmp(tab.selectedCustomer.deptEmployee)
-                            "
-                          >
-                            <el-option
-                              v-for="(x,
-                              index) in tab.departmentEmployees.employees"
-                              :key="index"
-                              :label="x.name"
-                              :value="x"
-                            >
-                              {{ x.name }}
-                            </el-option>
-                          </el-select>
-                        </div>
+                            {{ x.name }}
+                          </el-option>
+                        </el-select>
                       </div>
-
-
-
+                    </div>
                   </div>
 
                   <!-- End Of employees order type => 4 -->
 
                   <!-- Start Of partners order type => 5 -->
                   <label
-                    class="mt-3 mb-3 "
+                    class="mt-3 mb-3"
                     v-if="tab.selectedCustomer && tab.order_type_id == 5"
                   >
                     الشركاء
@@ -378,7 +382,7 @@
                     placeholder="الشركاء"
                     size="md"
                     value-key="id"
-                    class="styled-select-box "
+                    class="styled-select-box"
                     @change="setSelectedCustomer(tab.selectedCustomer.partener)"
                   >
                     <el-option
@@ -393,13 +397,13 @@
 
                   <!-- End Of partners order type => 5 -->
 
-                  <form v-if="tab.selectedCustomer" action="" class=" ">
+                  <form v-if="tab.selectedCustomer" action="" class="">
                     <b-row>
                       <b-col md="12" sm="12">
                         <label class="mb-1"> رقم التليفون </label>
                         <el-input
                           placeholder="تليفون 2"
-                          class="form-control  mb-4"
+                          class="form-control mb-4"
                           v-model="tab.selectedCustomer.phone"
                         />
                       </b-col>
@@ -428,14 +432,16 @@
                                 <label> العناوين السابقة </label>
                                 <el-select
                                   filterable
-                                  @change="setSelectedAddress(tab.selectedAddress)"
+                                  @change="
+                                    setSelectedAddress(tab.selectedAddress)
+                                  "
                                   v-model="tab.selectedAddress"
                                   placeholder="إختر عنوان"
                                   class="mt-3 styled-select-box"
                                   value-key="id"
                                 >
                                   <el-option
-                                    v-for="(x) in tab.addresses"
+                                    v-for="x in tab.addresses"
                                     :key="x.id"
                                     :label="x.description"
                                     :value="x"
@@ -485,7 +491,7 @@
                                           :key="index"
                                           :label="area.name"
                                           :value="area"
-                                          v-if="area.id!=1"
+                                          v-if="area.id != 1"
                                         >
                                         </el-option>
                                       </el-select>
@@ -504,7 +510,7 @@
                               <div class="col-md-6">
                                 <label> الشارع </label>
                                 <el-input
-                                 @input.native="updateLocalStorage"
+                                  @input.native="updateLocalStorage"
                                   placeholder=" الشارع"
                                   class="address form-control"
                                   v-model="tab.selectedAddress.streat"
@@ -561,7 +567,7 @@
                                 <div class="col-md-3">
                                   <label> العمارة </label>
                                   <el-input
-                                  @input.native="updateLocalStorage"
+                                    @input.native="updateLocalStorage"
                                     placeholder=" العمارة"
                                     class="address form-control"
                                     v-model="tab.selectedAddress.building"
@@ -570,55 +576,52 @@
                               </div>
                             </div>
                             <div class="col-md-12 mt-4">
-
-
-                               <div class="row">
-                                  <div class="col-md-6">
-                                    <div>
-                                      <label> المُدن </label>
-                                      <el-select
-                                        class="styled-select-box"
-                                        v-model="tab.city"
-                                        value-key="id"
-                                        filterable
-                                        placeholder=" مدينة"
-                                        @change="setCityInAddress(tab.city)"
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div>
+                                    <label> المُدن </label>
+                                    <el-select
+                                      class="styled-select-box"
+                                      v-model="tab.city"
+                                      value-key="id"
+                                      filterable
+                                      placeholder=" مدينة"
+                                      @change="setCityInAddress(tab.city)"
+                                    >
+                                      <el-option
+                                        v-for="(city, index) in cities"
+                                        :key="index"
+                                        :label="city.name"
+                                        :value="city"
                                       >
-                                        <el-option
-                                          v-for="(city, index) in cities"
-                                          :key="index"
-                                          :label="city.name"
-                                          :value="city"
-                                        >
-                                        </el-option>
-                                      </el-select>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-6">
-                                    <div>
-                                      <label> المناطق </label>
-                                      <el-select
-                                        class="styled-select-box"
-                                        v-model="tab.selectedAddress.area"
-                                        filterable
-                                        placeholder=" المناطق"
-                                        value-key="id"
-                                        @change="setSelectedNewAddress()"
-                                      >
-                                        <el-option
-                                          v-for="(area, index) in cityAreas"
-                                          :key="index"
-                                          :label="area.name"
-                                          :value="area"
-                                          v-if="area.id!=1"
-                                        >
-                                        </el-option>
-                                      </el-select>
-                                    </div>
+                                      </el-option>
+                                    </el-select>
                                   </div>
                                 </div>
 
+                                <div class="col-md-6">
+                                  <div>
+                                    <label> المناطق </label>
+                                    <el-select
+                                      class="styled-select-box"
+                                      v-model="tab.selectedAddress.area"
+                                      filterable
+                                      placeholder=" المناطق"
+                                      value-key="id"
+                                      @change="setSelectedNewAddress()"
+                                    >
+                                      <el-option
+                                        v-for="(area, index) in cityAreas"
+                                        :key="index"
+                                        :label="area.name"
+                                        :value="area"
+                                        v-if="area.id != 1"
+                                      >
+                                      </el-option>
+                                    </el-select>
+                                  </div>
+                                </div>
+                              </div>
 
                               <!-- <select
                                 v-model="tab.selectedAddress.area"
@@ -653,9 +656,8 @@
             </el-tabs>
           </div>
 
-
           <b-row class="mt-3">
-            <b-col md="12" >
+            <b-col md="12">
               <el-input
                 type="textarea"
                 id="notes"
@@ -667,29 +669,54 @@
             </b-col>
           </b-row>
 
-
           <table class="final-calc-table mt-2">
             <tr>
               <!-- <td><b>الكميه</b></td> -->
 
-              <td v-if="tab.orderType.id != 1 && tab.orderType.id != 3 && tab.driver_cost">
+              <td
+                v-if="
+                  tab.orderType.id != 1 &&
+                  tab.orderType.id != 3 &&
+                  tab.driver_cost
+                "
+              >
                 <b>سعر التوصيل</b>
               </td>
               <td v-if="tab.total"><b>الاجمالى</b></td>
+
+              <td v-if="tab.discount"><b>الخصم</b></td>
+
+              <td v-if="tab.afterDiscounts && tab.afterDiscounts != tab.total">
+                <b>بعد الخصم</b>
+              </td>
             </tr>
 
             <tr>
               <!-- <td>{{ numOfQuantity(orders[index]) }}</td> -->
 
-              <td v-if="tab.orderType.id != 1 && tab.orderType.id != 3 && tab.driver_cost">
+              <td
+                v-if="
+                  tab.orderType.id != 1 &&
+                  tab.orderType.id != 3 &&
+                  tab.driver_cost
+                "
+              >
                 <var>
                   {{ tab.haven_cost + tab.driver_cost
                   }}<sup class="ml-1">LE</sup></var
                 >
               </td>
 
-              <td>
+              <td v-if="tab.total">
                 <var> {{ tab.total }}<sup class="ml-1">LE</sup></var>
+              </td>
+
+              <td v-if="tab.discount">
+                <var> {{ tab.discount }}<sup class="ml-1">LE</sup></var>
+              </td>
+
+              <td v-if="tab.afterDiscounts && tab.afterDiscounts != tab.total">
+                <var> {{ tab.afterDiscounts }}<sup class="ml-1">LE</sup></var>
               </td>
             </tr>
           </table>
@@ -716,7 +743,7 @@
               md="5"
               sm="8"
               class="prices"
-              style="display: flex;flex-direction: row-reverse;"
+              style="display: flex; flex-direction: row-reverse"
               v-if="product && product.prices && product.prices.length > 0"
             >
               <b-row>
@@ -774,7 +801,7 @@ export default {
   activeName: "first",
   props: {
     items: Array,
-    activeOrderTab: Boolean
+    activeOrderTab: Boolean,
   },
   data: () => ({
     printerSettings: null,
@@ -788,8 +815,8 @@ export default {
     value: "",
     printers: [],
     tab: {
-      departmentEmployees:{
-        employees:[]
+      departmentEmployees: {
+        employees: [],
       },
       date: new Date().toISOString(),
 
@@ -842,8 +869,7 @@ export default {
     form: {},
     currTab: {},
     preparation_time: "",
-    determinePrinterSettingsFirst: false
-    
+    determinePrinterSettingsFirst: false,
   }),
 
   created() {
@@ -854,13 +880,9 @@ export default {
     this.getEmployeeDepartments();
     this.getPartenars();
     this.getPreparationTime();
-    
   },
   watch: {
     // when toggle between ( new address and old address ) i will reset selected address
-    
-
-
   },
   mounted() {
     if (localStorage.getItem("HevenOrders")) {
@@ -914,92 +936,91 @@ export default {
   },
 
   methods: {
-    getPreparationTime(){
-        axiosApi.get(`/settings`).then(res => {
-          this.preparation_time = res.data.preparation_time
-        })
+    getPreparationTime() {
+      axiosApi.get(`/settings`).then((res) => {
+        this.preparation_time = res.data.preparation_time;
+      });
     },
-    calcTotal(){
+    calcTotal() {
       this.$store.commit("calcPrice");
     },
-    ResetSelectedAddress(){
+    ResetSelectedAddress() {
       console.log("Reset Selected Address");
 
       this.tab.selectedAddress = {
-        area: {}
+        area: {},
       };
 
       this.tab.city = {};
 
-      
       this.updateLocalStorage();
-
     },
-    updateLocalStorage()
-    {
+    updateLocalStorage() {
       this.$store.commit("updateOrder", this.tab);
-      
+
       this.$store.commit("calcPrice");
     },
 
-    setSelectedNewAddress(){
+    setSelectedNewAddress() {
       this.tab.selectedAddress.area_id = this.tab.selectedAddress.area.id;
       this.$store.commit("updateOrder", this.tab);
       this.$store.commit("calcPrice");
-      
-    },  
-
-
-    getEmployeeDepartments(){
-      const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
-      axiosApi.get(`/departments`).then(res => {
-        this.$store.commit("setEmployeeDepts" , res.data)
-      }).finally(() => loading.close());
     },
 
-    getPartenars(){
+    getEmployeeDepartments() {
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
-      axiosApi.get(`/parteners`).then(res => {
-        this.$store.commit("setPartenars" , res.data)
-      }).finally(() => loading.close());
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
+      axiosApi
+        .get(`/departments`)
+        .then((res) => {
+          this.$store.commit("setEmployeeDepts", res.data);
+        })
+        .finally(() => loading.close());
     },
 
+    getPartenars() {
+      const loading = this.$loading({
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
+      axiosApi
+        .get(`/parteners`)
+        .then((res) => {
+          this.$store.commit("setPartenars", res.data);
+        })
+        .finally(() => loading.close());
+    },
 
-    setSelectedAddress(address){
-      console.log(address)
+    setSelectedAddress(address) {
+      console.log(address);
       this.updateLocalStorage();
     },
 
     handleClickOrdersTab(tab, event) {
       console.log(tab, event);
       // tab.name == 'clients'
-      if(tab.name == 'clients'){
+      if (tab.name == "clients") {
         this.$store.commit("setOrdersTabActive", false);
-      }else if (tab.name == 'orders'){
+      } else if (tab.name == "orders") {
         this.$store.commit("setOrdersTabActive", true);
-
       }
     },
     getCities() {
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .get(`/cities`)
         .then((res) => {
@@ -1010,29 +1031,31 @@ export default {
     setCityInAddress(city) {
       this.tab.selectedAddress.area = {};
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .get(`/cities/${city.id}`)
         .then((res) => {
-          if (this.tab.order_type_id != 4 && this.tab.order_type_id != 5 && res.data.areas.findIndex((ele) => ele.id === 1) > -1 ){
+          if (
+            this.tab.order_type_id != 4 &&
+            this.tab.order_type_id != 5 &&
+            res.data.areas.findIndex((ele) => ele.id === 1) > -1
+          ) {
             res.data.areas.splice(
-              res.data.areas.findIndex((ele) => ele.id === 1)
-              ,
+              res.data.areas.findIndex((ele) => ele.id === 1),
               1
             );
           }
-            
 
           this.cityAreas = res.data.areas;
         })
         .finally(loading.close());
 
-        this.updateLocalStorage();
+      this.updateLocalStorage();
     },
     selectDeptEmp(emp) {
       if (!emp) {
@@ -1040,28 +1063,23 @@ export default {
       }
 
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .get(`/customers/${emp.customer_id}`)
         .then((res) => {
-  
-
           this.tab.selectedCustomer = res.data;
-          if(!this.tab.selectedCustomer.phone){
-            this.tab.selectedCustomer.phone = " "
+          if (!this.tab.selectedCustomer.phone) {
+            this.tab.selectedCustomer.phone = " ";
           }
 
           this.tab.selectedCustomer.deptEmployee = emp;
 
-          
-            this.tab.addresses = res.data.addresses;
-
-          
+          this.tab.addresses = res.data.addresses;
 
           this.tab.newUser = false;
 
@@ -1076,21 +1094,21 @@ export default {
           if (err && err.response.status == 404) {
             this.tab.newUser = true;
 
-            this.tab.selectedAddress = {area: {}};
+            this.tab.selectedAddress = { area: {} };
             this.tab.addresses = [];
             this.tab.selectedCustomer = {
               id: emp.customer_id,
               mobile: this.tab.selectedCustomer.mobile,
               deptEmployee: emp,
               name: emp.name,
-              phone:""
+              phone: "",
             };
           }
         })
         .finally(() => loading.close());
 
       this.tab.selectedCustomer.deptEmployee = emp;
-     this.updateLocalStorage()
+      this.updateLocalStorage();
     },
 
     setSelectedCustomer(partner) {
@@ -1099,27 +1117,22 @@ export default {
       }
 
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .get(`/customers/${partner.customer_id}`)
         .then((res) => {
-       
-
           this.tab.selectedCustomer = res.data;
-          if(!this.tab.selectedCustomer.phone){
-            this.tab.selectedCustomer.phone = " "
+          if (!this.tab.selectedCustomer.phone) {
+            this.tab.selectedCustomer.phone = " ";
           }
           this.tab.selectedCustomer.partener = partner;
 
           this.tab.addresses = res.data.addresses;
-
-
-          
 
           this.tab.newUser = false;
 
@@ -1134,46 +1147,48 @@ export default {
           if (err && err.response.status == 404) {
             this.tab.newUser = true;
 
-            this.tab.selectedAddress = {area: {}};
+            this.tab.selectedAddress = { area: {} };
             this.tab.addresses = [];
             this.tab.selectedCustomer = {
               id: partner.customer_id,
               mobile: this.tab.selectedCustomer.mobile,
               partener: partner,
               name: partner.name,
-              phone:""
+              phone: "",
             };
           }
         })
         .finally(() => loading.close());
 
       this.tab.selectedCustomer.partener = partner;
-      this.updateLocalStorage()
+      this.updateLocalStorage();
     },
 
     getdeptEmployee(emp) {
-      this.tab.selectedAddress = {area: {}};
+      this.tab.selectedAddress = { area: {} };
       this.tab.selectedCustomer = {
-        phone:""
+        phone: "",
       };
       if (!emp) {
         return;
       }
       console.log(emp);
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .get(`/departments/${emp.id}`)
         .then((res) => {
           if (res.data) {
-            let ind = res.data.employees.findIndex((ele) => ele.customer_id === 0);
-            if(ind > -1){
-              res.data.employees.splice(ind,1);
+            let ind = res.data.employees.findIndex(
+              (ele) => ele.customer_id === 0
+            );
+            if (ind > -1) {
+              res.data.employees.splice(ind, 1);
             }
           }
 
@@ -1183,26 +1198,26 @@ export default {
         })
         .finally(() => loading.close());
 
-        this.updateLocalStorage()
+      this.updateLocalStorage();
     },
 
     changeCurrentOrder(index) {
       // this.$store.commit("updateOrder", this.tab);
 
       // this.currentOrderIndex = index;
-      
+
       this.$store.commit("UpdateOrderTab", index);
       this.tab = this.orders[index];
     },
 
     cancelReservationTable(table) {
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .put(`/tables/${table.id}`, { status: 1 })
         .then((res) => {
@@ -1224,12 +1239,12 @@ export default {
     },
     reservationTable(table) {
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .put(`/tables/${table.id}`, { status: 3 })
         .then((res) => {
@@ -1253,9 +1268,7 @@ export default {
     },
 
     getTableCheck(table) {
-
-      if(!this.printers || this.printers.length == 0){
-
+      if (!this.printers || this.printers.length == 0) {
         this.determinePrintersFirst = true;
 
         // setTimeout(() => {
@@ -1265,15 +1278,14 @@ export default {
         return;
       }
 
-      
       console.log(table);
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .get(`/tables/${table.id}/check`)
         .then((res) => {
@@ -1308,24 +1320,18 @@ export default {
       this.$store.commit("ResetOrderTable");
     },
     getAllPrinters() {
+      if (JSON.parse(localStorage.getItem("printers"))) {
+        let printers = JSON.parse(localStorage.getItem("printers"));
 
-      
-      if( JSON.parse(localStorage.getItem("printers")) ){
-          let printers = JSON.parse(localStorage.getItem("printers"));
-      
-
-          if(printers.findIndex(ele => !ele.devicePrinter) > -1){
-            console.log("printer hasn't device printer")
-            this.printers = [];
-            return;
-          }
+        if (printers.findIndex((ele) => !ele.devicePrinter) > -1) {
+          console.log("printer hasn't device printer");
+          this.printers = [];
+          return;
+        }
       }
 
       this.printers = JSON.parse(localStorage.getItem("printers"));
-      console.log("printer has device printer")
-
-      
-
+      console.log("printer has device printer");
     },
     getAllCategories() {
       axiosApi.get(`/product-categories`).then((res) => {
@@ -1416,27 +1422,29 @@ export default {
       return true;
     },
     saveOrderInBackend() {
-
-      if(localStorage.getItem("printerSettings")){
-        this.printerSettings = JSON.parse(localStorage.getItem("printerSettings"));
+      if (localStorage.getItem("printerSettings")) {
+        this.printerSettings = JSON.parse(
+          localStorage.getItem("printerSettings")
+        );
       }
 
+      if (localStorage.getItem("printerSettings")) {
+        this.printerSettings = JSON.parse(
+          localStorage.getItem("printerSettings")
+        );
+      }
 
-
-      if(!this.printers || this.printers.length == 0){
-
+      if (!this.printers || this.printers.length == 0) {
         this.determinePrintersFirst = true;
-
 
         return;
       }
 
-      if(!this.printerSettings){
+      if (!this.printerSettings) {
         this.determinePrinterSettingsFirst = true;
         return;
       }
 
-      
       // if validate function return false function will destroyed
 
       this.$store.commit("updateOrder", this.tab);
@@ -1456,7 +1464,7 @@ export default {
           area_id: 1,
           description: "port said egypt",
           id: 1,
-          area: {}
+          area: {},
         };
       }
 
@@ -1465,26 +1473,20 @@ export default {
       }
 
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
 
-
-      if(!this.tab.selectedCustomer.phone){
-        this.tab.selectedCustomer.phone = ""
+      if (!this.tab.selectedCustomer.phone) {
+        this.tab.selectedCustomer.phone = "";
       }
 
-
-
       // if((this.tab.selectedAddress.building && this.tab.selectedAddress.flat && this.tab.selectedAddress.streat) && !this.tab.selectedAddress.description){
-      //   this.tab.selectedAddress.description = 
+      //   this.tab.selectedAddress.description =
       // }
-
-      
-
 
       axiosApi
         .post(`/orders`, this.tab)
@@ -1507,7 +1509,10 @@ export default {
               invoice: res.data.invoice_details,
               kitchenPrinters: true,
             });
-          } else if ((!res.data.invoice || !res.data.invoice_details) && res.data.table_id ) {
+          } else if (
+            (!res.data.invoice || !res.data.invoice_details) &&
+            res.data.table_id
+          ) {
             res.data.kitchen_invoice.forEach((ele) => {
               products.push(ele);
             });
@@ -1539,9 +1544,6 @@ export default {
     },
 
     printInvoiceDetails(products) {
-
-      
-      
       let productsCategories = [];
       for (let i = 0; i < products.length; i++) {
         productsCategories.push(products[i].product_category_id);
@@ -1583,12 +1585,12 @@ export default {
 
     getAreas() {
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
       axiosApi
         .get("areas")
         .then((res) => {
@@ -1609,12 +1611,12 @@ export default {
       }
 
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
 
       let query = `/customers-search?`;
 
@@ -1635,22 +1637,14 @@ export default {
       axiosApi
         .get(query)
         .then((res) => {
-          
-
           this.tab.selectedCustomer = res.data;
-          if(!this.tab.selectedCustomer.phone){
-            this.tab.selectedCustomer.phone = " "
+          if (!this.tab.selectedCustomer.phone) {
+            this.tab.selectedCustomer.phone = " ";
           }
-            this.tab.addresses = res.data.addresses;
+          this.tab.addresses = res.data.addresses;
 
-         
+          console.log("addresses", this.tab.addresses);
 
-
-          console.log("addresses",this.tab.addresses)
-
-          
-
-          
           this.tab.newUser = false;
 
           this.tab.selectFromOldAddresses = true;
@@ -1663,23 +1657,24 @@ export default {
 
           if (err && err.response.status == 404) {
             this.tab.newUser = true;
-            this.tab.selectedAddress = {area:{}};
+            this.tab.selectedAddress = { area: {} };
             this.tab.addresses = [];
             this.tab.selectedCustomer = {
               id: 0,
               mobile: this.tab.selectedCustomer.mobile,
-              phone:""
+              phone: "",
             };
           }
         })
         .finally(() => loading.close());
 
-      this.updateLocalStorage()
+      this.updateLocalStorage();
     },
     deleteProduct(index) {
       this.$store.commit(`deleteProductInOrder`, index);
       this.$store.commit("updateOrder", this.tab);
       this.$store.commit("calcPrice");
+      // this.$store.commit("calcDiscounts");
     },
     addAdditionToOrder(product, price) {
       // console.log(price);
@@ -1709,12 +1704,12 @@ export default {
     addAdditions(item, index) {
       this.addAdditionsPopup = true;
       const loading = this.$loading({
-          lock: true,
-          text: false,
-          spinner: 'el-icon-loading',
-          background: 'rgba(255,255,255,.7)',
-          customClass: 'fullscreen-loading'
-        });
+        lock: true,
+        text: false,
+        spinner: "el-icon-loading",
+        background: "rgba(255,255,255,.7)",
+        customClass: "fullscreen-loading",
+      });
 
       this.selectedProductToAddAdditions = item;
       this.selectedProductToAddAdditions.index = index;
@@ -1803,17 +1798,15 @@ export default {
   }
 }
 
-
-
 .order {
   min-height: 100vh;
   margin-top: 20px;
   .card-body {
     padding-top: 0;
   }
-  .el-tabs__nav{
-  float: right !important;
-}
+  .el-tabs__nav {
+    float: right !important;
+  }
   .order-type {
     .table-btn {
       margin-left: 14px;
@@ -1861,13 +1854,18 @@ export default {
       margin: 0 auto;
       margin-bottom: 13px;
 
-      padding: 8px 17px 1px;
+      display: flex;
+      flex-direction: column;
+      width: 50px;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+
       margin-bottom: 0;
       h6 {
         color: #fe5634 !important;
         text-align: center;
         margin: 0;
-        margin-bottom: 10px;
 
         &:first-of-type {
           font-weight: bold;
@@ -1975,13 +1973,13 @@ export default {
   border-radius: 5px;
 }
 
-#idToScrollBottom{
-  table{
-    td, tr{
+#idToScrollBottom {
+  table {
+    td,
+    tr {
       border: 1px solid #d8d8d8;
       text-align: center;
     }
   }
 }
-
 </style>

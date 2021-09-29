@@ -20,7 +20,7 @@
         <path d="M330 306 c-5 -15 -10 -35 -9 -44 0 -9 7 1 15 22 8 22 12 41 9 44 -2 3 -9 -7 -15 -22z"/>
         </g>
         </svg>
-        مطبخ بستا</h6>
+        مطبخ باستا</h6>
 
       
 
@@ -40,12 +40,7 @@
           </td>
         </tr>
 
-        <tr v-if="notes">
-          <td width="35%">ملاحظات</td>
-          <td>
-            <b>{{ notes }}</b>
-          </td>
-        </tr>
+        
 
 
 
@@ -54,6 +49,7 @@
           <td width="35%">رقم الطلب</td>
           <td>
             <b>{{ inVoiceDetails.order }}</b>
+            <!-- <b>50</b> -->
           </td>
         </tr>
 
@@ -77,18 +73,13 @@
         </tr>
 
 
-        <tr v-if="inVoiceDetails.notes">
-          <td width="35%">ملاحظات</td>
-          <td>
-            <b>{{ inVoiceDetails.notes }}</b>
-          </td>
-        </tr>
+        
 
 
       </table>
 
-      <div style="height: 10px;"></div>
-
+      <div style="height: 10px;     border-top: 1px solid #000;
+    margin-top: 10px;"></div>
       <table class="custom-table">
         <thead>
           <tr>
@@ -101,11 +92,41 @@
         <tbody>
           <tr v-for="(x, index) in productsToPrint" :key="index">
             <!-- <td>{{ x.id }}</td> -->
-            <td>{{ x.qty || x.pivot.qty }}</td>
+            <td >{{ x.qty || x.pivot.qty }}</td>
             <td>{{ x.name || x.pivot.name }}</td>
             <td>{{ x.size || x.pivot.size }}</td>
           </tr>
         </tbody>
+      </table>
+
+     <div v-if="inVoiceDetails.notes" style="height: 10px;      border-top: 1px solid #000;
+    margin-top: 10px;"></div>
+      <table class="custom-table">
+        <template  v-if="notes">
+      
+          <tr>
+            <td width="35%">ملاحظات</td>
+            
+          </tr>
+          <tr>
+            <td>
+              <b>{{ notes }}</b>
+            </td>
+          </tr>
+        </template>
+
+        <template v-if="inVoiceDetails.notes">
+          <tr >
+            <td width="35%">ملاحظات</td>
+          </tr>
+          <tr>
+            <td>
+              <b>{{ inVoiceDetails.notes }}</b>
+            </td>
+          </tr>
+        </template>
+
+
       </table>
     </div>
   </div>
@@ -120,16 +141,16 @@ export default {
 <style scoped lang="scss">
 
 .custom-table{
-  border: 1px solid #000 !important;
-    margin: 5px 0px !important;
-    border-radius: 5px !important;
-    width: 100%;
-    border-collapse: collapse;
+      border: none !important;
+    /* border-bottom: 1px solid #000 !important; */
     text-align: center;
+    font-size: 12px;
+    font-family: "CairoBold";
     td{
-      border: 1px solid #000 !important;
+      border: none !important;
+      // border-bottom: 1px solsid #000 !important;
       text-align: center;
-      font-size: 12px;
+          font-size: 12px;
     font-family: "CairoBold";
     }
 }

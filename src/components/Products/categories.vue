@@ -1,50 +1,83 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container-fluid">
       <div class="categories-selection">
-        <h6>التصنيفات</h6>
-        <div class="addNewCategory">
-          <el-button
-            @click="openAddCategory()"
-            type="primary"
-            plain
-            icon="el-icon-plus"
-          >
-            إضافة نوع</el-button
-          >
-        </div>
-
-        <swiper class="swiper" :options="swiperOptionBestSeller">
-          <swiper-slide v-for="category in categories" :key="category.id">
-            <Category
-              :class="{
-                'selected-category': category.id == selectedCategory.id,
-              }"
-              @click.native="selectCategory(category)"
-              :categorie="category"
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>التصنيفات</span>
+            <el-button style="float: left; padding: 3px 0" type="text">
+              <div class="addNewCategory">
+                <el-button
+                  @click="openAddCategory()"
+                  type="primary"
+                  plain
+                  icon="el-icon-plus"
+                >
+                  إضافة نوع</el-button
+                >
+              </div></el-button
             >
+          </div>
 
-              <div slot="edit-delete"> 
-                <button
-                  class="btn emp-dept-update"
-                  @click.stop="openUpdateCategoryModel(category)"
-                >
-                  <i class="el-icon-edit"></i>
-                </button>
+          <swiper class="swiper" :options="swiperOptionBestSeller">
+            <swiper-slide v-for="category in categories" :key="category.id">
+              <Category
+                :class="{
+                  'selected-category': category.id == selectedCategory.id,
+                }"
+                @click.native="selectCategory(category)"
+                :categorie="category"
+              >
+                <div slot="edit-delete">
+                  <!-- class="btn emp-dept-update" -->
+                  <div class="d-flex justify-content-center">
+                    <el-button
+                      class="mr-2"
+                      style="padding: 10px"
+                      @click.stop="openUpdateCategoryModel(category)"
+                    >
+                      <i class="el-icon-edit"></i>
+                    </el-button>
 
-                <button
-                  class="btn emp-dept-delete"
-                  @click.stop="handleDeleteEmployeeDept(category)"
-                >
-                  <i class="el-icon-delete-solid"></i>
-                </button>
-              </div>
+                    <!-- class="btn emp-dept-delete" -->
+                    <!--    <el-popconfirm
+                      class="mr-auto"
+                      confirm-button-text="موافق"
+                      cancel-button-text="إلغاء"
+                      icon="el-icon-info"
+                      icon-color="red"
+                      :title="'هل تريد إلغاء الطلب ؟'"
+                      @confirm="deleteCategory()"
+                    >
+                      <div slot="reference">
+                        <el-button
+                          type="danger"
+                          plain
+                          style="padding: 10px"
+                          class="mr-1"
+                          @click.stop="handleDeleteEmployeeDept(category)"
+                        >
+                          <i class="el-icon-delete-solid"></i>
+                        </el-button>
+                      </div>
+                    </el-popconfirm> -->
+                    <el-button
+                      type="danger"
+                      plain
+                      style="padding: 10px"
+                      class="mr-1"
+                      @click.stop="handleDeleteEmployeeDept(category)"
+                    >
+                      <i class="el-icon-delete-solid"></i>
+                    </el-button>
+                  </div>
+                </div>
+              </Category>
+            </swiper-slide>
 
-            </Category>
-          </swiper-slide>
-
-          <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
+            <div class="swiper-pagination" slot="pagination"></div>
+          </swiper>
+        </el-card>
 
         <div
           class="products"
@@ -100,9 +133,7 @@
                             ).price
                           }}
                         </div>
-                        <div v-else class="price">
-                          -
-                        </div>
+                        <div v-else class="price">-</div>
 
                         <div
                           v-if="
@@ -118,9 +149,7 @@
                             ).price
                           }}
                         </div>
-                        <div v-else class="price">
-                          -
-                        </div>
+                        <div v-else class="price">-</div>
 
                         <div
                           v-if="
@@ -136,15 +165,13 @@
                             ).price
                           }}
                         </div>
-                        <div v-else class="price">
-                          -
-                        </div>
+                        <div v-else class="price">-</div>
                       </div>
                       <b-col md="3">
                         <el-button
                           @click.native="handleUpdateProduct(product)"
                           type="primary"
-                          style=" margin:2px;   padding: 3px;"
+                          style="margin: 2px; padding: 3px"
                           plain
                         >
                           <i class="el-icon-edit"></i>
@@ -152,7 +179,7 @@
                         <el-button
                           @click="handleDeleteProduct(product)"
                           type="danger"
-                          style=" margin:2px;   padding: 3px;"
+                          style="margin: 2px; padding: 3px"
                           plain
                         >
                           <i class="el-icon-delete"></i>
@@ -174,16 +201,15 @@
                 :sizes="sizes"
                 :selectedCategory="selectedCategory"
               />
-             
 
-               <EditProduct
-                  @successProductUpdated="successUpdated(1)"
-                  v-else-if="operationStatus == 'update'"
-                  @changeOperationStatus="changeOperationStatus"
-                  :product="currProduct"
-                  :sizes="sizes"
-                  :selectedCategory="selectedCategory"
-                />
+              <EditProduct
+                @successProductUpdated="successUpdated(1)"
+                v-else-if="operationStatus == 'update'"
+                @changeOperationStatus="changeOperationStatus"
+                :product="currProduct"
+                :sizes="sizes"
+                :selectedCategory="selectedCategory"
+              />
 
               <div class="row">
                 <div
@@ -193,70 +219,61 @@
                 >
                   <div class="d-flex meunItem">
                     <div class="name">{{ product.name }}</div>
-                    <div
-                      class="price-circle d-flex"
-                      
-                    >
+                    <div class="price-circle d-flex">
                       <div
-                          v-if="
-                            product.prices.find(
-                              (ele) => ele.product_size_id == sizes[0].id
-                            )
-                          "
-                          class="price"
-                        >
-                          {{
-                            product.prices.find(
-                              (ele) => ele.product_size_id == sizes[0].id
-                            ).price
-                          }}
-                        </div>
-                        <div v-else class="price">
-                          -
-                        </div>
+                        v-if="
+                          product.prices.find(
+                            (ele) => ele.product_size_id == sizes[0].id
+                          )
+                        "
+                        class="price"
+                      >
+                        {{
+                          product.prices.find(
+                            (ele) => ele.product_size_id == sizes[0].id
+                          ).price
+                        }}
+                      </div>
+                      <div v-else class="price">-</div>
 
-                        <div
-                          v-if="
-                            product.prices.find(
-                              (ele) => ele.product_size_id == sizes[1].id
-                            )
-                          "
-                          class="price"
-                        >
-                          {{
-                            product.prices.find(
-                              (ele) => ele.product_size_id == sizes[1].id
-                            ).price
-                          }}
-                        </div>
-                        <div v-else class="price">
-                          -
-                        </div>
+                      <div
+                        v-if="
+                          product.prices.find(
+                            (ele) => ele.product_size_id == sizes[1].id
+                          )
+                        "
+                        class="price"
+                      >
+                        {{
+                          product.prices.find(
+                            (ele) => ele.product_size_id == sizes[1].id
+                          ).price
+                        }}
+                      </div>
+                      <div v-else class="price">-</div>
 
-                        <div
-                          v-if="
-                            product.prices.find(
-                              (ele) => ele.product_size_id == sizes[2].id
-                            )
-                          "
-                          class="price"
-                        >
-                          {{
-                            product.prices.find(
-                              (ele) => ele.product_size_id == sizes[2].id
-                            ).price
-                          }}
-                        </div>
-                        <div v-else class="price">
-                          -
-                        </div>
+                      <div
+                        v-if="
+                          product.prices.find(
+                            (ele) => ele.product_size_id == sizes[2].id
+                          )
+                        "
+                        class="price"
+                      >
+                        {{
+                          product.prices.find(
+                            (ele) => ele.product_size_id == sizes[2].id
+                          ).price
+                        }}
+                      </div>
+                      <div v-else class="price">-</div>
                     </div>
 
                     <div class="operations">
                       <el-button
                         @click.native="handleUpdateProduct(product)"
                         type="primary"
-                        style=" margin:2px;   padding: 3px;"
+                        style="margin: 2px; padding: 3px"
                         plain
                       >
                         <i class="el-icon-edit"></i>
@@ -264,7 +281,7 @@
                       <el-button
                         @click="handleDeleteProduct(product)"
                         type="danger"
-                        style=" margin:2px;   padding: 3px;"
+                        style="margin: 2px; padding: 3px"
                         plain
                       >
                         <i class="el-icon-delete"></i>
@@ -279,59 +296,37 @@
       </div>
     </div>
 
-    
+    <vs-dialog
+      class="delete-dialog"
+      width="550px"
+      not-center
+      v-model="confirmDeleteProduct"
+    >
+      <div class="con-content">
+        <h6><i class="el-icon-warning-outline"></i></h6>
+        <p class="mb-3">هل أنت متأكد من أتك تريد حذف ؟</p>
+        <span class="text-danger d-block"> {{ currProduct.name }} </span>
 
-
-
-    <vs-dialog class="delete-dialog" width="550px" not-center v-model="confirmDeleteProduct">
-        
-
-
-        <div class="con-content">
-            <h6> <i class="el-icon-warning-outline"></i> </h6>
-          <p class="mb-3">
-            هل أنت متأكد من أتك تريد حذف ؟
-          </p>
-          <span class="text-danger d-block"> {{ currProduct.name }} </span>
-
-
-          <div class="btns d-flex justify-content-center">
-              <vs-button color="danger" @click="confirmDeleteProduct=false" >
-              إلغاء
-                </vs-button>
-              <vs-button color="#675DEC" @click="removeProduct()">
-                تأكيد
-                </vs-button>
-              
-                
-          </div>
-
+        <div class="btns d-flex justify-content-center">
+          <vs-button color="danger" @click="confirmDeleteProduct = false">
+            إلغاء
+          </vs-button>
+          <vs-button color="#675DEC" @click="removeProduct()">
+            تأكيد
+          </vs-button>
         </div>
+      </div>
+    </vs-dialog>
 
-      
-      </vs-dialog>
-
-
-
-
-
-
-
-     <!-- Model To Add Category -->
+    <!-- Model To Add Category -->
 
     <vs-dialog class="add-category" width="300" v-model="addCategoryModel">
       <template #header>
-        <h4 class="not-margin">
-          إضافة قسم جديد
-        </h4>
+        <h4 class="not-margin">إضافة قسم جديد</h4>
       </template>
 
       <div class="con-form">
-
-
-
         <el-form :model="add" status-icon ref="add" class="demo-ruleForm">
-
           <el-form-item
             prop="name"
             label="أسم القسم"
@@ -342,7 +337,6 @@
             <el-input placeholder="الاسم " v-model="add.name"></el-input>
           </el-form-item>
 
-
           <el-form-item
             prop="printer_id"
             label="إختر طابعة للقسم"
@@ -350,7 +344,12 @@
               { required: true, message: 'اسم الطابعة مطلوب', trigger: 'blur' },
             ]"
           >
-            <el-select filterable v-model="add.printer_id" value-key="id" placeholder="طابعة القسم">
+            <el-select
+              filterable
+              v-model="add.printer_id"
+              value-key="id"
+              placeholder="طابعة القسم"
+            >
               <el-option
                 v-for="printer in printers"
                 :key="printer.id"
@@ -361,16 +360,23 @@
             </el-select>
           </el-form-item>
 
-
-
           <el-form-item
             prop="kitchen_type"
             label="نوع المطبخ"
             :rules="[
-              { required: true, message: 'تحديد نوع المطبخ مطلوب', trigger: 'blur' },
+              {
+                required: true,
+                message: 'تحديد نوع المطبخ مطلوب',
+                trigger: 'blur',
+              },
             ]"
           >
-            <el-select filterable v-model="add.kitchen_type" value-key="val" placeholder=" نوع مطبخ للقسم">
+            <el-select
+              filterable
+              v-model="add.kitchen_type"
+              value-key="val"
+              placeholder=" نوع مطبخ للقسم"
+            >
               <el-option
                 v-for="kitchen in kitchens"
                 :key="kitchen.val"
@@ -381,48 +387,37 @@
             </el-select>
           </el-form-item>
 
-
           <el-form-item label="أضف ايقون للقسم">
-
-              <el-upload
-                class="avatar-uploader"
-                list-type="picture-card"
-                action="#"
-                :show-file-list="true"
-                :auto-upload="false"
-                :on-change="handlePictureCardPreview"
-                :on-preview="handlePreview"
-                :limit="1"
-                :on-remove="handleRemove"
-              >
-                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-
+            <el-upload
+              class="avatar-uploader"
+              list-type="picture-card"
+              action="#"
+              :show-file-list="true"
+              :auto-upload="false"
+              :on-change="handlePictureCardPreview"
+              :on-preview="handlePreview"
+              :limit="1"
+              :on-remove="handleRemove"
+            >
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
           </el-form-item>
-
 
           <el-form-item>
             <div class="footer-dialog">
-              <el-button type="primary" plain block @click="validateAddCategory('add')">
+              <el-button
+                type="primary"
+                plain
+                block
+                @click="validateAddCategory('add')"
+              >
                 إضافة
               </el-button>
             </div>
           </el-form-item>
-
-
         </el-form>
-        
-        
-
-        
-
-       
-      
       </div>
-
-      
-
     </vs-dialog>
 
     <!-- <vs-dialog class="add-category" v-model="addCategoryModel">
@@ -488,24 +483,20 @@
       </template>
     </vs-dialog> -->
 
-
-
-
     <!-- Model To Update Category -->
 
     <vs-dialog class="add-category" width="300" v-model="updateCategoryModel">
       <template #header>
-        <h4 class="not-margin">
-          تعديل قسم 
-        </h4>
+        <h4 class="not-margin">تعديل قسم</h4>
       </template>
 
       <div class="con-form">
-
-
-
-        <el-form :model="updateCategory" status-icon ref="updateCategory" class="demo-ruleForm">
-
+        <el-form
+          :model="updateCategory"
+          status-icon
+          ref="updateCategory"
+          class="demo-ruleForm"
+        >
           <el-form-item
             prop="name"
             label="أسم القسم"
@@ -513,9 +504,11 @@
               { required: true, message: 'اسم القسم مطلوب', trigger: 'blur' },
             ]"
           >
-            <el-input placeholder="الأسم" v-model="updateCategory.name"></el-input>
+            <el-input
+              placeholder="الأسم"
+              v-model="updateCategory.name"
+            ></el-input>
           </el-form-item>
-
 
           <el-form-item
             prop="printer_id"
@@ -524,7 +517,12 @@
               { required: true, message: 'اسم الطابعة مطلوب', trigger: 'blur' },
             ]"
           >
-            <el-select filterable v-model="updateCategory.printer_id" value-key="id" placeholder="طابعة القسم">
+            <el-select
+              filterable
+              v-model="updateCategory.printer_id"
+              value-key="id"
+              placeholder="طابعة القسم"
+            >
               <el-option
                 v-for="printer in printers"
                 :key="printer.id"
@@ -535,16 +533,23 @@
             </el-select>
           </el-form-item>
 
-
-
           <el-form-item
             prop="kitchen_type"
             label="نوع المطبخ"
             :rules="[
-              { required: true, message: 'تحديد نوع المطبخ مطلوب', trigger: 'blur' },
+              {
+                required: true,
+                message: 'تحديد نوع المطبخ مطلوب',
+                trigger: 'blur',
+              },
             ]"
           >
-            <el-select filterable v-model="updateCategory.kitchen_type" value-key="val" placeholder=" نوع المطبخ">
+            <el-select
+              filterable
+              v-model="updateCategory.kitchen_type"
+              value-key="val"
+              placeholder=" نوع المطبخ"
+            >
               <el-option
                 v-for="kitchen in kitchens"
                 :key="kitchen.val"
@@ -554,7 +559,6 @@
               </el-option>
             </el-select>
           </el-form-item>
-
 
           <!-- <el-form-item label="أضف ايقون للقسم">
 
@@ -575,73 +579,42 @@
 
           </el-form-item> -->
 
-
           <el-form-item>
             <div class="footer-dialog">
-              <el-button type="primary" plain block @click="validateUpdateCategory('updateCategory')">
+              <el-button
+                type="primary"
+                plain
+                block
+                @click="validateUpdateCategory('updateCategory')"
+              >
                 تعديل
               </el-button>
             </div>
           </el-form-item>
-
-
         </el-form>
-        
-        
-
-        
-
-       
-      
       </div>
-
-      
-
     </vs-dialog>
 
+    <vs-dialog
+      class="delete-dialog"
+      width="550px"
+      not-center
+      v-model="showDeleteCategoryModel"
+    >
+      <div class="con-content">
+        <h6><i class="el-icon-warning-outline"></i></h6>
+        <p>هل أنت متأكد من أتك تريد حذف ؟</p>
 
-
-
-
-
-
-
-
-
-
-    <vs-dialog class="delete-dialog" width="550px" not-center v-model="showDeleteCategoryModel">
-        
-
-
-        <div class="con-content">
-            <h6> <i class="el-icon-warning-outline"></i> </h6>
-          <p >
-            هل أنت متأكد من أتك تريد حذف ؟
-          </p>
-
-
-          <div class="btns d-flex justify-content-center">
-              <vs-button color="danger" @click="showDeleteCategoryModel=false" >
-              إلغاء
-                </vs-button>
-              <vs-button color="#675DEC" @click="deleteCategory()">
-                تأكيد
-                </vs-button>
-              
-                
-          </div>
-
+        <div class="btns d-flex justify-content-center">
+          <vs-button color="danger" @click="showDeleteCategoryModel = false">
+            إلغاء
+          </vs-button>
+          <vs-button color="#675DEC" @click="deleteCategory()">
+            تأكيد
+          </vs-button>
         </div>
-
-      
-      </vs-dialog>
-
-
-
-
-    
-
-
+      </div>
+    </vs-dialog>
   </div>
 </template>
 
@@ -673,52 +646,59 @@ export default {
     },
   },
   methods: {
-    deleteCategory(){
+    deleteCategory() {
       const loading = this.$vs.loading();
-      axiosApi.delete(`/product-categories/${this.currCategory.id}`).then(res => {
-        this.$notify({
+      axiosApi
+        .delete(`/product-categories/${this.currCategory.id}`)
+        .then((res) => {
+          this.$notify({
             title: "تم",
             message: `تم إضافة الصنف بنجاح `,
             type: "success",
           });
-        this.showDeleteCategoryModel = false;
-        this.getCategories();
-      }).catch(error => {
-        this.$notify.error({
-          title: "خطأ",
-          message: `حدث خطأ ما`,
-        });
-      }).finally(() => loading.close());
+          this.showDeleteCategoryModel = false;
+          this.getCategories();
+        })
+        .catch((error) => {
+          this.$notify.error({
+            title: "خطأ",
+            message: `حدث خطأ ما`,
+          });
+        })
+        .finally(() => loading.close());
     },
-    handleDeleteEmployeeDept(cate){
+    handleDeleteEmployeeDept(cate) {
       this.showDeleteCategoryModel = true;
-      this.currCategory = {...cate}
+      this.currCategory = { ...cate };
     },
-    getSizes(){
-      const loading = this.$vs.loading()
-      axiosApi.get(`/product-sizes`).then(res => {
-        this.sizes = res.data;
-      }).finally(() => loading.close())
+    getSizes() {
+      const loading = this.$vs.loading();
+      axiosApi
+        .get(`/product-sizes`)
+        .then((res) => {
+          this.sizes = res.data;
+        })
+        .finally(() => loading.close());
     },
-    validateUpdateCategory(formName){
+    validateUpdateCategory(formName) {
       this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateProductCategory();
-          } else {
-            return false;
-          }
+        if (valid) {
+          this.updateProductCategory();
+        } else {
+          return false;
+        }
       });
     },
-    validateAddCategory(formName){
+    validateAddCategory(formName) {
       this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addNewCategorie();
-          } else {
-            return false;
-          }
+        if (valid) {
+          this.addNewCategorie();
+        } else {
+          return false;
+        }
       });
     },
-    updateProductCategory(){
+    updateProductCategory() {
       let loading = this.$vs.loading();
       this.updateCategoryModel = false;
       // let formData = new FormData();
@@ -733,7 +713,6 @@ export default {
       // formData.append("printer_id", this.updateCategory.printer_id);
       // formData.append("kitchen_type", this.updateCategory.kitchen_type);
 
-      
       axiosApi
         .put(`/product-categories/${this.updateCategory.id}`, updatedCategory)
         .then(() => {
@@ -746,42 +725,41 @@ export default {
             type: "success",
           });
           this.getCategories();
-        }).catch(err => {
-          console.log(err.response.status)
-          if(err.response.status === 422){
+        })
+        .catch((err) => {
+          console.log(err.response.status);
+          if (err.response.status === 422) {
             this.$notify.error({
               title: "خطأ",
               message: `اسم الصنف موجود مسبقا`,
             });
-          }else{
+          } else {
             this.$notify.error({
               title: "خطأ",
               message: `حدث خطأ ما`,
             });
           }
-          
         })
         .finally(() => loading.close());
     },
-    openUpdateCategoryModel(category){
-      console.log(category)
-      this.imageUrl = this.categoryIcon = this.$store.state.url + category.image;
-      this.updateCategory = {...category};
+    openUpdateCategoryModel(category) {
+      console.log(category);
+      this.imageUrl = this.categoryIcon =
+        this.$store.state.url + category.image;
+      this.updateCategory = { ...category };
       this.updateCategoryModel = true;
     },
     successUpdated(type) {
-
-      if(type == 0){
+      if (type == 0) {
         // console.log("hey , products")
         this.getProductsByCategorie(this.selectedCategory);
-      }else{
+      } else {
         // console.log("hey , additions")
 
         this.getAdditionsByCategorie(this.selectedCategory);
       }
-     
+
       this.isUserNowUpdate = false;
-      
     },
     getAllPrinters() {
       const loading = this.$vs.loading();
@@ -795,7 +773,7 @@ export default {
     handlePictureCardPreview(file) {
       console.log(file);
       this.categoryIcon = file.raw;
-      this.imageUrl = ""
+      this.imageUrl = "";
     },
     handlePreview(file) {
       this.dialogImageUrl = file.url;
@@ -807,7 +785,7 @@ export default {
     openAddCategory() {
       this.dialogImageUrl = {};
       this.categoryIcon = "";
-      this.imageUrl = ""
+      this.imageUrl = "";
       this.addCategoryModel = true;
     },
     getCategories() {
@@ -820,7 +798,6 @@ export default {
         .finally(() => loading.close());
     },
     addNewCategorie() {
-      
       if (!this.categoryIcon) {
         this.$notify.error({
           title: "خطأ!",
@@ -834,13 +811,12 @@ export default {
       this.openAddModel = false;
       let formData = new FormData();
       formData.append("name", this.add.name);
-      if(this.categoryIcon){
+      if (this.categoryIcon) {
         formData.append("image", this.categoryIcon);
       }
       formData.append("printer_id", this.add.printer_id);
       formData.append("kitchen_type", this.add.kitchen_type);
 
-      
       axiosApi
         .post(`/product-categories`, formData)
         .then(() => {
@@ -854,20 +830,20 @@ export default {
           });
           this.addCategoryModel = false;
           this.getCategories();
-        }).catch(err => {
-          console.log(err.response.status)
-          if(err.response.status === 422){
+        })
+        .catch((err) => {
+          console.log(err.response.status);
+          if (err.response.status === 422) {
             this.$notify.error({
               title: "خطأ",
               message: `اسم الصنف موجود مسبقا`,
             });
-          }else{
+          } else {
             this.$notify.error({
               title: "خطأ",
               message: `حدث خطأ ما`,
             });
           }
-          
         })
         .finally(() => loading.close());
     },
@@ -877,17 +853,15 @@ export default {
       this.currProduct = { ...product };
     },
     handleUpdateProduct(product) {
-      
-      this.currProduct = {  };
-      this.operationStatus = 'add';
+      this.currProduct = {};
+      this.operationStatus = "add";
 
       setTimeout(() => {
         this.currProduct = { ...product };
-        this.operationStatus = 'update';
+        this.operationStatus = "update";
       }, 50);
-
     },
-    changeOperationStatus(e){
+    changeOperationStatus(e) {
       this.operationStatus = e;
     },
     removeProduct() {
@@ -909,7 +883,7 @@ export default {
             this.selectedTab = 1;
             this.getAdditionsByCategorie(this.selectedCategory);
           }
-          this.operationStatus = 'add';
+          this.operationStatus = "add";
         })
         .finally(() => loading.close());
     },
@@ -950,28 +924,27 @@ export default {
         .get("product-categories")
         .then((res) => {
           this.categories = res.data;
-          if(this.categories.length > 0){
-            this.selectCategory(this.categories[0])
+          if (this.categories.length > 0) {
+            this.selectCategory(this.categories[0]);
           }
-          
         })
         .finally(() => loading.close());
     },
   },
   data() {
     return {
-      sizes:[],
-      showDeleteCategoryModel:false,
+      sizes: [],
+      showDeleteCategoryModel: false,
       currCategory: {},
-      kitchens:[
+      kitchens: [
         // {name: "نخزين", val: 1},
-        {name: "بيتزا", val: 2},
-        {name: "بستا", val: 3},
+        { name: "بيتزا", val: 2 },
+        { name: "بستا", val: 3 },
       ],
-      operationStatus: 'add',
-      updateCategory:{},
+      operationStatus: "add",
+      updateCategory: {},
       printers: [],
-      updateCategoryModel:false,
+      updateCategoryModel: false,
       add: {},
       categoryIcon: "",
       imageUrl: "",
@@ -987,17 +960,17 @@ export default {
       products: [],
       categories: [],
       swiperOptionBestSeller: {
-        slidesPerView: 12,
+        slidesPerView: 9,
         spaceBetween: 5,
         slidesPerGroup: 1,
         loopFillGroupWithBlank: false,
         breakpoints: {
           1200: {
-            slidesPerView: 12,
+            slidesPerView: 11,
             spaceBetween: 5,
           },
           1024: {
-            slidesPerView: 11,
+            slidesPerView: 8,
             spaceBetween: 5,
           },
           768: {
@@ -1028,6 +1001,12 @@ export default {
 </script>
 
 <style lang="scss">
+.el-card.is-always-shadow {
+  box-shadow: none !important;
+}
+.el-card {
+  border: none !important;
+}
 .add-category {
   .footer-dialog {
     button {
@@ -1083,7 +1062,7 @@ export default {
     align-items: center;
     padding-right: 13px;
 
-    .operations{
+    .operations {
       padding-top: 0 !important;
     }
 
@@ -1112,14 +1091,12 @@ export default {
     padding: 0;
   }
 
-  
   .card-header {
     margin-bottom: 0;
     background-color: transparent !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-    
   }
-  .tab-content{
+  .tab-content {
     height: 100vh;
   }
   .tab-content > .active {
@@ -1139,32 +1116,30 @@ export default {
   max-width: 335px;
 }
 
-
-
 // Global Style For Dialog Form
 
-.el-form{
-  .el-input__suffix{
-    left: 5px ;
-    right: auto !important
+.el-form {
+  .el-input__suffix {
+    left: 5px;
+    right: auto !important;
   }
-  .el-form-item__error{
+  .el-form-item__error {
     right: 0 !important;
     left: auto !important;
   }
-  .el-form-item__label{
+  .el-form-item__label {
     float: right !important;
-        display: block;
+    display: block;
     width: 100%;
   }
-  label{
+  label {
     text-align: right;
   }
-  .el-upload--picture-card{
+  .el-upload--picture-card {
   }
-  .el-form-item__content{
-    .footer-dialog{
-      button{
+  .el-form-item__content {
+    .footer-dialog {
+      button {
         display: block;
         width: 100%;
       }
@@ -1172,12 +1147,11 @@ export default {
   }
 }
 .el-form-item {
-    margin-bottom: 10px !important;
+  margin-bottom: 10px !important;
 }
 
-
-.el-upload.el-upload--picture-card{
-  img{
+.el-upload.el-upload--picture-card {
+  img {
     max-width: 200px;
   }
 }

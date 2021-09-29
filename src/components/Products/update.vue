@@ -228,7 +228,6 @@ export default {
       display: flex;
       flex-wrap: wrap;
       label {
-        padding-top: 8px;
         margin: 0 11px;
         color: #fe5634;
       }

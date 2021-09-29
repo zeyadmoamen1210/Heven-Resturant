@@ -1,11 +1,13 @@
 <template>
   <div class="categorie category-component">
-    <img
-      v-if="categorie.image"
-      class="show-category-image"
-      :src="$store.state.url + categorie.image"
-      alt=""
-    />
+    <div class="img-circle">
+      <img
+        v-if="categorie.image"
+        class="show-category-image"
+        :src="$store.state.url + categorie.image"
+        alt=""
+      />
+    </div>
     <h6>{{ categorie.name }}</h6>
 
     <div class="edit-delete mt-2">
@@ -35,13 +37,26 @@ export default {
 </script>
 
 <style lang="scss">
+.img-circle {
+  width: 48px;
+  height: 48px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: auto;
+  img {
+    width: 28px;
+    height: 28px;
+  }
+}
 .categorie.category-component {
   font-family: "din";
   padding-top: 7px;
   background: #ebf9fc;
   color: #333;
   border-radius: 8px;
-  margin-right: 10px;
   padding-bottom: 10px;
   transition: all 0.5s ease;
   cursor: pointer;
@@ -52,8 +67,9 @@ export default {
     margin-top: 12px;
   }
   .show-category-image {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
     margin: auto;
     text-align: center;
   }
@@ -74,7 +90,7 @@ export default {
       background: #ebf9fc;
       padding: 3px 6px 0;
       cursor: pointer;
-    
+
       outline: none !important;
     }
 

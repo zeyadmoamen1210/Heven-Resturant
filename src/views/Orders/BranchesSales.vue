@@ -89,7 +89,8 @@ export default {
     getBranchesSales(){
  this.selectedBranches.forEach((branch) => {
         let branchUrl = `branches/${branch}/statistics`;
-        if (this.dateRange != null) {
+        if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
           branchUrl += `?start_date=${this.dateRange[0]}`;
           branchUrl += `&end_date=${this.dateRange[1]}`;
         }
@@ -125,7 +126,8 @@ export default {
       this.selectedBranchesReport = [];
 
          let branchesUrl = `branches-statistics?branches=${this.selectedBranches}`;
-      if (this.dateRange != null) {
+      if (this.dateRange != null) {localStorage.setItem('reportsInterval',JSON.stringify(this.dateRange));
+
         branchesUrl += `&start_date=${this.dateRange[0]}`;
         branchesUrl += `&end_date=${this.dateRange[1]}`;
       }

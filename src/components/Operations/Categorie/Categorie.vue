@@ -22,7 +22,6 @@ export default {
     color: #333;
     
     border-radius: 8px;
-    margin-right: 10px;
     height:78px;
     text-align: center;
     h6{

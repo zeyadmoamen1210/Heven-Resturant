@@ -1,27 +1,19 @@
 <template>
   <div class="receiving-orders">
-
-    <el-dialog
-      :visible.sync="determinePrintersFirst"
-      width="30%">
-
+    <el-dialog :visible.sync="determinePrintersFirst" width="30%">
       <div class="d-block text-center">
         <div class="text-center">
           <img
-            style="width: 90px;margin-bottom: 10px;"
+            style="width: 90px; margin-bottom: 10px"
             src="@/assets/printer.svg"
             alt=""
           />
         </div>
         <h3 class="text-center">من فضلك حدد الطابعات علي الجهاز اولاً</h3>
       </div>
-      
     </el-dialog>
-    
+
     <div class="container-fluid">
-
-
-
       <swiper class="swiper" :options="swiperOptionBestSeller">
         <swiper-slide v-for="type in types" :key="type.id">
           <Type
@@ -36,9 +28,7 @@
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
 
-
-     
-      <div class="show-orders" style="padding: 0 45px;">
+      <div class="show-orders" style="padding: 0 45px">
         <!-- <h6 class="text-right" style="color: #949494;font-size: 12px;">اﺑﺤﺚ ﺑﺮﻗﻢ اﻟﻬﺎﺗﻒ ﻭ اﻟﻤﻨﺎﻃﻖ ﻭ ﺭﻗﻢ اﻟﻄﻠﺐ</h6> -->
 
         <div class="filter-orders d-flex mb-4">
@@ -57,14 +47,14 @@
               v-model="code"
             ></el-input>
           </div>
-          <div>
+          <div class="ml-2">
             <el-select
               clearable
               @change="getOrders"
               v-model="area"
               placeholder="اﺑﺤﺚ ﺑﺎﻟﻤﻨﺎﻃﻖ"
             >
-              <el-option :key="5" label="5" :value="5"> </el-option>
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
 
               <el-option
                 v-for="area in areas"
@@ -75,10 +65,46 @@
               </el-option>
             </el-select>
           </div>
+          <div class="ml-2">
+            <el-select
+              clearable
+              @change="getOrders"
+              v-model="status"
+              placeholder="حالة الطلب"
+            >
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
+
+              <el-option
+                v-for="option in statusOptions"
+                :key="option.value"
+                :label="option.label"
+                :value="option.value"
+              >
+              </el-option>
+            </el-select>
+          </div>
+          <div class="ml-2">
+            <el-select
+              clearable
+              @change="getOrders"
+              v-model="payment_type"
+              placeholder="طريقة الدفع"
+            >
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
+
+              <el-option
+                v-for="option in paymentStatus"
+                :key="option.val"
+                :label="option.name"
+                :value="option.val"
+              >
+              </el-option>
+            </el-select>
+          </div>
 
           <div class="mr-2">
-                <!-- range-separator="اﻟﻲ" -->
-              <!-- <el-date-picker
+            <!-- range-separator="اﻟﻲ" -->
+            <!-- <el-date-picker
                 
                 v-model="dateRange"
                 type="daterange"
@@ -89,145 +115,267 @@
               >
               </el-date-picker> -->
 
-
-              <el-date-picker
-                @change="getOrders"
-                :format="format"
-                :value-format="valueFormat"
-                v-model="dateRange"
-                type="datetimerange"
-                range-separator="إلي"
-                start-placeholder="بداية الفترة"
-                end-placeholder="نهاية الفترة">
-              </el-date-picker>
-
-
+            <el-date-picker
+              @change="getOrders"
+              :format="format"
+              :value-format="valueFormat"
+              v-model="dateRange"
+              type="datetimerange"
+              range-separator="إلي"
+              start-placeholder="بداية الفترة"
+              end-placeholder="نهاية الفترة"
+            >
+            </el-date-picker>
           </div>
         </div>
         <div class="row">
+          <el-table
+            class="mt-2"
+            align="right"
+            v-if="tableData.length > 0"
+            :data="tableData"
+            border
+            style="width: 100%"
+          >
+            <el-table-column label="#" type="index" width="50">
+            </el-table-column>
+            <el-table-column sortable width="80" label="ﺭﻗﻢ " prop="order">
+            </el-table-column>
 
-       
-        
-       <el-table
-        class="mt-2"
-        align="right"
-        v-if="tableData.length > 0"
-        :data="tableData"
-        border
-        style="width: 100%"
-      >
-        <el-table-column label="#" type="index" width="50"> </el-table-column>
-        <el-table-column sortable width="80" label="ﺭﻗﻢ " prop="order">
-        </el-table-column>
+            <el-table-column width="100" label="القيمة">
+              <template slot-scope="scope">
+                {{
+                  Number(scope.row.total) +
+                  Number(scope.row.restaurant_cost) +
+                  Number(scope.row.driver_cost)
+                }}
+              </template>
+            </el-table-column>
 
-        <el-table-column  width="100" label="القيمة">
+            <el-table-column width="100" label="اﻟﺤﺎﻟﺔ">
+              <template slot-scope="scope">
+                <el-tag v-if="scope.row.status == 1">ﻓﻲ اﻟﻤﻄﺒﺦ</el-tag>
+                <el-tag type="warning" v-if="scope.row.status == 2"
+                  >ﻓﻲ اﻟﻄﺮﻳﻖ</el-tag
+                >
+                <el-tag type="success" v-if="scope.row.status == 3"
+                  >ﺗﻢ اﻟﺘﻮﺻﻴﻞ
+                </el-tag>
+                <el-tag type="danger" v-if="scope.row.status == 4">
+                  ﻣﺮﻓﻮﺽ بعد</el-tag
+                >
+                <el-tag type="danger" v-if="scope.row.status == 5"
+                  >ﻣﺮﻓﻮﺽ قبل</el-tag
+                >
+              </template>
+            </el-table-column>
 
-          <template slot-scope="scope">
-             {{Number(scope.row.total) + Number(scope.row.restaurant_cost) + Number(scope.row.driver_cost)}}
-           </template>
+            <el-table-column width="180" label="اﻟﻌﻤﻴﻞ">
+              <template slot-scope="scope">
+                <span>{{ scope.row.customer.name }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="ﺑﻮاﺳﻄﺔ" prop="user.name"> </el-table-column>
+            <el-table-column width="100" label="اﻟﻨﻮﻉ">
+              <template slot-scope="scope">
+                <el-tag type="warning">{{ scope.row.order_type.name }}</el-tag>
+              </template>
+            </el-table-column>
 
-        </el-table-column>
+            <el-table-column label="اﻟﺴﺎﺋﻖ">
+              <template slot-scope="scope">
+                <span v-if="scope.row.employee.id > 1">{{
+                  scope.row.employee.name
+                }}</span>
+              </template>
+            </el-table-column>
 
-        
-        <el-table-column   width="100"  label="اﻟﺤﺎﻟﺔ"> 
+            <el-table-column width="200" sortable label="اﻟﺘﻮﻗﻴﺖ">
+              <template slot-scope="scope">
+                <span>{{
+                  scope.row.created_at
+                    | moment("dddd | Do / MM / YYYY | h:mm A")
+                }}</span>
+              </template>
+            </el-table-column>
 
-           <template slot-scope="scope">
-             <el-tag v-if="scope.row.status==1">ﻓﻲ اﻟﻤﻄﺒﺦ</el-tag>
-             <el-tag type="warning" v-if="scope.row.status==2">ﻓﻲ اﻟﻄﺮﻳﻖ</el-tag>
-             <el-tag type="success" v-if="scope.row.status==3">ﺗﻢ اﻟﺘﻮﺻﻴﻞ </el-tag>
-             <el-tag type="danger" v-if="scope.row.status==4"> ﻣﺮﻓﻮﺽ بعد</el-tag>
-             <el-tag type="danger" v-if="scope.row.status==5">ﻣﺮﻓﻮﺽ قبل</el-tag>
-           </template>
-        </el-table-column>
-       
-        <el-table-column   width="180" label="اﻟﻌﻤﻴﻞ" >
-           <template slot-scope="scope">
-             <span>{{scope.row.customer.name }}</span>
-
-           </template>
-           </el-table-column>
-        <el-table-column label="ﺑﻮاﺳﻄﺔ" prop="user.name"> </el-table-column>
-         <el-table-column   width="100"  label="اﻟﻨﻮﻉ"> 
-
-           <template slot-scope="scope">
-           
-             <el-tag type="warning" >{{scope.row.order_type.name}}</el-tag>
-         
-           </template>
-        </el-table-column>
-      
-        <el-table-column label="اﻟﺴﺎﺋﻖ" prop="employee.name" v-if="employee_id>1"> </el-table-column>
-        
-        <el-table-column label="اﻟﺴﺎﺋﻖ"  prop="employee.name"  v-else> </el-table-column>
-      
-        <el-table-column width="200" sortable label="اﻟﺘﻮﻗﻴﺖ">
-     
-            <template slot-scope="scope">
-              <span>{{scope.row.created_at | moment("dddd | Do / MM / YYYY | h:mm A")}}</span>
-            </template>
-        </el-table-column>
-
-         <el-table-column label="اﺟﺮاءاﺕ" >
-          <template slot-scope="scope">
-
-            <el-dropdown>
-              <el-button type="primary">
-                الإجرائات<i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-if="scope.row.status<4" @click.native="openModelToUpdateStatus(scope.row)">ﺗﻐﻴﻴﺮ اﻟﺤﺎﻟﺔ</el-dropdown-item>
-                <el-dropdown-item v-if="scope.row.status<4" @click.native="openModelToUpdatePaymentWay(scope.row)" >طريقة الدفع</el-dropdown-item>
-                <el-dropdown-item @click.native="printOrder(scope.row)">إعادة الطباعة</el-dropdown-item>
-
-              </el-dropdown-menu>
-            </el-dropdown>
-
-              
-                 
-                  
-               
-          </template>
-         </el-table-column>
-         <el-table-column type="expand">
-      <template slot-scope="props">
-        <el-table
-        class="mt-2"
-        align="right"
-        :data="props.row.products"
-        border
-        style="width: 60%; margin-right:20%"
-      >
-
-       <el-table-column label="#" type="index" width="50"> </el-table-column>
-        <el-table-column sortable width="100" label="اﻟﻜﻤﻴﺔ " prop="pivot.qty">
-        </el-table-column>
-        <el-table-column  label="اﻟﺼﻨﻒ " prop="name"></el-table-column>
-        <el-table-column  width="100"  label="اﻟﻤﻘﺎﺱ " prop="pivot.size"></el-table-column>
-        <el-table-column  width="100"  label="اﻟﺴﻌﺮ " prop="pivot.price"></el-table-column>
-        <el-table-column  width="100"  label="اﻻﺟﻤﺎﻟﻲ">
-            <template slot-scope="scope">
-              <span>{{scope.row.pivot.qty* scope.row.pivot.price}}</span>
-
-            </template>
-
-        </el-table-column>
-
-        
-
-       
-
-        </el-table>
-
-      <el-tag type="success" v-if="props.row.notes"> * ﻣﻼﺣﻈﺎﺕ : {{props.row.notes}}</el-tag>
-      <el-tag type="danger" v-if="props.row.rejected_reason"> * ﺳﺒﺐ اﻟﺮﻓﺾ : {{props.row.rejected_reason}}</el-tag>
-      <el-tag type="warning" v-if="props.row.payment_type && props.row.payment_type == 1"> * نوع الدفع : نقدي </el-tag>
-      <el-tag type="warning" v-if="props.row.payment_type && props.row.payment_type == 2"> * نوع الدفع: فيزا</el-tag>
-
-      <el-tag type="warning" v-if="props.row.preparated_at"> * تاريخ الاستلام : {{new Date(props.row.preparated_at).toLocaleString("ar-EG")}}   </el-tag>
-      </template>
-    </el-table-column>
-       
-      </el-table>
+            <el-table-column label="اﺟﺮاءاﺕ">
+              <template slot-scope="scope">
+                <el-dropdown>
+                  <el-button type="primary">
+                    الإجرائات<i class="el-icon-arrow-down el-icon--right"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      v-if="scope.row.status < 4"
+                      @click.native="openModelToUpdateStatus(scope.row)"
+                      >ﺗﻐﻴﻴﺮ اﻟﺤﺎﻟﺔ</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      v-if="scope.row.status < 4"
+                      @click.native="openModelToUpdatePaymentWay(scope.row)"
+                      >طريقة الدفع</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      @click.native="printOrder(scope.row)"
+                      v-if="isAdmin"
+                      >إعادة الطباعة</el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </template>
+            </el-table-column>
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <div class="row">
+                  <div class="col-8">
+                    <el-table
+                      class="mt-2"
+                      align="right"
+                      :data="props.row.products"
+                      border
+                      style="width: 100%"
+                    >
+                      <el-table-column label="#" type="index" width="50">
+                      </el-table-column>
+                      <el-table-column
+                        sortable
+                        width="100"
+                        label="اﻟﻜﻤﻴﺔ "
+                        prop="pivot.qty"
+                      >
+                      </el-table-column>
+                      <el-table-column
+                        label="اﻟﺼﻨﻒ "
+                        prop="name"
+                      ></el-table-column>
+                      <el-table-column
+                        width="100"
+                        label="اﻟﻤﻘﺎﺱ "
+                        prop="pivot.size"
+                      ></el-table-column>
+                      <el-table-column
+                        width="100"
+                        label="اﻟﺴﻌﺮ "
+                        prop="pivot.price"
+                      ></el-table-column>
+                      <el-table-column width="100" label="اﻻﺟﻤﺎﻟﻲ">
+                        <template slot-scope="scope">
+                          <span>{{
+                            scope.row.pivot.qty * scope.row.pivot.price
+                          }}</span>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                  <div class="col-4">
+                    <div class="row pr-2 mt-2" style="text-align: start">
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">اسم العميل</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.customer.name }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row pr-2" style="text-align: start">
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">رقم العميل</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.customer.phone }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row pr-2" style="text-align: start">
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">العنوان</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">{{ props.row.address }}</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="props.row.notes"
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">* ﻣﻼﺣﻈﺎﺕ</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.notes }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="props.row.rejected_reason"
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">* ﻣﻼﺣﻈﺎﺕ</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.rejected_reason }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="
+                        props.row.payment_type && props.row.payment_type == 1
+                      "
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">نوع الدفع</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">نقدي</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="
+                        props.row.payment_type && props.row.payment_type == 2
+                      "
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">نوع الدفع</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">فيزا</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="props.row.preparated_at"
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">تاريخ الاستلام</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{
+                            new Date(props.row.preparated_at).toLocaleString(
+                              "ar-EG"
+                            )
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
 
@@ -248,15 +396,14 @@
           <div class="d-flex">
             <div class="ml-2">
               <el-input
-              @keydown.enter.native="getDrivers()"
+                @keydown.enter.native="getDrivers()"
                 placeholder="اﺑﺤﺚ ﺑﺄﺳﻢ اﻟﺴﺎﺋﻖ "
                 v-model="driverName"
               ></el-input>
             </div>
             <div class="ml-2">
               <el-input
-               @keydown.enter.native="getDrivers()"
-
+                @keydown.enter.native="getDrivers()"
                 placeholder="اﺑﺤﺚ ﺑﺮﻗﻢ اﻟﺴﺎﺋﻖ  "
                 v-model="driverMobile"
               ></el-input>
@@ -264,11 +411,7 @@
           </div>
 
           <div class="row">
-            <div
-              v-for="boy in drivers"
-              :key="boy.id"
-              class="col-md-2"
-            >
+            <div v-for="boy in drivers" :key="boy.id" class="col-md-2">
               <div
                 class="delivery-boy"
                 @click="setDeliveryBoy(boy)"
@@ -361,29 +504,29 @@
           </el-option>
         </el-select>
       </div>
-      <div class="con-form" v-if="updateStatus==4||updateStatus==5">
-          <el-select
-              clearable
-              v-model="rejectedReason"
-              placeholder="ﺣﺪﺩ ﺳﺒﺐ اﻟﺮﻓﺾ"
-            >
-
-              <el-option
-                v-for="reason in orderRejectReasons"
-                :key="reason.id"
-                :label="reason.reason"
-                :value="reason.reason"
-              >
-              </el-option>
-            </el-select>
+      <div class="con-form" v-if="updateStatus == 4 || updateStatus == 5">
+        <el-select
+          clearable
+          v-model="rejectedReason"
+          placeholder="ﺣﺪﺩ ﺳﺒﺐ اﻟﺮﻓﺾ"
+        >
+          <el-option
+            v-for="reason in orderRejectReasons"
+            :key="reason.id"
+            :label="reason.reason"
+            :value="reason.reason"
+          >
+          </el-option>
+        </el-select>
       </div>
-    <span v-if="updateStatus==4&&rejectedReason==''" class="text-danger">ﻣﻦ ﻓﻀﻠﻚ ﺣﺪﺩ ﺳﺒﺐ اﻟﺮﻓﺾ</span>
+      <span v-if="updateStatus == 4 && rejectedReason == ''" class="text-danger"
+        >ﻣﻦ ﻓﻀﻠﻚ ﺣﺪﺩ ﺳﺒﺐ اﻟﺮﻓﺾ</span
+      >
       <template #footer>
         <!-- <vs-button border @click="updateStatusInBackend()"> </vs-button> -->
 
         <el-button
-
-        :disabled="updateStatus==4&&rejectedReason==''"
+          :disabled="updateStatus == 4 && rejectedReason == ''"
           style="
             background-color: #fe5634 !important;
             border-color: #fe5634 !important;
@@ -398,34 +541,26 @@
       </template>
     </vs-dialog>
 
-
-
-
-
-
-
     <vs-dialog v-model="showModelToUpdatePaymentWay">
       <template #header>
         <h4 class="not-margin">ﺗﻌﺪﻳﻞ طريقة الدفع</h4>
       </template>
 
-    
-      <div class="con-form" >
-          <el-select
-              clearable
-              v-model="paymentWay"
-              placeholder="حالات الدفع"
-              key-value="val"
-            >
-
-              <el-option
-                v-for="way in paymentStatus"
-                :key="way.val"
-                :label="way.name"
-                :value="way.val"
-              >
-              </el-option>
-            </el-select>
+      <div class="con-form">
+        <el-select
+          clearable
+          v-model="paymentWay"
+          placeholder="حالات الدفع"
+          key-value="val"
+        >
+          <el-option
+            v-for="way in paymentStatus"
+            :key="way.val"
+            :label="way.name"
+            :value="way.val"
+          >
+          </el-option>
+        </el-select>
       </div>
       <template #footer>
         <!-- <vs-button border @click="updateStatusInBackend()"> </vs-button> -->
@@ -444,10 +579,6 @@
         </el-button>
       </template>
     </vs-dialog>
-
-
-
-
 
     <vs-dialog v-model="showDeliveryInfoModel">
       <template #header>
@@ -483,19 +614,32 @@ import Type from "@/components/Operations/Type.vue";
 
 export default {
   components: {
-    Type
+    Type,
   },
   watch: {},
   data() {
     return {
       determinePrintersFirst: false,
-      showModelToUpdatePaymentWay:false,
-    
-          dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'6:00:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'6:00:00')],
+      showModelToUpdatePaymentWay: false,
+      //
+      dateRange: localStorage.getItem("reportsInterval")
+        ? JSON.parse(localStorage.getItem("reportsInterval"))
+        : [
+            this.$moment(new Date(), "DD-MM-YYYY")
+              .locale("en")
+              .format("YYYY-MM-DD") +
+              " " +
+              "11:30:00",
+            this.$moment(new Date(), "DD-MM-YYYY")
+              .add(1, "days")
+              .locale("en")
+              .format("YYYY-MM-DD") +
+              " " +
+              "11:30:00",
+          ],
 
-
-      format:'yyyy-MM-dd HH:mm A',
-      valueFormat:'yyyy-MM-dd HH:mm:ss',
+      format: "yyyy-MM-dd HH:mm A",
+      valueFormat: "yyyy-MM-dd HH:mm:ss",
 
       rejectedReason: "",
       driverMobile: "",
@@ -514,11 +658,15 @@ export default {
       drivers: [],
       updateStatus: "",
       showDeliveryModel: false,
-      paymentStatus:[
-        {name: 'نقدي', val: 1},
-        {name: 'فيزا', val: 2},
+      payment_type: this.$route.query.payment_type
+        ? Number(this.$route.query.payment_type)
+        : "",
+      paymentStatus: [
+        { name: "نقدي", val: 1 },
+        { name: "فيزا", val: 2 },
       ],
-      paymentWay: '',
+      paymentWay: "",
+      status: this.$route.query.status ? Number(this.$route.query.status) : "",
       statusOptions: [
         { label: "ﻗﻴﺪ اﻹﻧﺘﻈﺎﺭ", value: 1 },
         { label: "ﻓﻲ اﻟﻄﺮﻳﻖ", value: 2 },
@@ -526,15 +674,15 @@ export default {
         { label: " مرفوض بعد التشغيل", value: 4 },
         { label: " مرفوض قبل التشغيل", value: 5 },
       ],
-      selectedOrderType:{},
+      selectedOrderType: {},
       showModelToUpdateStatus: false,
       active: 0,
-      printers:[],
+      printers: [],
       selectedOrderType: {},
       types: [],
       orders: [],
       showDeliveryInfoModel: false,
-      categories:[],
+      categories: [],
 
       swiperOptionBestSeller: {
         slidesPerView: 8,
@@ -574,6 +722,16 @@ export default {
       },
     };
   },
+  computed: {
+    isAdmin() {
+      let user = localStorage.getItem("heavenDashboardUser");
+      if (JSON.parse(user).role_id == 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
 
   created() {
     this.getOrders();
@@ -584,13 +742,16 @@ export default {
   },
 
   methods: {
-
     getOrderTypes(inCreated = false) {
       const loading = this.$vs.loading();
       let x = axiosApi
         .get("order-types")
         .then((res) => {
           this.types = res.data;
+          this.types.unshift({
+            id: 0,
+            name: "الكل",
+          });
         })
         .finally(() => loading.close());
       if (inCreated) {
@@ -601,31 +762,23 @@ export default {
       }
     },
 
+    getAllPrinters() {
+      if (JSON.parse(localStorage.getItem("printers"))) {
+        let printers = JSON.parse(localStorage.getItem("printers"));
 
-   getAllPrinters() {
-
-      
-      if( JSON.parse(localStorage.getItem("printers")) ){
-          let printers = JSON.parse(localStorage.getItem("printers"));
-      
-
-          if(printers.findIndex(ele => !ele.devicePrinter) > -1){
-            console.log("printer hasn't device printer")
-            this.printers = [];
-            return;
-          }
+        if (printers.findIndex((ele) => !ele.devicePrinter) > -1) {
+          console.log("printer hasn't device printer");
+          this.printers = [];
+          return;
+        }
       }
 
       this.printers = JSON.parse(localStorage.getItem("printers"));
-      console.log("printer has device printer")
-
+      console.log("printer has device printer");
     },
 
-    printOrder(order){
-
-
-      if(!this.printers || this.printers.length == 0){
-
+    printOrder(order) {
+      if (!this.printers || this.printers.length == 0) {
         this.determinePrintersFirst = true;
 
         // setTimeout(() => {
@@ -635,29 +788,23 @@ export default {
         return;
       }
 
-
       this.printInvoiceDetails({
-              products: [...order.products],
-              invoice: order,
-              kitchenPrinters: true,
+        products: [...order.products],
+        invoice: order,
+        kitchenPrinters: true,
       });
-
     },
- 
+
     printInvoiceDetails(products) {
-
-
-
       // Set Printer id inside products
 
-      products.products.map(prod => {
-        this.categories.map(cate => {
-          if(cate.id == prod.product_category_id){
+      products.products.map((prod) => {
+        this.categories.map((cate) => {
+          if (cate.id == prod.product_category_id) {
             prod.printer_id = cate.printer_id;
           }
-        })
+        });
       });
-
 
       let productsCategories = [];
       for (let i = 0; i < products.products.length; i++) {
@@ -688,7 +835,6 @@ export default {
       ipcRenderer.send("printOrder", products);
       console.log("print order", products);
     },
- 
 
     showDeliveryInfo(order) {
       this.currOrder = { ...order };
@@ -710,14 +856,8 @@ export default {
       this.currOrderProducts = [...order.products];
     },
 
-   
-
-
     setDeliveryBoy(delivery) {
-
-
-      if(!this.printers || this.printers.length == 0){
-
+      if (!this.printers || this.printers.length == 0) {
         this.determinePrintersFirst = true;
 
         // setTimeout(() => {
@@ -727,20 +867,17 @@ export default {
         return;
       }
 
-
       this.currDeliveryBoy = { ...delivery };
       axiosApi
         .put(`/orders/${this.currOrder.id}`, {
           employee_id: this.currDeliveryBoy.id,
         })
         .then((res) => {
-
-          
           this.printInvoiceDetails({
-              products: [...res.data[0].products],
-              invoice: res.data[0],
-              kitchenPrinters: false,
-            });
+            products: [...res.data[0].products],
+            invoice: res.data[0],
+            kitchenPrinters: false,
+          });
           this.$notify({
             title: "ﺗﻢ ﺑﻨﺠﺎﺡ",
             message: "ﺗﻢ ﺇﺳﻨﺎﺩ اﻟﺴﺎﺋﻖ ﺇﻟﻲ اﻟﻄﻠﺐ ﺑﻨﺠﺎﺡ",
@@ -764,17 +901,17 @@ export default {
       });
     },
     openAssignToDeliveryModel(order) {
-      console.log("order",order)
+      console.log("order", order);
       this.showDeliveryModel = true;
       this.currOrder = { ...order };
     },
-    updatePaymentWay(){
+    updatePaymentWay() {
       this.showModelToUpdatePaymentWay = false;
       const loading = this.$vs.loading();
-     
+
       axiosApi
         .put(`/orders/${this.currOrder.id}/update`, {
-          payment_type: this.paymentWay
+          payment_type: this.paymentWay,
         })
         .then(() => {
           this.$notify({
@@ -789,11 +926,11 @@ export default {
     updateStatusInBackend() {
       this.showModelToUpdateStatus = false;
       const loading = this.$vs.loading();
-     
+
       axiosApi
         .put(`/orders/${this.currOrder.id}/status`, {
           status: this.updateStatus,
-          reject_reason:this.rejectedReason
+          reject_reason: this.rejectedReason,
         })
         .then(() => {
           this.$notify({
@@ -807,11 +944,11 @@ export default {
     },
     openModelToUpdateStatus(order) {
       this.currOrder = { ...order };
-      this.rejectedReason="";
+      this.rejectedReason = "";
       this.updateStatus = this.currOrder.status;
       this.showModelToUpdateStatus = true;
     },
-    openModelToUpdatePaymentWay(order){
+    openModelToUpdatePaymentWay(order) {
       this.currOrder = { ...order };
       this.showModelToUpdatePaymentWay = true;
     },
@@ -821,7 +958,7 @@ export default {
     },
     getOrders() {
       const loading = this.$vs.loading();
-    //   /orders?area=1&employee=1&user=1&start=2021-05-01&end_date=2021-06-30
+      //   /orders?area=1&employee=1&user=1&start=2021-05-01&end_date=2021-06-30
       let url = `/orders?page=1`;
       if (this.mobile.trim() != "") {
         url += "&mobile=" + this.mobile;
@@ -832,25 +969,36 @@ export default {
       if (this.area != "") {
         url += "&area=" + this.area;
       }
-      if (Object.keys(this.selectedOrderType).length > 0) {
+      if (this.payment_type != "") {
+        url += "&payment_type=" + this.payment_type;
+      }
+      if (this.status != "") {
+        url += "&status=" + this.status;
+      }
+      if (
+        Object.keys(this.selectedOrderType).length > 0 &&
+        this.selectedOrderType.id > 0
+      ) {
         url += "&order_type=" + this.selectedOrderType.id;
       }
-        if (this.dateRange != null) {
-          url += "&start=" + this.dateRange[0];
-          url += "&end=" + this.dateRange[1];
-        }
-      console.log(this.dateRange)
-      console.log(url)
+      if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
+        url += "&start=" + this.dateRange[0];
+        url += "&end=" + this.dateRange[1];
+      }
+      console.log(this.dateRange);
+      console.log(url);
       axiosApi
         .get(url)
         .then((res) => {
           this.orders = res.data.data;
           this.tableData = res.data.data;
-
         })
         .finally(() => loading.close());
     },
-   
   },
 };
 </script>
@@ -862,7 +1010,7 @@ export default {
     margin-bottom: 14px;
   }
 }
-.el-table .cell{
+.el-table .cell {
   text-align: center;
 }
 .el-select-dropdown.el-popper {

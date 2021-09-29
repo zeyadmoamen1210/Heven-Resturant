@@ -104,6 +104,7 @@ export default {
             accTypes:[
                 {name:"أدمن", val:1},
                 {name:"كاشير", val:2},
+                {name:"مشرف", val:3},
             ],
             branches:[]
         }

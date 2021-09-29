@@ -1,78 +1,147 @@
-
 @font-face {
     font-family: "din";
     src: url("../assets/fonts/din-next-regular.ttf");
 }
+
 @font-face {
     font-family: "din-bold";
     src: url("../assets/fonts/din-next-bold.ttf");
 }
 
-$regularFont : 'din', sans-serif;
-$boldFont : 'din-bold', sans-serif;
+$regularFont : 'din',
+sans-serif;
+$boldFont : 'din-bold',
+sans-serif;
+
+html {
+    -webkit-font-smoothing: antialiased;
+
+    --scrollbarBG: #ffff;
+    --thumbBG: #FE5634;
+    --white: #FFEBEF;
+}
+
+.el-table__expand-icon--expanded {
+    transform: rotate(270deg) !important;
+}
+
+.el-table__expand-icon {
+    transform: rotate(90deg);
+}
+
+body::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 6px;
+}
+
+body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+
+.el-button--primary {
+    background-color: #FE5634 !important;
+    border: none !important;
+}
+
+.el-scrollbar__wrap {
+    scrollbar-width: thin;
+    scrollbar-color: var(--white) var(--scrollbarBG);
+
+    &::-webkit-scrollbar-track {
+        background: var(--scrollbarBG);
+
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--white);
+
+        border-radius: 6px;
+        // border: 3px solid var(--scrollbarBG);
+    }
+
+    &::-webkit-scrollbar {
+        width: 4px;
+        border-radius: 6px;
+    }
+}
 
 
-    .vs-sidebar-content {
-        background-color: #EBF9FC;
-        border-radius: 0;
-        z-index: 2000 !important;
-        direction: ltr !important;
+body::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
 
-        .vs-sidebar__logo {
+    border-radius: 6px;
+}
 
-            margin: 25px 0px 0px;
-            padding: 0px;
-            min-height: 40px;
+body::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG);
+
+    border-radius: 6px;
+    // border: 3px solid var(--scrollbarBG);
+}
+
+.vs-sidebar-content {
+    background-color: #EBF9FC;
+    border-radius: 0;
+    z-index: 2000 !important;
+    direction: ltr !important;
+
+    .vs-sidebar__logo {
+
+        margin: 25px 0px 0px;
+        padding: 0px;
+        min-height: 40px;
 
 
-            img {}
+        img {}
+    }
+
+    p {
+        font-size: 10px;
+        font-family: "CairoRegular";
+        color: #FE5634;
+        font-weight: 700;
+        display: block !important;
+        width: 100%;
+    }
+
+    .vs-sidebar__item {
+        &::after {
+            width: 0;
         }
 
-        p {
-            font-size: 10px;
-            font-family: "din", sans-serif;
+        .vs-sidebar__item__text {
+            font-size: 19px;
+            font-family: "CairoRegular";
+            font-weight: 400;
+        }
+
+        .vs-sidebar__item__icon {
+            background: #EBF9FC;
+            color: #404445;
+
+        }
+
+        &.active {
             color: #FE5634;
-            font-weight: 700;
-            display: block !important;
-            width: 100%;
-        }
+            background: #ffffff;
+            border-top-left-radius: 36px;
+            border-bottom-left-radius: 36px;
 
-        .vs-sidebar__item {
-            &::after {
-                width: 0;
+            path {
+                fill: #FE5634 !important;
             }
 
-            .vs-sidebar__item__text {
-                font-size: 19px;
-                font-family: "din", sans-serif;
-                font-weight: 400;
-            }
 
             .vs-sidebar__item__icon {
-                background: #EBF9FC;
-                color: #404445;
-
-            }
-
-            &.active {
-                color: #FE5634;
                 background: #ffffff;
                 border-top-left-radius: 36px;
                 border-bottom-left-radius: 36px;
+                color: #FE5634;
 
-                path{
-                    fill: #FE5634 !important;
-                }
-
-
-                .vs-sidebar__item__icon {
-                    background: #ffffff;
-                    border-top-left-radius: 36px;
-                    border-bottom-left-radius: 36px;
-                    color: #FE5634;
-
-                }
             }
         }
-
     }
+
+}

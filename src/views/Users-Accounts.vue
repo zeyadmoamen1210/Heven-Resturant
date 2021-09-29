@@ -21,6 +21,7 @@
             <template slot-scope="scope">
               <h6 v-if="scope.row.role_id == 1">أدمن</h6>
               <h6 v-if="scope.row.role_id == 2">كاشير</h6>
+              <h6 v-if="scope.row.role_id == 3">مشرف</h6>
             </template>
           </el-table-column>
           <el-table-column label="تاريخ الإنشاء ">

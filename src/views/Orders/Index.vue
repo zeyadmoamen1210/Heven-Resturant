@@ -62,7 +62,7 @@
               v-model="area"
               placeholder="ابحث بالمناطق"
             >
-              <el-option :key="5" label="5" :value="5"> </el-option>
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
 
               <el-option
                 v-for="area in areas"
@@ -232,10 +232,15 @@
         <el-table-column label="العميل" prop="customer.name"> </el-table-column>
         <el-table-column label="الفون" prop="customer.mobile"> </el-table-column>
         <el-table-column label="بواسطة" prop="user.name"> </el-table-column>
-         <el-table-column label="اﻟﺴﺎﺋﻖ" prop="employee.name" v-if="employee_id>1"> </el-table-column>
+         
+        <el-table-column label="اﻟﺴﺎﺋﻖ"> 
+            <template slot-scope="scope">
+              <span v-if="scope.row.employee.id>1">{{scope.row.employee.name}}</span>
+              
+            </template>
+
+        </el-table-column>
         
-        <el-table-column label="اﻟﺴﺎﺋﻖ"  prop="employee.name"  v-else> </el-table-column>
-      
         <el-table-column width="200" sortable label="التوقيت">
      
             <template slot-scope="scope">
@@ -255,6 +260,7 @@
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="openModelToUpdateStatus(scope.row)" v-if="scope.row.status<3 && scope.row.order_type_id!=2 && scope.row.area_id==1 ">تم الإستلام</el-dropdown-item>
                         <el-dropdown-item v-if="scope.row.status<3 && scope.row.area_id > 1 " @click.native="openAssignToDeliveryModel(scope.row)">إسناد إلي سائق</el-dropdown-item>
+                        <el-dropdown-item v-if="scope.row.status<3 && scope.row.area_id > 1 " @click.native="resetOrder(scope.row)"> إلغاء السائق</el-dropdown-item>
 
                       </el-dropdown-menu>
                     </el-dropdown>
@@ -687,6 +693,22 @@ export default {
         .put(`/orders/${this.currOrder.id}/status`, {
           status: 3,
         })
+        .then(() => {
+          this.$notify({
+            title: "تم بنجاح",
+            message: "تم تحديث حالة الطلب بنجاح",
+            type: "success",
+          });
+          this.getOrdersByType();
+        })
+        .finally(() => loading.close());
+    },
+    resetOrder(order) {
+      this.showModelToUpdateStatus = false;
+      const loading = this.$vs.loading();
+      // orders-reset/{id}
+      axiosApi
+        .post(`/orders-reset/${order.id}`)
         .then(() => {
           this.$notify({
             title: "تم بنجاح",
