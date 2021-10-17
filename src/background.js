@@ -22,7 +22,9 @@ protocol.registerSchemesAsPrivileged([{
   }
 },]);
 const { ipcMain } = require('electron');
+const {autoUpdate} = require('electron-auto-update');
 
+autoUpdate();
 let printWindow, printBarCode;
 
 async function createWindow() {

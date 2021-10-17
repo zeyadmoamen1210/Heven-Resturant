@@ -7,7 +7,10 @@ import "./plugins/moment"
 import './plugins/swiper'
 Vue.use(VueApexCharts)
 
-Vue.component('apexchart', VueApexCharts)
+Vue.component('apexchart', VueApexCharts);
+
+
+
 
 import {
   BootstrapVue,
