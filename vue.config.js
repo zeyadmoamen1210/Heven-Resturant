@@ -5,13 +5,14 @@ module.exports = {
             builderOptions: {
                 publish: [
                   {
-                    provider:"gitlab",
-                    owner: "hamza",
+                    provider:"github",
+                    owner: "zeyadmoamen1210",
                     private: true,
                   }
                 ]
               },
             nodeIntegration: true,
+            preload: "src/preload.js", // this one
             
         }
     }

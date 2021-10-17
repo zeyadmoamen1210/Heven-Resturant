@@ -1,6 +1,6 @@
 // dev-app-update.yml
-provider: gitlab
+provider: github
 private: true
-owner: hamza
-repo: Cashier-V2.2
-token: nF2kU3845GQjV3TGArTH
+owner: zeyadmoamen1210
+repo: Heven-Resturant
+token: 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

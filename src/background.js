@@ -110,7 +110,7 @@ async function createWindow() {
 
   printWindow = printWin;
   printBarCode = barCodeWindow;
-  process.env.GH_TOKEN = "ttxXa3uaMXWsNt-4QVxg";
+  process.env.GH_TOKEN = "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";
   autoUpdater.autoDownload = false;
   autoUpdater.checkForUpdates();
 }
