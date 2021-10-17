@@ -13,6 +13,8 @@ import Siderbar from "@/components/sidebar";
 
 export default {
   components:{Siderbar},
+
+  
   name: 'App',
   methods:{
     printBarCode(){

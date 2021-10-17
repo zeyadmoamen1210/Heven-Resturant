@@ -3,7 +3,8 @@
 import { 
   app,
   protocol,
-  BrowserWindow
+  BrowserWindow,
+  autoUpdater, dialog
 } from "electron";
 import {
   createProtocol
@@ -12,6 +13,42 @@ import installExtension, {
   VUEJS_DEVTOOLS
 } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
+
+
+require('update-electron-app')({
+  repo: 'github-user/https://gitlab.com/hamza-solutions/haven-restaurant/frontend/cashier-v2.2.git',
+  updateInterval: '1 hour',
+  logger: require('electron-log')
+})
+const server = 'http://167.172.157.191:5050'
+const url = `${server}/update/${process.platform}/${app.getVersion()}`
+
+autoUpdater.setFeedURL({ url })
+
+setInterval(() => {
+  autoUpdater.checkForUpdates()
+}, 1000)
+
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Restart', 'Later'],
+    title: 'Application Update',
+    message: process.platform === 'win32' ? releaseNotes : releaseName,
+    detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+  }
+
+  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+    if (returnValue.response === 0) autoUpdater.quitAndInstall()
+  })
+})
+
+
+autoUpdater.on('error', message => {
+  console.error('There was a problem updating the application')
+  console.error(message)
+})
+
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{
@@ -22,9 +59,7 @@ protocol.registerSchemesAsPrivileged([{
   }
 },]);
 const { ipcMain } = require('electron');
-const {autoUpdate} = require('electron-auto-update');
 
-autoUpdate();
 let printWindow, printBarCode;
 
 async function createWindow() {
