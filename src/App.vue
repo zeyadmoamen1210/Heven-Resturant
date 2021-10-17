@@ -2,6 +2,9 @@
   <div id="app" dir="rtl">
     <div :style="{'padding-left': isAuth() && $route.name != 'printOrder' ? '50px': '0'}" class="heaven-content">
     <Siderbar v-if="isAuth() && $route.name != 'printOrder' &&  $route.name !=  'printBarcode'" />
+      <div>
+        <p>Updates State: {{ state }}</p>
+      </div>
       <router-view dir="rtl" />
     </div>
 
@@ -14,8 +17,13 @@ import Siderbar from "@/components/sidebar";
 export default {
   components:{Siderbar},
 
-  
+
   name: 'App',
+  data(){
+    return {
+      state: "Thinking..."
+    }
+  },
   methods:{
     printBarCode(){
       const { ipcRenderer } = require("electron");
@@ -26,6 +34,18 @@ export default {
       return (localStorage.getItem('heavenDashboardToken') && localStorage.getItem('heavenDashboardUser'))
     }
 
+  },
+  mounted(){
+    window.ipcRenderer.on("updater", (event, message) => {
+    switch (message) {
+      case "update_available":
+        this.state = "Available";
+        break;
+      case "update_not_available":
+        this.state = "Not Available";
+        break;
+    }
+  });
   }
 }
 </script>

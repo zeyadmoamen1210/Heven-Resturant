@@ -1,0 +1,6 @@
+// dev-app-update.yml
+provider: gitlab
+private: true
+owner: hamza
+repo: Cashier-V2.2
+token: nF2kU3845GQjV3TGArTH

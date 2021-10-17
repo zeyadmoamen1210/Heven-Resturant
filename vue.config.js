@@ -2,7 +2,17 @@ module.exports = {
     lintOnSave: false,
     pluginOptions: {
         electronBuilder: {
-            nodeIntegration: true
+            builderOptions: {
+                publish: [
+                  {
+                    provider:"gitlab",
+                    owner: "hamza",
+                    private: true,
+                  }
+                ]
+              },
+            nodeIntegration: true,
+            
         }
     }
     //...
