@@ -7,9 +7,7 @@
         :class="{ active: item.id == $store.state.currentType.id }"
         @click="selectType(index, item)"
       >
-        
-          <p>{{ item.name }}</p>
-        
+        <p>{{ item.name }}</p>
       </div>
     </div>
   </div>
@@ -23,47 +21,35 @@ export default {
   },
   data: () => ({
     selectedType: undefined,
-    currType:{
+    currType: {
       // isSelected: false
-    }
+    },
   }),
-  methods:{
-    selectType(index, item){
+  methods: {
+    selectType(index, item) {
+      this.currType = { ...item };
 
+      this.$store.commit("ResetSelectedAddressAndCustomer");
 
-
-      this.currType = {...item};
-
-      
-      
-      this.$store.commit('ResetSelectedAddressAndCustomer')
-
-      this.$store.commit('SetOrderType', item)
+      this.$store.commit("SetOrderType", item);
 
       this.$store.commit("setOrdersTabActive", true);
 
       this.$store.commit("calcPrice");
-
     },
-
-    
-
-    
   },
-  mounted(){
-
-    if(localStorage.getItem('currType')){
-      this.currType = JSON.parse(localStorage.getItem('currType'));
+  mounted() {
+    if (localStorage.getItem("currType")) {
+      this.currType = JSON.parse(localStorage.getItem("currType"));
 
       // this.type.forEach(ele => {
       //   if(ele.id === this.currType.id)
       //     ele.isSelected = true;
       // });
 
-      let index = this.type.findIndex(ele => ele.id == this.currType.id );
-      this.selectType(index, this.currType)
+      let index = this.type.findIndex((ele) => ele.id == this.currType.id);
+      this.selectType(index, this.currType);
     }
-
   },
 };
 </script>

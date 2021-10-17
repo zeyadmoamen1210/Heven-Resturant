@@ -24,16 +24,18 @@ $boldFont : 'din-bold',
 sans-serif;
 
 
-.tabs-container{
+.tabs-container {
     .tab {
         padding: 15px !important;
         margin: 15px 0 !important;
     }
-    .total-orders{
+
+    .total-orders {
         margin: -13px 0;
         text-align: right;
         margin-right: 69px;
-        .tab-btn{
+
+        .tab-btn {
             background: #EBF9FC;
             border: none;
             color: #333;
@@ -45,22 +47,24 @@ sans-serif;
             transition: all .2s ease-in-out;
             outline: none;
             cursor: pointer;
-            &:hover{
+
+            &:hover {
                 transform: translateY(-5px);
             }
         }
-        .active-tab{
+
+        .active-tab {
             background-color: #FE5634;
-            color:#FFF;
+            color: #FFF;
         }
     }
 
-    .tab{
+    .tab {
         padding: 15px;
         margin: 15px;
     }
-    
-    
+
+
 }
 
 
@@ -83,8 +87,8 @@ sans-serif;
         box-shadow: 0px 0px 15px 6px #ebf9fc;
 
 
-        .customer-info{
-            label{
+        .customer-info {
+            label {
                 display: block;
                 text-align: start;
                 margin-bottom: 4px;
@@ -110,13 +114,15 @@ sans-serif;
             border: none;
             min-height: 100vh;
 
-            .tab-content, .tab-pane.card-body{
+            .tab-content,
+            .tab-pane.card-body {
                 min-height: 100vh;
             }
 
 
             .tab {
                 min-height: 100vh;
+
                 ul {
                     li {
                         &.icons {
@@ -136,10 +142,11 @@ sans-serif;
 
                             &:first-child {
                                 color: #003CFF;
-                                path{
+
+                                path {
                                     fill: #003CFF;
                                 }
-                                
+
 
                                 &:hover {
                                     p {
@@ -153,16 +160,20 @@ sans-serif;
 
                             &.save {
                                 color: #4C7D4C;
-                                path{
+
+                                path {
                                     fill: #4C7D4C;
                                 }
-                                
+
 
                                 &:hover {
                                     p {
                                         &.green {
                                             display: block;
                                             margin: 0;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
                                         }
                                     }
                                 }
@@ -171,7 +182,8 @@ sans-serif;
 
                         &:last-child {
                             color: #FF0000;
-                            path{
+
+                            path {
                                 fill: #FF0000;
                             }
 
@@ -180,6 +192,9 @@ sans-serif;
                                     &.red {
                                         display: block;
                                         margin: 0;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
                                     }
                                 }
                             }
@@ -310,16 +325,16 @@ sans-serif;
 
                 .selectedItem {
                     max-height: 60vh;
-                    
+
                     overflow: auto;
                     overflow-x: hidden;
                     scrollbar-width: thin;
                     scrollbar-color: var(--thumbBG) var(#EBF9FC);
-                    
 
-                    thead{
-                        tr{
-                            td{
+
+                    thead {
+                        tr {
+                            td {
                                 font-weight: bold;
                                 font-size: 13px;
                                 line-height: 2;
@@ -380,7 +395,7 @@ sans-serif;
                                 line-height: 1;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
-                              
+
 
 
                             }
@@ -419,10 +434,12 @@ sans-serif;
                         }
 
                         .quantity {
-                            .el-input-number.el-input-number--mini{
+                            .el-input-number.el-input-number--mini {
                                 line-height: none !important;
                             }
-                            .el-input-number__decrease, .el-input-number__increase {
+
+                            .el-input-number__decrease,
+                            .el-input-number__increase {
                                 position: absolute;
                                 z-index: 1;
                                 top: 1px;
@@ -435,26 +452,30 @@ sans-serif;
                                 font-size: 17px !important;
                                 padding: 0 7px;
                                 border-radius: 30% !important;
-                                i{
+
+                                i {
                                     margin-top: 5px;
                                 }
                             }
-                            .el-input__inner{
+
+                            .el-input__inner {
                                 width: 100%;
                                 padding: 14px 0;
                                 border: 1px solid #DDD !important;
 
-                             
+
 
                                 // &::selection{
                                 //     background: none !important;
                                 // }
                             }
-                            .data .order .card .tab .selectedItem .yourOrder .quantity .el-input__inner{
+
+                            .data .order .card .tab .selectedItem .yourOrder .quantity .el-input__inner {
                                 width: 30px !important;
-                                
+
                             }
-                            .el-input-number .el-input{
+
+                            .el-input-number .el-input {
                                 width: 30px !important;
                                 margin: auto;
                                 font-size: 15px;
@@ -596,7 +617,7 @@ sans-serif;
                 }
 
                 .price {
-                    
+
                     text-align: start;
                     // padding: 0 1.5rem;
                     display: flex;
@@ -639,8 +660,8 @@ sans-serif;
 }
 
 
-*{
-    &::selection{
+* {
+    &::selection {
         background: #FE5634 !important;
         color: #fff !important;
     }

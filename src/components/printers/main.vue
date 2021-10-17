@@ -30,7 +30,7 @@
       <table class="custom-table" >
         <tr v-if="inVoiceDetails">
           <td width="35%">رقم الطلب</td>
-          <td>
+          <td >
             <b>{{ inVoiceDetails.order }}</b>
             <!-- <b>2</b> -->
           </td>
@@ -134,7 +134,8 @@
 
       </table>
 
-      <div style="height: 5px;"></div>
+      <div style="height: 10px;     border-top: 1px solid #000;
+    margin-top: 10px;"></div>
 
       <table class="custom-table" >
         <thead>
@@ -149,7 +150,7 @@
 
         <tbody v-if="isKitchenPrinters">
           <tr v-for="(x, index) in dataForPrint" :key="index">
-            <td>{{ x.pivot ? x.pivot.qty : x.qty }}</td>
+            <td >{{ x.pivot ? x.pivot.qty : x.qty }}</td>
             <td>{{ x.name }}</td>
             <td>{{ x.pivot ? x.pivot.size : x.size }}</td>
             <td>{{ x.pivot ? x.pivot.price : x.price }}</td>
@@ -166,7 +167,7 @@
 
         <tbody v-else>
           <tr v-for="(x, index) in dataForPrint" :key="index">
-            <td>{{ x.pivot ? x.pivot.qty : x.qty }}</td>
+            <td >{{ x.pivot ? x.pivot.qty : x.qty }}</td>
             <td>{{ x.name }}</td>
             <td>{{ x.pivot ? x.pivot.size : x.size }}</td>
             <td>{{ x.pivot ? x.pivot.price : x.price }}</td>
@@ -192,9 +193,9 @@
         </tfoot> -->
       </table>
 
-      <div style="height: 10px;"></div>
+      <div style="height: 10px;     border-top: 1px solid #000;
+    margin-top: 10px;"></div>
 
-     
 
       <table class="custom-table">
 
@@ -301,7 +302,7 @@
         
       </table>
 
-      <div style="height: 5px;"></div>
+      <div style="height: 10px;"></div>
 
 
       <table class="custom-table"  v-if="inVoiceDetails.notes">
@@ -312,6 +313,8 @@
               <b>{{ inVoiceDetails.notes }}</b>
           </td>
       </table>
+<div style="height: 5px;     border-top: 1px solid #000;
+    margin-top: 10px;"></div>
 
       <div
         class="d-flex justify-content-center pt-1 shared-value"
@@ -370,20 +373,20 @@ export default {
       border: none !important;
     /* border-bottom: 1px solid #000 !important; */
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
     font-family: "CairoBold";
     line-height: 1.3 !important;
     td{
       border: none !important;
-      border-bottom: 1px solid #000 !important;
+      // border-bottom: 1px solid #000 !important;
       text-align: center;
-          font-size: 10px;
+          font-size: 12px;
     font-family: "CairoBold";
     }
 }
 
 .shared-value{
-  border-bottom: 1px solid #000;
+  // border-bottom: 1px solid #000;
   margin: 0 ;
   h6{
     margin:0 10px;
@@ -395,7 +398,7 @@ export default {
 }
 .phone{
     padding: 0;
-    border-bottom: 1px solid #000;
+    // border-bottom: 1px solid #000;
     margin: 0;
     .head{
       margin:0 5px;margin-bottom:0;font-size:10px;font-family: "CairoBold";

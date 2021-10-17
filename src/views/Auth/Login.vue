@@ -36,6 +36,7 @@
                     <label for="name" style="text-align: right" class="mb-2"> كلمة المرور</label>
                     <el-input
                       id="name"
+                       @keydown.enter.native="makeLogin"
                       type="password"
                       v-model="form.password"
                     ></el-input>

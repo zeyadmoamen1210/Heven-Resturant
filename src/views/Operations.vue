@@ -73,16 +73,16 @@
               <Type :type="type">
                 <div slot="edit-delete">
                   <button
-                    class="btn emp-dept-update"
-                    @click="openUpdateModel('type', type)"
-                  >
-                    <img src="@/images/Icon-feather-edit-3.svg" alt="" />
-                  </button>
-                  <button
                     class="btn emp-dept-delete"
                     @click="handleDelete('type', type)"
                   >
                     <img src="@/images/Icon-material-delete.svg" alt="" />
+                  </button>
+                  <button
+                    class="btn emp-dept-update"
+                    @click="openUpdateModel('type', type)"
+                  >
+                    <img src="@/images/Icon-feather-edit-3.svg" alt="" />
                   </button>
                 </div>
               </Type>
@@ -327,13 +327,15 @@
                     class="btn emp-dept-delete"
                     @click="handleDelete('employee_dept', dept)"
                   >
-                    <i class="el-icon-delete-solid"></i>
+                    <!-- <i class="el-icon-delete-solid"></i> -->
+                    <img src="@/images/Icon-material-delete.svg" alt="" />
                   </button>
                   <button
                     class="btn emp-dept-update"
                     @click="openUpdateModel('employee_dept', dept)"
                   >
-                    <i class="el-icon-edit"></i>
+                    <!-- <i class="el-icon-edit"></i> -->
+                    <img src="@/images/Icon-feather-edit-3.svg" alt="" />
                   </button>
                 </div>
               </EmployeeDepts>
@@ -362,25 +364,26 @@
           </el-form>
         </el-tab-pane>
 
-
-
-
-
-
-        <el-tab-pane label="اعدادات الطابعة" color="#FE5634" name="printerSettings">
+        <el-tab-pane
+          label="اعدادات الطابعة"
+          color="#FE5634"
+          name="printerSettings"
+        >
           <el-form :model="printerSettings" ref="printerSettings">
-
             <div class="row">
               <div class="col-md-6">
                 <el-form-item
                   label="عدد مرات طباعة الشيك للعميل"
                   prop="numberOfMainReset"
-                  :rules="[{ required: true, message: '  مطلوب' }, { type: 'number', message: 'يجب ان يكون رقم صحيح'}]"
+                  :rules="[
+                    { required: true, message: '  مطلوب' },
+                    { type: 'number', message: 'يجب ان يكون رقم صحيح' },
+                  ]"
                 >
                   <el-input
-                      type="number"
-                      placeholder="عدد مرات طباعة الشيك للعميل"
-                      v-model.number="printerSettings.numberOfMainReset"
+                    type="number"
+                    placeholder="عدد مرات طباعة الشيك للعميل"
+                    v-model.number="printerSettings.numberOfMainReset"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -389,35 +392,30 @@
                 <el-form-item
                   label="عدد مرات طباعة الشيك للمطبخ"
                   prop="numberOfKitchenReset"
-                  :rules="[{ required: true, message: '  مطلوب' }, { type: 'number', message: 'يجب ان يكون رقم صحيح'}]"
+                  :rules="[
+                    { required: true, message: '  مطلوب' },
+                    { type: 'number', message: 'يجب ان يكون رقم صحيح' },
+                  ]"
                 >
                   <el-input
                     type="number"
-                      placeholder="عدد مرات طباعة الشيك للمطبخ"
-                      v-model.number="printerSettings.numberOfKitchenReset"
+                    placeholder="عدد مرات طباعة الشيك للمطبخ"
+                    v-model.number="printerSettings.numberOfKitchenReset"
                   ></el-input>
                 </el-form-item>
               </div>
 
               <el-form-item>
-                <el-button type="primary" class="mt-2 text-center" @click="savePrinterSettings()"
+                <el-button
+                  type="primary"
+                  class="mt-2 text-center"
+                  @click="savePrinterSettings()"
                   >حفظ اعدادات الطابعة</el-button
                 >
               </el-form-item>
-
             </div>
-            
-
-
-            
-
-            
           </el-form>
-
-
         </el-tab-pane>
-
-
       </el-tabs>
     </b-container>
 
@@ -656,7 +654,7 @@
                 <div class="d-flex justify-content-center mt-2 mb-2">
                   <el-form-item label="الراتب" prop="salary">
                     <el-input-number
-                      style="width:150px !important"
+                      style="width: 150px !important"
                       size="md"
                       v-model="add.salary"
                       :min="0"
@@ -807,16 +805,14 @@
     >
       <div class="con-content">
         <h6><i class="el-icon-warning-outline"></i></h6>
-        <p>
-          هل أنت متأكد من أتك تريد حذف ؟
-        </p>
+        <p>هل أنت متأكد من أتك تريد حذف ؟</p>
 
         <div class="btns d-flex justify-content-center">
-          <vs-button color="danger" @click="showConfirmModelToDelete = false">
-            إلغاء
-          </vs-button>
           <vs-button color="#675DEC" @click="deleteOperation()">
             تأكيد
+          </vs-button>
+          <vs-button color="danger" @click="showConfirmModelToDelete = false">
+            إلغاء
           </vs-button>
         </div>
       </div>
@@ -1062,7 +1058,7 @@
                 <div class="d-flex justify-content-center mt-2 mb-2">
                   <el-form-item label="الراتب" prop="salary">
                     <el-input-number
-                      style="width:150px !important"
+                      style="width: 150px !important"
                       size="md"
                       v-model="update.salary"
                       :min="0"
@@ -1173,16 +1169,15 @@
 
           <span class="dialog-footer mt-4">
             <el-form-item>
-              <el-button @click="showConfirmModelToUpdate = false"
-                >إلغاء</el-button
-              >
-            </el-form-item>
-
-            <el-form-item>
               <el-button
                 type="primary"
                 @click="submitUpdateForm('updateOperation')"
                 >تعديل</el-button
+              >
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="showConfirmModelToUpdate = false"
+                >إلغاء</el-button
               >
             </el-form-item>
           </span>
@@ -1268,12 +1263,11 @@ export default {
     this.getPrintersForAssigned();
     this.getEmployeeDepts();
 
-
-    if(localStorage.getItem("printerSettings")){
-      this.printerSettings = JSON.parse(localStorage.getItem("printerSettings"))
+    if (localStorage.getItem("printerSettings")) {
+      this.printerSettings = JSON.parse(
+        localStorage.getItem("printerSettings")
+      );
     }
-
-
   },
   data() {
     return {
@@ -1323,31 +1317,34 @@ export default {
     };
   },
   methods: {
-    savePrinterSettings(){
-
+    savePrinterSettings() {
       this.$refs["printerSettings"].validate((valid) => {
-        if (valid){
-            if(this.printerSettings.numberOfMainReset < 0 || this.printerSettings.numberOfKitchenReset < 0){
-              this.$notify.error({
-                      title: "خطأ!",
-                      message: "القيم يجب ان تكون اكبر من او يساوي الصفر",
-                      duration: 1500,
-              });
-            }else{
-              const loading = this.$vs.loading();
-              localStorage.setItem("printerSettings", JSON.stringify(this.printerSettings));
-              this.$notify({
-                      title: "تمت العملية بنجاح",
-                      message: "تم حفظ اعدادات الطابعة بنجاح",
-                      type: "success",
-                      duration: 1500,
-              });
-              loading.close();
-            }
+        if (valid) {
+          if (
+            this.printerSettings.numberOfMainReset < 0 ||
+            this.printerSettings.numberOfKitchenReset < 0
+          ) {
+            this.$notify.error({
+              title: "خطأ!",
+              message: "القيم يجب ان تكون اكبر من او يساوي الصفر",
+              duration: 1500,
+            });
+          } else {
+            const loading = this.$vs.loading();
+            localStorage.setItem(
+              "printerSettings",
+              JSON.stringify(this.printerSettings)
+            );
+            this.$notify({
+              title: "تمت العملية بنجاح",
+              message: "تم حفظ اعدادات الطابعة بنجاح",
+              type: "success",
+              duration: 1500,
+            });
+            loading.close();
+          }
         }
       });
-
-      
     },
     submitAddForm(formName) {
       this.$refs[formName].validate((valid) => {

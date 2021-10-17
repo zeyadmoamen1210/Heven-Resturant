@@ -1,26 +1,19 @@
 <template>
   <div class="receiving-orders">
-    <el-dialog
-      :visible.sync="determinePrintersFirst"
-      width="30%">
-
+    <el-dialog :visible.sync="determinePrintersFirst" width="30%">
       <div class="d-block text-center">
         <div class="text-center">
           <img
-            style="width: 90px;margin-bottom: 10px;"
+            style="width: 90px; margin-bottom: 10px"
             src="@/assets/printer.svg"
             alt=""
           />
         </div>
         <h3 class="text-center">من فضلك حدد الطابعات علي الجهاز اولاً</h3>
       </div>
-      
     </el-dialog>
 
-    
     <div class="container-fluid">
-
-      
       <swiper class="swiper" :options="swiperOptionBestSeller">
         <swiper-slide v-for="type in types" :key="type.id">
           <Type
@@ -62,7 +55,7 @@
               v-model="area"
               placeholder="ابحث بالمناطق"
             >
-              <el-option :key="5" label="5" :value="5"> </el-option>
+              <!-- <el-option :key="5" label="5" :value="5"> </el-option> -->
 
               <el-option
                 v-for="area in areas"
@@ -198,101 +191,266 @@
               </div>
             </div>
           </div> -->
-      
-        <el-table
-        class="mt-2"
-        align="right"
-        v-if="tableData.length > 0"
-        :data="tableData"
-        border
-        style="width: 100%"
-      >
-        <el-table-column label="#" type="index" width="50"> </el-table-column>
-        <el-table-column sortable width="100" label="رقم " prop="order">
-        </el-table-column>
 
-        <el-table-column  width="100" label="القيمة">
+          <el-table
+            class="mt-2"
+            align="right"
+            v-if="tableData.length > 0"
+            :data="tableData"
+            border
+            style="width: 100%"
+          >
+            <el-table-column label="#" type="index" width="50">
+            </el-table-column>
+            <el-table-column sortable width="100" label="رقم " prop="order">
+            </el-table-column>
 
-          <template slot-scope="scope">
-             {{Number(scope.row.total) + Number(scope.row.restaurant_cost) + Number(scope.row.driver_cost)}}
-           </template>
+            <el-table-column width="100" label="القيمة">
+              <template slot-scope="scope">
+                {{
+                  Number(scope.row.total) +
+                  Number(scope.row.restaurant_cost) +
+                  Number(scope.row.driver_cost)
+                }}
+              </template>
+            </el-table-column>
+            <el-table-column width="100" label="الحالة">
+              <template slot-scope="scope">
+                <el-tag v-if="scope.row.status == 1">في المطبخ</el-tag>
+                <el-tag type="warning" v-if="scope.row.status == 2"
+                  >في الطريق</el-tag
+                >
+                <el-tag type="success" v-if="scope.row.status == 3"
+                  >تم التوصيل
+                </el-tag>
+                <el-tag type="danger" v-if="scope.row.status == 4">
+                  ﻣﺮﻓﻮﺽ بعد</el-tag
+                >
+                <el-tag type="danger" v-if="scope.row.status == 5"
+                  >ﻣﺮﻓﻮﺽ قبل</el-tag
+                >
+              </template>
+            </el-table-column>
 
-        </el-table-column>
-        <el-table-column  width="100"  label="الحالة"> 
+            <el-table-column label="العميل" prop="customer.name">
+            </el-table-column>
+            <el-table-column label="الفون" prop="customer.mobile">
+            </el-table-column>
+            <el-table-column label="بواسطة" prop="user.name"> </el-table-column>
 
-           <template slot-scope="scope">
-             <el-tag v-if="scope.row.status==1">في المطبخ</el-tag>
-             <el-tag type="warning" v-if="scope.row.status==2">في الطريق</el-tag>
-             <el-tag type="success" v-if="scope.row.status==3">تم التوصيل </el-tag>
-              <el-tag type="danger" v-if="scope.row.status==4"> ﻣﺮﻓﻮﺽ بعد</el-tag>
-             <el-tag type="danger" v-if="scope.row.status==5">ﻣﺮﻓﻮﺽ قبل</el-tag>
-           </template>
-        </el-table-column>
-      
-        <el-table-column label="العميل" prop="customer.name"> </el-table-column>
-        <el-table-column label="الفون" prop="customer.mobile"> </el-table-column>
-        <el-table-column label="بواسطة" prop="user.name"> </el-table-column>
-         <el-table-column label="اﻟﺴﺎﺋﻖ" prop="employee.name" v-if="employee_id>1"> </el-table-column>
-        
-        <el-table-column label="اﻟﺴﺎﺋﻖ"  prop="employee.name"  v-else> </el-table-column>
-      
-        <el-table-column width="200" sortable label="التوقيت">
-     
-            <template slot-scope="scope">
-              <span>{{scope.row.created_at | moment("dddd | Do / MM / YYYY | h:mm A")}}</span>
-            </template>
-        </el-table-column>
+            <el-table-column label="اﻟﺴﺎﺋﻖ">
+              <template slot-scope="scope">
+                <span v-if="scope.row.employee.id > 1">{{
+                  scope.row.employee.name
+                }}</span>
+              </template>
+            </el-table-column>
 
-         <el-table-column label="اجراءات" width="120">
-          <template slot-scope="scope">
-              
-                  
+            <el-table-column width="200" sortable label="التوقيت">
+              <template slot-scope="scope">
+                <span>{{
+                  scope.row.created_at
+                    | moment("dddd | Do / MM / YYYY | h:mm A")
+                }}</span>
+              </template>
+            </el-table-column>
 
-                  <el-dropdown  >
-                      <el-button type="primary">
-                        الإجرائات<i class="el-icon-arrow-down el-icon--right"></i>
-                      </el-button>
-                      <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native="openModelToUpdateStatus(scope.row)" v-if="scope.row.status<3 && scope.row.order_type_id!=2 && scope.row.area_id==1 ">تم الإستلام</el-dropdown-item>
-                        <el-dropdown-item v-if="scope.row.status<3 && scope.row.area_id > 1 " @click.native="openAssignToDeliveryModel(scope.row)">إسناد إلي سائق</el-dropdown-item>
-                        <el-dropdown-item v-if="scope.row.status<3 && scope.row.area_id > 1 " @click.native="resetOrder(scope.row)"> إلغاء السائق</el-dropdown-item>
-
-                      </el-dropdown-menu>
-                    </el-dropdown>
-
-
-               
-          </template>
-         </el-table-column>
-         <el-table-column type="expand">
-      <template slot-scope="props">
-        <el-table
-        class="mt-2"
-        align="right"
-        :data="props.row.products"
-        border
-        style="width: 60%; margin-right:20%"
-      >
-
-       <el-table-column label="#" type="index" width="50"> </el-table-column>
-        <el-table-column sortable width="100" label="الكمية " prop="pivot.qty">
-        </el-table-column>
-        <el-table-column  label="الصنف " prop="name"></el-table-column>
-        <el-table-column  width="100"  label="المقاس " prop="pivot.size"></el-table-column>
-        <el-table-column  width="100"  label="السعر " prop="pivot.price"></el-table-column>
-        <el-table-column  width="100"  label="الاجمالي">
-            <template slot-scope="scope">
-              <span>{{scope.row.pivot.qty* scope.row.pivot.price}}</span>
-
-            </template>
-
-        </el-table-column>
-
-        </el-table>
-      </template>
-    </el-table-column>
-       
-      </el-table>
+            <el-table-column label="اجراءات" width="120">
+              <template slot-scope="scope">
+                <el-dropdown>
+                  <el-button type="primary">
+                    الإجرائات<i class="el-icon-arrow-down el-icon--right"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      @click.native="openModelToUpdateStatus(scope.row)"
+                      v-if="
+                        scope.row.status < 3 &&
+                        scope.row.order_type_id != 2 &&
+                        scope.row.area_id == 1
+                      "
+                      >تم الإستلام</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      v-if="scope.row.status < 3 && scope.row.area_id > 1"
+                      @click.native="openAssignToDeliveryModel(scope.row)"
+                      >إسناد إلي سائق</el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      v-if="scope.row.status < 3 && scope.row.area_id > 1"
+                      @click.native="resetOrder(scope.row)"
+                    >
+                      إلغاء السائق</el-dropdown-item
+                    >
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </template>
+            </el-table-column>
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <div class="row">
+                  <div class="col-8">
+                    <el-table
+                      class="mt-2"
+                      align="right"
+                      :data="props.row.products"
+                      border
+                      style="width: 100%"
+                    >
+                      <el-table-column label="#" type="index" width="50">
+                      </el-table-column>
+                      <el-table-column
+                        sortable
+                        width="100"
+                        label="الكمية "
+                        prop="pivot.qty"
+                      >
+                      </el-table-column>
+                      <el-table-column
+                        label="الصنف "
+                        prop="name"
+                      ></el-table-column>
+                      <el-table-column
+                        width="100"
+                        label="المقاس "
+                        prop="pivot.size"
+                      ></el-table-column>
+                      <el-table-column
+                        width="100"
+                        label="السعر "
+                        prop="pivot.price"
+                      ></el-table-column>
+                      <el-table-column width="100" label="الاجمالي">
+                        <template slot-scope="scope">
+                          <span>{{
+                            scope.row.pivot.qty * scope.row.pivot.price
+                          }}</span>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                  <div class="col-4">
+                    <div class="row pr-2 mt-2" style="text-align: start">
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">اسم العميل</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.customer.name }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row pr-2" style="text-align: start">
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">رقم العميل</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.customer.mobile }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row pr-2" style="text-align: start">
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">العنوان</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">{{ props.row.address }}</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="props.row.notes"
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">* ﻣﻼﺣﻈﺎﺕ</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.notes }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="props.row.rejected_reason"
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">* ﻣﻼﺣﻈﺎﺕ</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.rejected_reason }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="
+                        props.row.payment_type && props.row.payment_type == 1
+                      "
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">نوع الدفع</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">نقدي</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="
+                        props.row.payment_type && props.row.payment_type == 2
+                      "
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">نوع الدفع</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">فيزا</p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="props.row.preparated_at"
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">تاريخ الاستلام</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{
+                            new Date(props.row.preparated_at).toLocaleString(
+                              "ar-EG"
+                            )
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="row pr-2"
+                      style="text-align: start"
+                      v-if="props.row.rejected_reason"
+                    >
+                      <div class="col-4" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0">سبب الرفض</p>
+                      </div>
+                      <div class="col-8" style="border: 1px solid #ebeef5">
+                        <p style="margin: 10px 0px">
+                          {{ props.row.rejected_reason }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
 
@@ -313,15 +471,14 @@
           <div class="d-flex">
             <div class="ml-2">
               <el-input
-              @keydown.enter.native="getDrivers()"
+                @keydown.enter.native="getDrivers()"
                 placeholder="ابحث بأسم السائق "
                 v-model="driverName"
               ></el-input>
             </div>
             <div class="ml-2">
               <el-input
-               @keydown.enter.native="getDrivers()"
-
+                @keydown.enter.native="getDrivers()"
                 placeholder="ابحث برقم السائق  "
                 v-model="driverMobile"
               ></el-input>
@@ -329,11 +486,7 @@
           </div>
 
           <div class="row">
-            <div
-              v-for="boy in drivers"
-              :key="boy.id"
-              class="col-md-2"
-            >
+            <div v-for="boy in drivers" :key="boy.id" class="col-md-2">
               <div
                 class="delivery-boy"
                 @click="setDeliveryBoy(boy)"
@@ -425,7 +578,7 @@
           >
           </el-option>
         </el-select> -->
-        <h6> هل أنت متأكد انك تريد تغير الحالة إلي تم التسليم ؟  </h6>
+        <h6>هل أنت متأكد انك تريد تغير الحالة إلي تم التسليم ؟</h6>
       </div>
 
       <template #footer>
@@ -483,7 +636,7 @@ export default {
     Type,
   },
   watch: {},
-  
+
   data() {
     return {
       driverMobile: "",
@@ -599,40 +752,30 @@ export default {
 
       console.log(productsPrinters);
 
-
       const { ipcRenderer } = require("electron");
 
-
-      console.log()
+      console.log();
       ipcRenderer.send("printOrder", products);
-      console.log( "print order" ,products)
+      console.log("print order", products);
     },
 
     getAllPrinters() {
+      if (JSON.parse(localStorage.getItem("printers"))) {
+        let printers = JSON.parse(localStorage.getItem("printers"));
 
-      
-      if( JSON.parse(localStorage.getItem("printers")) ){
-          let printers = JSON.parse(localStorage.getItem("printers"));
-      
-
-          if(printers.findIndex(ele => !ele.devicePrinter) > -1){
-            console.log("printer hasn't device printer")
-            this.printers = [];
-            return;
-          }
+        if (printers.findIndex((ele) => !ele.devicePrinter) > -1) {
+          console.log("printer hasn't device printer");
+          this.printers = [];
+          return;
+        }
       }
 
       this.printers = JSON.parse(localStorage.getItem("printers"));
-      console.log("printer has device printer")
-
+      console.log("printer has device printer");
     },
 
-
     setDeliveryBoy(delivery) {
-
-
-      if(!this.printers || this.printers.length == 0){
-
+      if (!this.printers || this.printers.length == 0) {
         this.determinePrintersFirst = true;
 
         // setTimeout(() => {
@@ -642,7 +785,6 @@ export default {
         return;
       }
 
-
       this.currDeliveryBoy = { ...delivery };
       axiosApi
         .put(`/orders/${this.currOrder.id}`, {
@@ -650,10 +792,10 @@ export default {
         })
         .then((res) => {
           this.printInvoiceDetails({
-              products: [...res.data[0].products],
-              invoice: res.data[0],
-              kitchenPrinters: false,
-            });
+            products: [...res.data[0].products],
+            invoice: res.data[0],
+            kitchenPrinters: false,
+          });
           this.$notify({
             title: "تم بنجاح",
             message: "تم إسناد السائق إلي الطلب بنجاح",
@@ -677,7 +819,7 @@ export default {
       });
     },
     openAssignToDeliveryModel(order) {
-      console.log("order",order)
+      console.log("order", order);
       this.showDeliveryModel = true;
       this.currOrder = { ...order };
     },
@@ -740,7 +882,6 @@ export default {
         .then((res) => {
           this.orders = res.data.data;
           this.tableData = res.data.data;
-
         })
         .finally(() => loading.close());
     },

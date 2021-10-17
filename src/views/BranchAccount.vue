@@ -1,23 +1,23 @@
 <template>
   <div class="container-fluid">
-    <div class="d-flex justify-content-center  mt-2 ">
+    <div class="d-flex justify-content-center mt-2">
       <div class="ml-2 mr-2 mb-3">
-         <el-select
-            dir="ltr"
-            @change="getOrders"
-            v-model="branch"
-            clearable
-            placeholder="حدد الفروع"
+        <el-select
+          dir="ltr"
+          @change="getOrders"
+          v-model="branch"
+          clearable
+          placeholder="حدد الفروع"
+        >
+          <!-- @change="getProducts" -->
+          <el-option
+            v-for="item in branches"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
           >
-            <!-- @change="getProducts" -->
-            <el-option
-              v-for="item in branches"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
+          </el-option>
+        </el-select>
       </div>
 
       <div>
@@ -50,17 +50,17 @@
           <el-divider direction="vertical"></el-divider>
           <span>{{
             totalSales -
-              totalNotpaiedSales -
-              totalExpenses -
-              totalDriverCost -
-              totalPartenersPayment
+            totalNotpaiedSales -
+            totalExpenses -
+            totalDriverCost -
+            totalPartenersPayment
           }}</span>
         </el-card>
       </el-col>
     </div>
     <div class="row mt-2">
       <el-card
-        style="width:48%"
+        style="width: 48%"
         class="box-card"
         v-if="salesByCashier.length > 0"
       >
@@ -86,7 +86,7 @@
         </el-table>
       </el-card>
       <el-card
-        style="width:50%;"
+        style="width: 50%"
         class="box-card mr-2"
         v-if="salesByCashier.length > 0"
       >
@@ -107,11 +107,30 @@
           <el-table-column label="#" type="index" width="80"> </el-table-column>
           <el-table-column label="البيان " prop="name"> </el-table-column>
           <el-table-column label="القيمة " prop="totalCost"> </el-table-column>
+          <el-table-column label="تفاصيل ">
+            <template slot-scope="scope">
+              <el-button @click="goTo(scope.row.link)" type="primary"
+                >عرض التفاصيل</el-button
+              >
+              <!-- <router-link
+                v-if="scope.row.link"
+                title=" تفاصيل"
+                class="btn btn-sm btn-success btn-color"
+                :to="{
+                  path: scope.row.link,
+                }"
+              >
+                <i class="fa fa-eye ml-1"></i>
+
+                عرض التفاصيل
+              </router-link> -->
+            </template>
+          </el-table-column>
         </el-table>
       </el-card>
 
       <el-card
-        style="width:45%;"
+        style="width: 45%"
         class="box-card mt-2 mb-2"
         v-if="expenses.length > 0"
       >
@@ -135,7 +154,11 @@
         </el-table>
       </el-card>
 
-      <el-card style="width:45%;" class="box-card mr-auto mt-2 mb-2" v-if="partenersReport.length > 0">
+      <el-card
+        style="width: 45%"
+        class="box-card mr-auto mt-2 mb-2"
+        v-if="partenersReport.length > 0"
+      >
         <div slot="header" class="clearfix">
           <span>مسحوبات اﻷونر</span>
         </div>
@@ -169,10 +192,24 @@ export default {
     return {
       format: "yyyy-MM-dd HH:mm A",
       valueFormat: "yyyy-MM-dd HH:mm:ss",
-      dateRange: [((this.$moment(new Date(), "DD-MM-YYYY")).locale("en").format("YYYY-MM-DD") + ' '+'6:00:00'), ((this.$moment(new Date(), "DD-MM-YYYY").add(1,'days')).locale("en").format("YYYY-MM-DD")+ ' '+'6:00:00')],
+      dateRange: localStorage.getItem("reportsInterval")
+        ? JSON.parse(localStorage.getItem("reportsInterval"))
+        : [
+            this.$moment(new Date(), "DD-MM-YYYY")
+              .locale("en")
+              .format("YYYY-MM-DD") +
+              " " +
+              "11:30:00",
+            this.$moment(new Date(), "DD-MM-YYYY")
+              .add(1, "days")
+              .locale("en")
+              .format("YYYY-MM-DD") +
+              " " +
+              "11:30:00",
+          ],
 
-      branch:null,
-      branches:[],
+      branch: null,
+      branches: [],
 
       totalAccount: 0,
       salesByCashier: [],
@@ -184,7 +221,6 @@ export default {
       totalExpenses: 0,
       partenersReport: [],
       totalPartenersPayment: 0,
-    
     };
   },
   created() {
@@ -201,22 +237,28 @@ export default {
         })
         .finally(() => loading.close());
     },
-
+    goTo(path) {
+      this.$router.push({ path: path });
+    },
     getOrders() {
       this.getSalesByCashier();
-    this.getExpenses();
-    this.getSelectedPartenerReport();
+      this.getExpenses();
+      this.getSelectedPartenerReport();
     },
 
     getSelectedPartenerReport() {
       let url = `parteners-payments?groupBy=true`;
 
-        if (this.branch != null) {
-        url += "&branch=" + this.branch + "&";
+      if (this.branch != null) {
+        url += "&branch=" + this.branch;
       }
       if (this.dateRange != null) {
-        url += "start=" + this.dateRange[0] + "&";
-        url += "end=" + this.dateRange[1] + "&";
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
+        url += "&start=" + this.dateRange[0];
+        url += "&end=" + this.dateRange[1];
       }
       const vm = this;
       this.totalPartenersPayment = 0;
@@ -224,7 +266,7 @@ export default {
         .get(url)
         .then((res) => {
           this.partenersReport = res.data;
-          this.partenersReport.map(function(value) {
+          this.partenersReport.map(function (value) {
             vm.totalPartenersPayment += value["cost"];
           });
         })
@@ -236,10 +278,12 @@ export default {
 
       let url = `orders-by-cashier?`;
 
-        if (this.branch != null) {
+      if (this.branch != null) {
         url += "branch=" + this.branch + "&";
       }
       if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
         url += "start=" + this.dateRange[0] + "&";
         url += "end=" + this.dateRange[1] + "&";
       }
@@ -250,7 +294,7 @@ export default {
         .get(url)
         .then((res) => {
           this.salesByCashier = res.data;
-          this.salesByCashier.map(function(value) {
+          this.salesByCashier.map(function (value) {
             vm.totalSales += value["totalCost"];
             vm.totalDriverCost += value["totalDriverCost"];
           });
@@ -263,10 +307,12 @@ export default {
 
       this.totalNotpaiedSales = 0;
       let url = `not-paied-orders-by-type?`;
-        if (this.branch != null) {
+      if (this.branch != null) {
         url += "branch=" + this.branch + "&";
       }
       if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
         url += "start=" + this.dateRange[0] + "&";
         url += "end=" + this.dateRange[1] + "&";
       }
@@ -282,18 +328,20 @@ export default {
           // });
 
           this.getRejectedOrders();
+          this.getOrdersPaiedByVisa();
         })
         .finally(() => loading.close());
     },
     getRejectedOrders() {
       const loading = this.$vs.loading();
 
-      
       let url = `rejected-orders?`;
-        if (this.branch != null) {
+      if (this.branch != null) {
         url += "branch=" + this.branch + "&";
       }
       if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
         url += "start=" + this.dateRange[0] + "&";
         url += "end=" + this.dateRange[1] + "&";
       }
@@ -301,11 +349,41 @@ export default {
       axiosApi
         .get(url)
         .then((res) => {
-          this.notPaiedSales.push(res.data[0]);
-          this.notPaiedSales.map(function(value) {
+          let data = res.data[0];
+
+          data["link"] = "/orders/report?status=4";
+          this.notPaiedSales.push(data);
+          this.notPaiedSales.map(function (value) {
             vm.totalNotpaiedSales += value["totalCost"];
           });
-         this.totalDriverCost -=res.data[0].totalDriverCost;
+          this.totalDriverCost -= res.data[0].totalDriverCost;
+        })
+        .finally(() => loading.close());
+    },
+    getOrdersPaiedByVisa() {
+      const loading = this.$vs.loading();
+
+      let url = `orders-paied-by-visa?`;
+      if (this.branch != null) {
+        url += "branch=" + this.branch + "&";
+      }
+      if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
+        url += "start=" + this.dateRange[0] + "&";
+        url += "end=" + this.dateRange[1] + "&";
+      }
+      const vm = this;
+      axiosApi
+        .get(url)
+        .then((res) => {
+          let data = res.data[0];
+
+          data["link"] = "/orders/report?payment_type=2";
+          this.notPaiedSales.push(data);
+          this.notPaiedSales.map(function (value) {
+            vm.totalNotpaiedSales += value["totalCost"];
+          });
         })
         .finally(() => loading.close());
     },
@@ -313,21 +391,23 @@ export default {
       const loading = this.$vs.loading();
 
       let url = `expenses/category?`;
-         if (this.branch != null) {
+      if (this.branch != null) {
         url += "branch=" + this.branch + "&";
       }
       if (this.dateRange != null) {
+        localStorage.setItem("reportsInterval", JSON.stringify(this.dateRange));
+
         url += "start=" + this.dateRange[0] + "&";
         url += "end=" + this.dateRange[1] + "&";
       }
-   
+
       const vm = this;
       this.totalExpenses = 0;
       axiosApi
         .get(url)
         .then((res) => {
           this.expenses = res.data;
-          this.expenses.map(function(value) {
+          this.expenses.map(function (value) {
             vm.totalExpenses += value["cost"];
           });
         })
@@ -336,3 +416,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.btn-color {
+  list-style: none;
+}
+</style>

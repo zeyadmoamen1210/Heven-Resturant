@@ -138,7 +138,7 @@
         اﻟﻄﻠﺒﺎﺕ
       </vs-sidebar-item>
       <vs-sidebar-item
-        v-if="!notAdmin"
+        v-if="!notAdmin || moshref"
         class="mt-2"
         id="order-report"
         to="/orders/report"
@@ -469,6 +469,14 @@ export default {
     notAdmin() {
       let user = localStorage.getItem("heavenDashboardUser");
       if (JSON.parse(user).role_id != 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    moshref() {
+      let user = localStorage.getItem("heavenDashboardUser");
+      if (JSON.parse(user).role_id == 3) {
         return true;
       } else {
         return false;

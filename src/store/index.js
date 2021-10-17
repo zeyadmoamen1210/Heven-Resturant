@@ -441,7 +441,7 @@ export default new Vuex.Store({
 
       // concatenate flat and building and streat as a address descriptions
       if(address.building && address.streat && address.flat){
-        address.description = `شارع ${address.streat} - عمارة ${address.building} - شقة ${address.flat}`;
+        address.description = `${address.streat} - عمارة ${address.building} - شقة ${address.flat}`;
       }
 
 
